@@ -35,7 +35,7 @@ public class UsersController {
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
