@@ -7,6 +7,10 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
+<<<<<<< HEAD
+=======
+		<config>java:hr.tvz.serviceplanner.configuration.ServicePlannerApplication</config>
+>>>>>>> security
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
