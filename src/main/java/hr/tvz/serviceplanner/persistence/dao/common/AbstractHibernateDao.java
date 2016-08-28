@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Preconditions;
 
 @SuppressWarnings("unchecked")
-public abstract class AbstractHibernateDao<T extends Serializable> implements IOperations<T> {
+public abstract class AbstractHibernateDao<T extends Serializable> implements Operations<T> {
     private Class<T> clazz;
 
     @Autowired

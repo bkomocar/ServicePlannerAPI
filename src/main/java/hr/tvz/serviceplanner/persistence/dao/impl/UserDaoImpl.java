@@ -6,11 +6,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
-import hr.tvz.serviceplanner.persistence.dao.interfaces.IUserDao;
+import hr.tvz.serviceplanner.persistence.dao.interfaces.UserDao;
 import hr.tvz.serviceplanner.persistence.models.User;
 
 @Repository
-public class UserDao extends AbstractHibernateDao<User> implements IUserDao {
+public class UserDaoImpl extends AbstractHibernateDao<User> implements UserDao {
 
 	@Override
 	public User findByName(final String name){
@@ -23,7 +23,7 @@ public class UserDao extends AbstractHibernateDao<User> implements IUserDao {
 		return null;
 	}
 	
-	 public UserDao() {
+	 public UserDaoImpl() {
 	        super();
 	        setClazz(User.class);
 	    }

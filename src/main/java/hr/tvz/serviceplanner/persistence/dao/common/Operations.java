@@ -3,7 +3,7 @@ package hr.tvz.serviceplanner.persistence.dao.common;
 import java.io.Serializable;
 import java.util.List;
 
-public interface IOperations<T extends Serializable> {
+public interface Operations<T extends Serializable> {
 
     T findOne(final long id);
 

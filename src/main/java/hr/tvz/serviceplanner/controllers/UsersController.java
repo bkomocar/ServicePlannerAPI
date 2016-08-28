@@ -1,7 +1,8 @@
 package hr.tvz.serviceplanner.controllers;
 
 import hr.tvz.serviceplanner.persistence.models.User;
-import hr.tvz.serviceplanner.persistence.services.impl.UserService;
+import hr.tvz.serviceplanner.persistence.services.impl.UserServiceImpl;
+import hr.tvz.serviceplanner.security.model.SecurityUser;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 
 import hr.tvz.serviceplanner.viewmodels.request.*;
@@ -24,11 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userServiceImpl;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.findAll();
+	public ResponseEntity<List<User>> getAllUsers(Authentication authentication) {
+		List<User> users = userServiceImpl.findAll();
+		SecurityUser user = (SecurityUser) authentication.getPrincipal();
 		if (users.isEmpty()) {
 			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
 		}
@@ -37,7 +40,7 @@ public class UsersController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-		User user = userService.findOne(id);
+		User user = userServiceImpl.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
@@ -51,11 +54,11 @@ public class UsersController {
             return new ResponseEntity<Long>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-		if (userService.isUserValid(model.getName())) {
+		if (userServiceImpl.isUserValid(model.getName())) {
 			return new ResponseEntity<Long>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 
-		User user = userService.create(RegisterViewModel.toUser(model));
+		User user = userServiceImpl.create(RegisterViewModel.toUser(model));
 		return new ResponseEntity<Long>(user.getId(), HttpStatus.CREATED);
 	}
 }

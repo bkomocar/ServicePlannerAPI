@@ -1,5 +1,6 @@
 package hr.tvz.serviceplanner.persistence.models;
 
+import java.util.Date;
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 	@Entity
@@ -16,7 +18,9 @@ import javax.validation.constraints.NotNull;
 
 	  // The entity fields (private)  
 	  
-	  @Id
+	private static final long serialVersionUID = 121234535L;
+
+	@Id
 	  @GeneratedValue(strategy = GenerationType.AUTO)
 	  private Long id;
 	  
@@ -25,25 +29,32 @@ import javax.validation.constraints.NotNull;
 	  private String email;
 	  
 	  @NotNull
-	  @Column(columnDefinition = "varchar(20)")
+	  @Column(columnDefinition = "varchar(20)", unique=true)
 	  private String name;
 
 	  @NotNull
-	  @Column(columnDefinition = "varchar(30)")
+	  @Column(columnDefinition = "varchar(255)")
 	  private String password;
 
-	  // Public methods
+	  @Column
+	  private Date lastPasswordReset;
 	  
+	  @Column
+	  private String authorities;
+	  
+	  // Public methods
 	  public User() { }
 
 	  public User(long id) { 
 	    this.id = id;
 	  }
 
-	  public User(String email, String name, String password) {
+	  public User(String email, String username, String password) {
 	    this.email = email;
-	    this.name = name;
+	    this.name = username;
 	    this.password = password;
+	    this.lastPasswordReset = new Date();
+	    this.authorities = "USER";
 	  }
 
 	public long getId() {
@@ -62,12 +73,12 @@ import javax.validation.constraints.NotNull;
 		this.email = email;
 	}
 
-	public String getName() {
+	public String getUsername() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.name = username;
 	}
 
 	public String getPassword() {
@@ -77,5 +88,27 @@ import javax.validation.constraints.NotNull;
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Date getLastPasswordReset() {
+		return lastPasswordReset;
+	}
+
+	public void setLastPasswordReset(Date lastPasswordReset) {
+		this.lastPasswordReset = lastPasswordReset;
+	}
+
+	public String getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(String authorities) {
+		this.authorities = authorities;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 		  
 	}

@@ -11,7 +11,7 @@ public class UserViewModel {
 	public static UserViewModel fromUser (User user) {
 		
 		if(user != null){
-			return new UserViewModel(user.getId(), user.getName(), user.getEmail());
+			return new UserViewModel(user.getId(), user.getUsername(), user.getEmail());
 		}
 		
 		return null;

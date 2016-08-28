@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import hr.tvz.serviceplanner.persistence.dao.common.IOperations;
+import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 
 @Transactional
-public abstract class AbstractService<T extends Serializable> implements IOperations<T> {
+public abstract class AbstractService<T extends Serializable> implements Operations<T> {
 
     @Override
     public T findOne(final long id) {
@@ -40,6 +40,6 @@ public abstract class AbstractService<T extends Serializable> implements IOperat
         getDao().deleteById(entityId);
     }
 
-    protected abstract IOperations<T> getDao();
+    protected abstract Operations<T> getDao();
 
 }
