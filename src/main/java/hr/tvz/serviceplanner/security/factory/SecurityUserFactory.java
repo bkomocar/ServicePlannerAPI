@@ -7,17 +7,11 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import hr.tvz.serviceplanner.persistence.models.User;
 
 public class SecurityUserFactory {
-	
-	  public static SecurityUser create(User user) {
-		  
-		    return new SecurityUser(
-		      user.getId(),
-		      user.getUsername(),
-		      user.getPassword(),
-		      user.getEmail(),
-		      user.getLastPasswordReset(),
-		      AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthorities())
-		    );
-		    
-		  }
+
+	public static SecurityUser create(User user) {
+
+		return new SecurityUser(user.getId(), user.getName(), user.getPassword(), user.getEmail(),
+				user.getLastPasswordReset(), AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthorities()));
+
+	}
 }

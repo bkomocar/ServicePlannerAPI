@@ -1,67 +1,82 @@
 package hr.tvz.serviceplanner.persistence.models;
 
 import java.util.Date;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
-	@Entity
-	@Table(name = "users")
-	public class User implements Serializable{
+import org.hibernate.annotations.SortNatural;
 
-	  // The entity fields (private)  
-	  
+@Entity
+@Table(name = "users")
+public class User implements Serializable {
+
+	// The entity fields (private)
+
 	private static final long serialVersionUID = 121234535L;
 
 	@Id
-	  @GeneratedValue(strategy = GenerationType.AUTO)
-	  private Long id;
-	  
-	  @NotNull
-	  @Column(columnDefinition = "varchar(255)")
-	  private String email;
-	  
-	  @NotNull
-	  @Column(columnDefinition = "varchar(20)", unique=true)
-	  private String name;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-	  @NotNull
-	  @Column(columnDefinition = "varchar(255)")
-	  private String password;
+	@NotNull
+	@Column(columnDefinition = "varchar(255)")
+	private String email;
 
-	  @Column
-	  private Date lastPasswordReset;
-	  
-	  @Column
-	  private String authorities;
-	  
-	  // Public methods
-	  public User() { }
+	@NotNull
+	@Column(columnDefinition = "varchar(20)", unique = true)
+	private String name;
 
-	  public User(long id) { 
-	    this.id = id;
-	  }
+	@NotNull
+	@Column(columnDefinition = "varchar(255)")
+	private String password;
 
-	  public User(String email, String username, String password) {
-	    this.email = email;
-	    this.name = username;
-	    this.password = password;
-	    this.lastPasswordReset = new Date();
-	    this.authorities = "USER";
-	  }
+	@Column
+	private Date lastPasswordReset;
 
-	public long getId() {
+	@Column
+	private String authorities;
+
+	@SortNatural
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "usersVenues", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "venueId") })
+	private SortedSet<Venue> venues = new TreeSet<>();
+	
+	// Public methods
+	
+	public User() {
+	}
+
+	public User(long id) {
+		this.id = id;
+	}
+
+	public User(String email, String username, String password) {
+		this.email = email;
+		this.name = username;
+		this.password = password;
+		this.lastPasswordReset = new Date();
+		this.authorities = "ADMIN";
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -73,12 +88,12 @@ import javax.validation.constraints.NotNull;
 		this.email = email;
 	}
 
-	public String getUsername() {
+	public String getName() {
 		return name;
 	}
 
-	public void setUsername(String username) {
-		this.name = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPassword() {
@@ -105,10 +120,12 @@ import javax.validation.constraints.NotNull;
 		this.authorities = authorities;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public SortedSet<Venue> getVenues() {
+		return venues;
 	}
-	
-	
-		  
+
+	public void setVenues(SortedSet<Venue> venues) {
+		this.venues = venues;
 	}
+		
+}

@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import hr.tvz.json.AuthenticationRequest;
-import hr.tvz.json.AuthenticationResponse;
+import hr.tvz.serviceplanner.json.AuthenticationRequest;
+import hr.tvz.serviceplanner.json.AuthenticationResponse;
 import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.services.impl.UserServiceImpl;
 import hr.tvz.serviceplanner.security.TokenUtils;

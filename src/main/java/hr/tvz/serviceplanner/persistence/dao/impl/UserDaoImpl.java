@@ -1,6 +1,8 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

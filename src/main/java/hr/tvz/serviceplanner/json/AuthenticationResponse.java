@@ -1,4 +1,4 @@
-package hr.tvz.json;
+package hr.tvz.serviceplanner.json;
 
 import java.io.Serializable;
 

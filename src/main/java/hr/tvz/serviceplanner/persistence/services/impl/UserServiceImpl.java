@@ -1,5 +1,10 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +18,7 @@ import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserService;
 import hr.tvz.serviceplanner.security.factory.SecurityUserFactory;
+import hr.tvz.serviceplanner.viewmodels.response.UserViewModel;
 
 @Service
 public class UserServiceImpl extends AbstractService<User> implements UserService, UserDetailsService {
@@ -27,6 +33,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     
     public UserServiceImpl() {
         super();
+    }
+    
+    @Transactional
+    public List<UserViewModel> getAllUsers(){  
+    	return UserViewModel.fromUser(getDao().findAll());
     }
 
     @Override

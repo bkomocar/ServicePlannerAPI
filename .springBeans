@@ -9,7 +9,6 @@
 	<configs>
 	</configs>
 	<autoconfigs>
-		<config>java:hr.tvz.ServicePlannerApplication</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>
