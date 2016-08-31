@@ -13,40 +13,40 @@ import hr.tvz.serviceplanner.viewmodels.response.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
-public class GroupServiceImpl  extends AbstractService<Group> implements GroupService {
+public class GroupServiceImpl extends AbstractService<Group> implements GroupService {
 
 	@Autowired
-    private GroupDao dao;
-	
+	private GroupDao dao;
+
 	@Override
-	protected Operations<hr.tvz.serviceplanner.persistence.models.Group> getDao() {
+	protected Operations<Group> getDao() {
 		return dao;
 	}
 
 	public GroupServiceImpl() {
 		super();
 	}
-	
+
 	@Override
-	public IdViewModel createGroup(Long id, hr.tvz.serviceplanner.persistence.models.Group group) {
+	public IdViewModel createGroup(Long id, Group group) {
 		Long groupId = dao.createGroup(id, group);
 		if (groupId != null) {
 			return new IdViewModel(groupId);
 		}
 		return null;
 	}
-	
+
 	@Override
-	public boolean updateGroup(Long id, UpdateGroupViewModel service) {
-		if (service != null) {
-			return dao.updateGroup(id, UpdateGroupViewModel.toGroup(service));
+	public boolean updateGroup(Long id, UpdateGroupViewModel model) {
+		if (model != null) {
+			return dao.updateGroup(id, UpdateGroupViewModel.toGroup(model));
 		}
 		return false;
 	}
 
 	@Override
 	public GroupViewModel getGroup(Long id) {
-		hr.tvz.serviceplanner.persistence.models.Group group = dao.findOne(id);
+		Group group = dao.findOne(id);
 		if (group != null) {
 			return GroupViewModel.fromGroup(group);
 		}

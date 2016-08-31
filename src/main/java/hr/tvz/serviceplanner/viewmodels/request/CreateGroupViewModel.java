@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.persistence.models.Group;
 
-public class AddGroupToVenueViewModel {
+public class CreateGroupViewModel {
 
 	@NotBlank
 	@Length(min = 4, max = 255)
@@ -17,17 +17,17 @@ public class AddGroupToVenueViewModel {
 	@NotNull
 	private GroupType type;
 
-	public AddGroupToVenueViewModel() {
+	public CreateGroupViewModel() {
 		super();
 	}
 
-	public AddGroupToVenueViewModel(String name, GroupType type) {
+	public CreateGroupViewModel(String name, GroupType type) {
 		super();
 		this.name = name;
 		this.type = type;
 	}
 	
-	public static Group toGroup(AddGroupToVenueViewModel model) {
+	public static Group toGroup(CreateGroupViewModel model) {
 		if (model != null) {
 		return new Group(model.name, model.type);
 	} 

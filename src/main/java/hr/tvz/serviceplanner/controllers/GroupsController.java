@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.AddGroupToVenueViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -34,10 +34,10 @@ public class GroupsController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<IdViewModel> createGroup(@PathVariable("venueId") long id,
-			@Valid @RequestBody AddGroupToVenueViewModel model) {
+			@Valid @RequestBody CreateGroupViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel groupId = groupService.createGroup(id, AddGroupToVenueViewModel.toGroup(model));
+			IdViewModel groupId = groupService.createGroup(id, CreateGroupViewModel.toGroup(model));
 			if (groupId != null) {
 				return new ResponseEntity<IdViewModel>(groupId, HttpStatus.CREATED);
 			} else {
@@ -68,9 +68,9 @@ public class GroupsController {
 			@PathVariable("groupId") long groupId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			GroupViewModel service = groupService.getGroup(groupId);
-			if (service != null) {
-				return new ResponseEntity<GroupViewModel>(service, HttpStatus.OK);
+			GroupViewModel model = groupService.getGroup(groupId);
+			if (model != null) {
+				return new ResponseEntity<GroupViewModel>(model, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<GroupViewModel>(HttpStatus.NOT_FOUND);
 			}

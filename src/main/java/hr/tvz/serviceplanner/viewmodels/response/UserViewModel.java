@@ -12,20 +12,16 @@ public class UserViewModel {
 	private String email;
 	
 	public static UserViewModel fromUser (User user) {
-		
 		if(user != null){
 			return new UserViewModel(user.getId(), user.getName(), user.getEmail());
 		}
-		
 		return null;
 	}
 	
 	public static List <UserViewModel> fromUser (List<User> users) {
-		
 		if(users != null){
 			return users.stream().map(u -> UserViewModel.fromUser(u)).collect(Collectors.toList());
 		}
-		
 		return null;
 	}
 

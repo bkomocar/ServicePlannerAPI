@@ -12,6 +12,6 @@ public interface GroupService  extends Operations<Group> {
 	
 	public IdViewModel createGroup(Long id, Group group);
 	
-	public boolean updateGroup(Long id, UpdateGroupViewModel service);
+	public boolean updateGroup(Long id, UpdateGroupViewModel model);
 	
 }

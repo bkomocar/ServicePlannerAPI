@@ -6,7 +6,6 @@ import java.sql.Time;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,11 +17,11 @@ public class CreateVenueViewModel implements Serializable {
 
 	private static final long serialVersionUID = 545451L;
 
-	@NotBlank
+	@NotNull
 	@Length(min = 5, max = 255)
 	private String name;
 	
-	@NotBlank
+	@NotNull
 	@Length(min = 5, max = 255)
 	private String owner;
 	
