@@ -25,7 +25,7 @@ public class GroupViewModel {
 		return null;
 	}
 
-	public static List<GroupViewModel> fromService(List<Group> groups) {
+	public static List<GroupViewModel> fromGroup(List<Group> groups) {
 		if (groups != null) {
 			return groups.stream().map(u -> GroupViewModel.fromGroup(u)).collect(Collectors.toList());
 		}

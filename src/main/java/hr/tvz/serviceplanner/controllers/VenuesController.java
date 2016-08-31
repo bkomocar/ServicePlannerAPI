@@ -43,7 +43,7 @@ public class VenuesController {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		IdViewModel idViewModel = venueService.saveVenue(CreateVenueViewModel.toVenue(model),
+		IdViewModel idViewModel = venueService.saveVenue(model,
 				authenticationFacade.getUserId());
 		if (idViewModel == null) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);

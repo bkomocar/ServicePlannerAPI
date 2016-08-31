@@ -8,6 +8,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.CategoryDao;
 import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
+import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -28,8 +29,8 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	}
 
 	@Override
-	public IdViewModel createCategory(Long id, Category category) {
-		Long categoryId = dao.createCategory(id, category);
+	public IdViewModel createCategory(Long id, CreateCategoryViewModel model) {
+		Long categoryId = dao.createCategory(id, CreateCategoryViewModel.toCategory(model));
 		if (categoryId != null) {
 			return new IdViewModel(categoryId);
 		}

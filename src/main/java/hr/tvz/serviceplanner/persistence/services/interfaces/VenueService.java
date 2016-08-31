@@ -4,12 +4,13 @@ import java.util.List;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Venue;
+import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 public interface VenueService extends Operations<Venue> {
 	
-	public IdViewModel saveVenue(Venue venue, Long userId);
+	public IdViewModel saveVenue(CreateVenueViewModel model, Long userId);
 	
 	public boolean addUser(Long venueId, String userName);
 	

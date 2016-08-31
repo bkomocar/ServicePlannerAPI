@@ -12,6 +12,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
+import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
@@ -27,8 +28,8 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public IdViewModel saveVenue(Venue venue, Long userId) {
-		Venue daoVenue = this.dao.saveVenue(venue, userId);
+	public IdViewModel saveVenue(CreateVenueViewModel model, Long userId) {
+		Venue daoVenue = this.dao.saveVenue(CreateVenueViewModel.toVenue(model), userId);
 		if (daoVenue != null) {
 			return new IdViewModel(daoVenue.getId());
 		}

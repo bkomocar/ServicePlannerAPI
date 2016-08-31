@@ -37,7 +37,7 @@ public class CategoriesController {
 			@PathVariable("groupId") long groupId, @Valid @RequestBody CreateCategoryViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel categoryId = categoryService.createCategory(groupId, CreateCategoryViewModel.toCategory(model));
+			IdViewModel categoryId = categoryService.createCategory(groupId, model);
 			if (categoryId != null) {
 				return new ResponseEntity<IdViewModel>(categoryId, HttpStatus.CREATED);
 			} else {

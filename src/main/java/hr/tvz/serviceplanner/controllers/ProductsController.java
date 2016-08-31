@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
+import hr.tvz.serviceplanner.persistence.services.interfaces.ProductService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.GroupViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateProductViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.UpdateProductViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.ProductViewModel;
 
 @RestController
-@RequestMapping("venues/{venueId}/groups")
-public class GroupsController {
-	
+@RequestMapping("venues/{venueId}")
+public class ProductsController {
+
 	@Autowired
 	private UserRightsCheckerService userRightsCheckerService;
 
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
-	
+
 	@Autowired
-	private GroupService groupService;	
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createGroup(@PathVariable("venueId") long id,
-			@Valid @RequestBody CreateGroupViewModel model) {
+	private ProductService productService;
+
+	@RequestMapping(value = "/categories/{categoryId}/products", method = RequestMethod.POST)
+	public ResponseEntity<IdViewModel> createProduct(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateProductViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel groupId = groupService.createGroup(id, model);
-			if (groupId != null) {
-				return new ResponseEntity<IdViewModel>(groupId, HttpStatus.CREATED);
+			IdViewModel productId = productService.createProduct(categoryId, model);
+			if (productId != null) {
+				return new ResponseEntity<IdViewModel>(productId, HttpStatus.CREATED);
 			} else {
 				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
 			}
@@ -48,12 +48,12 @@ public class GroupsController {
 		}
 	}
 
-	@RequestMapping(value = "/{groupId}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateGroup(@PathVariable("venueId") long id, @PathVariable("groupId") long groupId,
-			@Valid @RequestBody UpdateGroupViewModel model) {
+	@RequestMapping(value = "/products/{productId}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateProduct(@PathVariable("venueId") long id,
+			@PathVariable("productId") long productId, @Valid @RequestBody UpdateProductViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			if (groupService.updateGroup(groupId, model) != false) {
+			if (productService.updateProduct(productId, model) != false) {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
@@ -62,20 +62,20 @@ public class GroupsController {
 			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
-	@RequestMapping(value = "/{groupId}", method = RequestMethod.GET)
-	public ResponseEntity<GroupViewModel> getGroup(@PathVariable("venueId") long id,
-			@PathVariable("groupId") long groupId) {
+
+	@RequestMapping(value = "/products/{productId}", method = RequestMethod.GET)
+	public ResponseEntity<ProductViewModel> getProduct(@PathVariable("venueId") long id,
+			@PathVariable("productId") long productId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			GroupViewModel model = groupService.getGroup(groupId);
+			ProductViewModel model = productService.getProduct(productId);
 			if (model != null) {
-				return new ResponseEntity<GroupViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<ProductViewModel>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<GroupViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<ProductViewModel>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<GroupViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<ProductViewModel>(HttpStatus.FORBIDDEN);
 		}
 	}
 }
