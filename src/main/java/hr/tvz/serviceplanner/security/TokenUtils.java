@@ -1,16 +1,18 @@
 package hr.tvz.serviceplanner.security;
 
-import io.jsonwebtoken.*;
-import hr.tvz.serviceplanner.persistence.models.User;
-import hr.tvz.serviceplanner.security.model.SecurityUser;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import hr.tvz.serviceplanner.security.model.SecurityUser;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class TokenUtils {

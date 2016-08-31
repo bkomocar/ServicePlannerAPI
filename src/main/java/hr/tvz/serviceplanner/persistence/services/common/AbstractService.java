@@ -40,6 +40,11 @@ public abstract class AbstractService<T extends Serializable> implements Operati
         getDao().deleteById(entityId);
     }
 
+    @Override
+    public T findByName(final String name) {
+    	return getDao().findByName(name);
+    }
+    
     protected abstract Operations<T> getDao();
-
+    
 }

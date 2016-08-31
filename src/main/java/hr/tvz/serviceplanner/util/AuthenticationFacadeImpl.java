@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.security.model.SecurityUser;
 
 @Component
@@ -22,6 +23,17 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
 		if (user != null && user.getId() != null) {
 			return user.getId();
+		}
+		return null;
+	}
+
+	@Override
+	public User getUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		SecurityUser user = (SecurityUser) authentication.getPrincipal();
+
+		if (user != null && user.getId() != null) {
+			return SecurityUser.toUser(user);
 		}
 		return null;
 	}

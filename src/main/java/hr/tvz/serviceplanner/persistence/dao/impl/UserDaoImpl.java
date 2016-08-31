@@ -1,32 +1,31 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
-import java.util.List;
 
-import javax.transaction.Transactional;
+import java.util.SortedSet;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.UserDao;
 import hr.tvz.serviceplanner.persistence.models.User;
+import hr.tvz.serviceplanner.persistence.models.Venue;
 
 @Repository
 public class UserDaoImpl extends AbstractHibernateDao<User> implements UserDao {
 
-	@Override
-	public User findByName(final String name){
-		Criteria crit = getCurrentSession().createCriteria(User.class);  
-		crit.add(Restrictions.eq("name", name));
-		List results = crit.list();
-		if (results != null && !results.isEmpty()) {
-		return (User) results.get(0);
-		}
-		return null;
+	public UserDaoImpl() {
+		super();
+		setClazz(User.class);
 	}
 	
-	 public UserDaoImpl() {
-	        super();
-	        setClazz(User.class);
-	    }
+	@Override
+	public boolean hasUserRightsOnVenue(Long userId, Venue venue) {
+		
+		User u = getCurrentSession().get(User.class, userId);
+		SortedSet<Venue> venues = u.getVenues();
+		if (venues.contains(venue)){
+			return true;
+		}
+		return false;
+		
+	}
 }

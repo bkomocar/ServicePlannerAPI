@@ -23,7 +23,7 @@ import com.google.common.base.Preconditions;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:application.properties" })
-@ComponentScan({ "hr.tvz.serviceplanner.persistence" })
+@ComponentScan({ "hr.tvz.serviceplanner.persistence"})
 public class PersistenceConfig {
 
     @Autowired

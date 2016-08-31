@@ -1,12 +1,16 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
+import java.io.Serializable;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import hr.tvz.serviceplanner.persistence.models.User;
 
-public class RegisterViewModel {
+public class RegisterViewModel implements Serializable {
+
+	private static final long serialVersionUID = 14564546L;
 
 	@NotBlank
     @Length(min = 5, max = 20)
@@ -21,7 +25,6 @@ public class RegisterViewModel {
 	private String password;
 	
 	public static User toUser(RegisterViewModel register) {
-		
 		if (register != null) {
 		return new User(register.email, register.name, register.password);
 	} 

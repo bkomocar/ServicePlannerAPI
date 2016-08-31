@@ -1,8 +1,6 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,11 @@ import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserService;
 import hr.tvz.serviceplanner.security.factory.SecurityUserFactory;
+import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.UserViewModel;
 
 @Service
 public class UserServiceImpl extends AbstractService<User> implements UserService, UserDetailsService {
-
-	//private final AccountStatusUserDetailsChecker detailsChecker = new AccountStatusUserDetailsChecker();
 	
     @Autowired
     private UserDao dao;
@@ -41,9 +38,15 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
-    public User saveUser(User user) {
+    public IdViewModel saveUser(User user) {
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
-    	return getDao().create(user);  	
+    	User daoUser = getDao().create(user);
+    	
+    	if(daoUser != null){
+    		return new IdViewModel(daoUser.getId());  
+    	}
+    	
+    	return null;  	
     }
     
     @Override

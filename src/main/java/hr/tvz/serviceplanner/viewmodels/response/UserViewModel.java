@@ -1,12 +1,9 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.User;
-import hr.tvz.serviceplanner.persistence.models.Venue;
 
 public class UserViewModel {
 

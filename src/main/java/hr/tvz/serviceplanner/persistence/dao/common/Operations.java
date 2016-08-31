@@ -3,9 +3,6 @@ package hr.tvz.serviceplanner.persistence.dao.common;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
-
 public interface Operations<T extends Serializable> {
 
     T findOne(final long id);
@@ -20,4 +17,5 @@ public interface Operations<T extends Serializable> {
 
     void deleteById(final long entityId);
 
+    T findByName(final String name); 
 }

@@ -20,9 +20,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.SortNatural;
 
+import hr.tvz.serviceplanner.enums.UserType;
+
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
 
 	// The entity fields (private)
 
@@ -64,12 +66,21 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	public User(Long id, String email, String username, String password, Date lastPasswordReset, String authorities) {
+		this.id = id;
+		this.email = email;
+		this.name = username;
+		this.password = password;
+		this.lastPasswordReset = lastPasswordReset;
+		this.authorities = authorities;
+	}
+	
 	public User(String email, String username, String password) {
 		this.email = email;
 		this.name = username;
 		this.password = password;
 		this.lastPasswordReset = new Date();
-		this.authorities = "ADMIN";
+		this.authorities = UserType.USER.name();
 	}
 
 	public Long getId() {
@@ -126,6 +137,18 @@ public class User implements Serializable {
 
 	public void setVenues(SortedSet<Venue> venues) {
 		this.venues = venues;
+	}
+
+	@Override
+	public int compareTo(User o) {
+		Long id = o.getId();
+
+		if (id == this.id)
+			return 0;
+		else if (id > this.id)
+			return 1;
+		else
+			return -1;
 	}
 		
 }
