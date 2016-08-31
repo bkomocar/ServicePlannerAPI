@@ -64,7 +64,7 @@ public class Venue implements Serializable, Comparable<Venue> {
 
 	@SortNatural
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
-	private SortedSet<Service> services = new TreeSet<>();
+	private SortedSet<Group> groups = new TreeSet<>();
 
 	@SortNatural
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
@@ -72,7 +72,7 @@ public class Venue implements Serializable, Comparable<Venue> {
 
 	@SortNatural
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
-	private SortedSet<Group> groups = new TreeSet<>();
+	private SortedSet<Event> events = new TreeSet<>();
 	
 	public Venue() {
 		super();
@@ -171,12 +171,12 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.customers = customers;
 	}
 
-	public SortedSet<Service> getServices() {
-		return services;
+	public SortedSet<Group> getServices() {
+		return groups;
 	}
 
-	public void setServices(SortedSet<Service> services) {
-		this.services = services;
+	public void setServices(SortedSet<Group> groups) {
+		this.groups = groups;
 	}
 
 	public SortedSet<Purchase> getPurchases() {
@@ -187,12 +187,12 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.purchases = purchases;
 	}
 
-	public SortedSet<Group> getGroups() {
-		return groups;
+	public SortedSet<Event> getGroups() {
+		return events;
 	}
 
-	public void setGroups(SortedSet<Group> groups) {
-		this.groups = groups;
+	public void setGroups(SortedSet<Event> events) {
+		this.events = events;
 	}
 
 	@Override

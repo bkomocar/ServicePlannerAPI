@@ -20,6 +20,7 @@ import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.AddUserToVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.VenueViewModel;
 
@@ -32,70 +33,78 @@ public class VenuesController {
 
 	@Autowired
 	private UserRightsCheckerService userRightsCheckerService;
-	
+
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
-	
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<IdViewModel> createVenue(@Valid @RequestBody CreateVenueViewModel model,
 			BindingResult bindingResult) {
-
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-
 		IdViewModel idViewModel = venueService.saveVenue(CreateVenueViewModel.toVenue(model),
 				authenticationFacade.getUserId());
-
 		if (idViewModel == null) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<IdViewModel>(idViewModel, HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<VenueViewModel> getVenue(@PathVariable("id") long id) {
 		Long userId = authenticationFacade.getUserId();
-		if(userRightsCheckerService.hasUserRightsOnVenue(userId, id)){
-			Venue venue = venueService.findOne(id);	
-			
-			if(venue != null) {				
-				return new ResponseEntity<VenueViewModel>(VenueViewModel.fromVenue(venue), HttpStatus.OK); 
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			Venue venue = venueService.findOne(id);
+			if (venue != null) {
+				return new ResponseEntity<VenueViewModel>(VenueViewModel.fromVenue(venue), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<VenueViewModel>(HttpStatus.NOT_FOUND);
 			}
-		}		
-		else {
+		} else {
 			return new ResponseEntity<VenueViewModel>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<VenueViewModel>> getVenuesForUser() {
 		Long userId = authenticationFacade.getUserId();
-			List<Venue> venues = venueService.getVenuesForUser(userId.longValue());	
-			if(venues != null) {				
-				return new ResponseEntity<List<VenueViewModel>>(VenueViewModel.fromVenue(venues), HttpStatus.OK); 
-			} 
-			return new ResponseEntity<List<VenueViewModel>>(HttpStatus.NOT_FOUND);		
+		List<Venue> venues = venueService.getVenuesForUser(userId.longValue());
+		if (venues != null) {
+			return new ResponseEntity<List<VenueViewModel>>(VenueViewModel.fromVenue(venues), HttpStatus.OK);
+		}
+		return new ResponseEntity<List<VenueViewModel>>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.POST)
-	public ResponseEntity<Void> addUserToVenue(@PathVariable("id") long id, @Valid @RequestBody AddUserToVenueViewModel model) {
+	public ResponseEntity<Void> addUserToVenue(@PathVariable("id") long id,
+			@Valid @RequestBody AddUserToVenueViewModel model) {
 		Long userId = authenticationFacade.getUserId();
-		if(userRightsCheckerService.hasUserRightsOnVenue(userId, id)){
-			if (venueService.addUser(id, model.getName())){
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			if (venueService.addUser(id, model.getName())) {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-			}		
-		}
-		
-		else {
+			}
+		} else {
 			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 		}
-		
 	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateVenue(@PathVariable("id") long id,
+			@Valid @RequestBody UpdateVenueViewModel model) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			if (venueService.updateVenue(id, model) != false) {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+	}
+
+
 }

@@ -1,5 +1,5 @@
 package hr.tvz.serviceplanner.enums;
 
-public enum ServiceType {
+public enum GroupType {
 	SERVICE, RENT, SELL;
 }

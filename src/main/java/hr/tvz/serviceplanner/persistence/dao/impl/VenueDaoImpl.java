@@ -22,7 +22,7 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		super();
 		setClazz(Venue.class);
 	}
-	
+
 	@Override
 	public Venue saveVenue(Venue venue, Long userId) {
 		Preconditions.checkNotNull(venue);
@@ -42,10 +42,8 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		Criteria crit = getCurrentSession().createCriteria(User.class);
 		crit.add(Restrictions.eq("name", userName));
 		List<?> results = crit.list();
-
 		if (results != null && !results.isEmpty()) {
-			
-			if(getCurrentSession()!= null){
+			if (getCurrentSession() != null) {
 				Venue venue = findOne(venueId);
 				SortedSet<User> users = venue.getUsers();
 				User u = (User) results.get(0);
@@ -53,9 +51,8 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 				venue.setUsers(users);
 				update(venue);
 				return true;
-			}	
+			}
 		}
-		
 		return false;
 	}
 
@@ -65,6 +62,31 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		SortedSet<Venue> venues = new TreeSet<>();
 		venues = u.getVenues();
 		return venues;
+	}
+
+	@Override
+	public boolean updateVenue(Long id, Venue venue) {
+		Venue originalVenue = findOne(id);
+		if (originalVenue != null) {
+			if (venue.getName() != null) {
+				originalVenue.setName(venue.getName());
+			}
+			if (venue.getDescription() != null) {
+				originalVenue.setDescription(venue.getDescription());
+			}
+			if (venue.getOwner() != null) {
+				originalVenue.setOwner(venue.getOwner());
+			}
+			if (venue.getOpenTime() != null) {
+				originalVenue.setOpenTime(venue.getOpenTime());
+			}
+			if (venue.getCloseTime() != null) {
+				originalVenue.setCloseTime(venue.getCloseTime());
+			}
+			update(originalVenue);
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -60,5 +60,5 @@ public class Employee implements Serializable {
 	@SortNatural
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "categoriesEmployees", joinColumns = { @JoinColumn(name = "employeeId") }, inverseJoinColumns = { @JoinColumn(name = "categoryId") })
-	private SortedSet<Service> categoriesEmployees;	
+	private SortedSet<Group> categoriesEmployees;	
 }

@@ -1,7 +1,10 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class AddUserToVenueViewModel {
 
+	@NotBlank
 	private String name;
 
 	public AddUserToVenueViewModel() {

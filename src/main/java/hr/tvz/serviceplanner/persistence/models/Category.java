@@ -45,12 +45,12 @@ public class Category implements Serializable {
 	private SortedSet<Product> products;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "serviceId", nullable = false)
-	private Service service;
+	@JoinColumn(name = "groupId", nullable = false)
+	private Group group;
 	
 	@SortNatural
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "categoriesEmployees", joinColumns = { @JoinColumn(name = "categoryId") }, inverseJoinColumns = { @JoinColumn(name = "employeeId") })
-	private SortedSet<Service> categoriesEmployees;
+	private SortedSet<Group> categoriesEmployees;
 	
 }
