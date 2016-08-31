@@ -4,7 +4,9 @@ import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.PriceDao;
+import hr.tvz.serviceplanner.persistence.models.Cost;
 import hr.tvz.serviceplanner.persistence.models.Price;
+import hr.tvz.serviceplanner.persistence.models.Product;
 
 @Repository
 public class PriceDaoImpl extends AbstractHibernateDao<Price> implements PriceDao {
@@ -16,19 +18,50 @@ public class PriceDaoImpl extends AbstractHibernateDao<Price> implements PriceDa
 
 	@Override
 	public Long createPrice(Long id, Price price) {
-		// TODO Auto-generated method stub
+		Product product = getCurrentSession().get(Product.class, id);
+
+		if (product != null) {
+			price.setProduct(product);
+			create(price);
+			for (Cost cost : price.getCosts()) {
+				cost.setPrice(price);
+				getCurrentSession().saveOrUpdate(cost);
+			}
+			return price.getId();
+		}
 		return null;
 	}
 
 	@Override
 	public boolean updatePrice(Long id, Price price) {
-		// TODO Auto-generated method stub
+		Price originalPrice = findOne(id);
+		if (originalPrice != null) {
+			if (price.getName() != null) {
+				originalPrice.setName(price.getName());
+			}
+			if (price.getDescription() != null) {
+				originalPrice.setDescription(price.getDescription());
+			}
+			if (price.getDurationInMin() != null) {
+				originalPrice.setDurationInMin(price.getDurationInMin());
+			}
+			if (price.getItemsCount() != null) {
+				originalPrice.setItemsCount(price.getItemsCount());
+			}
+			update(originalPrice);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean deletePrice(Long id) {
-		// TODO Auto-generated method stub
+		Price price = findOne(id);
+		Product product = price.getProduct();
+		if (product.getPrices() != null && product.getPrices().size() > 1){
+			deleteById(id);
+			return true;
+		}
 		return false;
 	}
 

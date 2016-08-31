@@ -11,16 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import hr.tvz.serviceplanner.persistence.services.interfaces.PriceService;
+import hr.tvz.serviceplanner.persistence.services.interfaces.CostService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.CreatePriceViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateCostViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.UpdateCostViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdatePriceViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}")
-public class PricesController {
+public class CostsController {
 	@Autowired
 	private UserRightsCheckerService userRightsCheckerService;
 
@@ -28,16 +29,16 @@ public class PricesController {
 	private AuthenticationFacade authenticationFacade;
 
 	@Autowired
-	private PriceService priceService;
+	private CostService costService;
 
-	@RequestMapping(value = "/products/{productId}/prices", method = RequestMethod.POST)
+	@RequestMapping(value = "/prices/{priceId}/costs", method = RequestMethod.POST)
 	public ResponseEntity<IdViewModel> createProduct(@PathVariable("venueId") long id,
-			@PathVariable("productId") long productId, @Valid @RequestBody CreatePriceViewModel model) {
+			@PathVariable("priceId") long priceId, @Valid @RequestBody CreateCostViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel priceId = priceService.createPrice(productId, model);
-			if (priceId != null) {
-				return new ResponseEntity<IdViewModel>(priceId, HttpStatus.CREATED);
+			IdViewModel costId = costService.createCost(priceId, model);
+			if (costId != null) {
+				return new ResponseEntity<IdViewModel>(costId, HttpStatus.CREATED);
 			} else {
 				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
 			}
@@ -46,12 +47,12 @@ public class PricesController {
 		}
 	}
 
-	@RequestMapping(value = "/prices/{priceId}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateProduct(@PathVariable("venueId") long id, @PathVariable("priceId") long priceId,
-			@Valid @RequestBody UpdatePriceViewModel model) {
+	@RequestMapping(value = "/costs/{costId}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateProduct(@PathVariable("venueId") long id, @PathVariable("costId") long costId,
+			@Valid @RequestBody UpdateCostViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			if (priceService.updatePrice(priceId, model) != false) {
+			if (costService.updateCost(costId, model) != false) {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
@@ -61,11 +62,11 @@ public class PricesController {
 		}
 	}
 
-	@RequestMapping(value = "/prices/{priceId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteProduct(@PathVariable("venueId") long id, @PathVariable("priceId") long priceId) {
+	@RequestMapping(value = "/costs/{costId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteProduct(@PathVariable("venueId") long id, @PathVariable("costId") long costId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			if (priceService.deletePrice(priceId)) {
+			if (costService.deleteCost(costId)) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 		}

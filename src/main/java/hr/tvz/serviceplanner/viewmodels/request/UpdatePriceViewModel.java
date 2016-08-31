@@ -3,15 +3,12 @@ package hr.tvz.serviceplanner.viewmodels.request;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 
 import hr.tvz.serviceplanner.persistence.models.Price;
 
 public class UpdatePriceViewModel {
 
-	@NotNull
 	@Length(max = 255)
 	private String name;
 	
