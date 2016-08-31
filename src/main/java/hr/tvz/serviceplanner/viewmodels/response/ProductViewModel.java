@@ -1,7 +1,7 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Price;
@@ -14,14 +14,14 @@ public class ProductViewModel {
 	private String name;
 	private String shortName;
 	private String description;
-	private SortedSet<Price> prices;
+	private List<PriceViewModel> prices = new ArrayList<>();
 
 	public ProductViewModel() {
 		super();
 	}
 
 	public ProductViewModel(Long id, Integer maxCustomers, String name, String shortName, String description,
-			SortedSet<Price> prices) {
+			List<PriceViewModel> prices) {
 		super();
 		this.id = id;
 		this.maxCustomers = maxCustomers;
@@ -33,8 +33,9 @@ public class ProductViewModel {
 
 	public static ProductViewModel fromProduct(Product product) {
 		if (product != null) {
+			List<Price> prices = new ArrayList<>(product.getPrices());
 			return new ProductViewModel(product.getId(), product.getMaxCustomers(), product.getName(),
-					product.getShortName(), product.getDescription(), product.getPrices());
+					product.getShortName(), product.getDescription(), PriceViewModel.fromPrice(prices));
 		}
 		return null;
 	}
@@ -86,11 +87,11 @@ public class ProductViewModel {
 		this.description = description;
 	}
 
-	public SortedSet<Price> getPrices() {
+	public List<PriceViewModel> getPrices() {
 		return prices;
 	}
 
-	public void setPrices(SortedSet<Price> prices) {
+	public void setPrices(List<PriceViewModel> prices) {
 		this.prices = prices;
 	}
 

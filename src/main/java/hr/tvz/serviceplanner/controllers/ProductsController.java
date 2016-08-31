@@ -78,4 +78,16 @@ public class ProductsController {
 			return new ResponseEntity<ProductViewModel>(HttpStatus.FORBIDDEN);
 		}
 	}
+	
+	@RequestMapping(value = "/products/{productId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteProduct(@PathVariable("venueId") long id,
+			@PathVariable("productId") long productId) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			productService.deleteById(productId);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+	}
 }

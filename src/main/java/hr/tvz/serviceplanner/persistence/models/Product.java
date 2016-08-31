@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SortNatural;
 
@@ -45,6 +47,7 @@ public class Product implements Serializable, Comparable<Product> {
 	private String description;
 
 	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
 	private SortedSet<Price> prices;
 

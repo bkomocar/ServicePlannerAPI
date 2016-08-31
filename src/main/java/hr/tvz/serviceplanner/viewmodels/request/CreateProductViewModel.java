@@ -1,9 +1,16 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
 
 public class CreateProductViewModel {
@@ -17,6 +24,9 @@ public class CreateProductViewModel {
 	@NotNull
 	@Length(max = 10)
 	private String shortName;
+
+	@NotEmpty
+	public List<CreatePriceViewModel> prices = new ArrayList<>();
 
 	@Length(max = 500)
 	private String description;
@@ -33,12 +43,23 @@ public class CreateProductViewModel {
 		this.description = description;
 	}
 
+	public CreateProductViewModel(Integer maxCustomers, String name, String shortName,
+			List<CreatePriceViewModel> prices, String description) {
+		super();
+		this.maxCustomers = maxCustomers;
+		this.name = name;
+		this.shortName = shortName;
+		this.prices = prices;
+		this.description = description;
+	}
+
 	public static Product toProduct(CreateProductViewModel model) {
 		if (model != null) {
-			if(model.maxCustomers == null || model.maxCustomers < 1){
+			if (model.maxCustomers == null || model.maxCustomers < 1) {
 				model.maxCustomers = 1;
-			} 
-			return new Product(model.maxCustomers, model.name, model.shortName, model.description);
+			}
+			SortedSet<Price> prices = new TreeSet<>(CreatePriceViewModel.toPrice(model.prices));
+			return new Product(model.maxCustomers, model.name, model.shortName, model.description, prices);
 		}
 		return null;
 	}
@@ -47,7 +68,7 @@ public class CreateProductViewModel {
 		return maxCustomers;
 	}
 
-	public void setMaxCustomers(Integer maxCustomers) {	
+	public void setMaxCustomers(Integer maxCustomers) {
 		this.maxCustomers = maxCustomers;
 	}
 
@@ -73,6 +94,14 @@ public class CreateProductViewModel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<CreatePriceViewModel> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(List<CreatePriceViewModel> prices) {
+		this.prices = prices;
 	}
 
 }

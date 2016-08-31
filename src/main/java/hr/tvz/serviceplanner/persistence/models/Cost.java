@@ -15,22 +15,84 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "costs")
-public class Cost implements Serializable {
+public class Cost implements Serializable, Comparable<Cost> {
 
 	private static final long serialVersionUID = 141135L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@NotNull
 	@Column(columnDefinition = "varchar(5)")
 	private String currency;
-	
+
+	@NotNull
 	@Column
 	private Long valueInSmallestCurrency;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "priceId", nullable = false)
 	private Price price;
+
+	public Cost() {
+		super();
+	}
+
+	public Cost(Long id, String currency, Long valueInSmallestCurrency) {
+		super();
+		this.id = id;
+		this.currency = currency;
+		this.valueInSmallestCurrency = valueInSmallestCurrency;
+	}
+
+	public Cost(String currency, Long valueInSmallestCurrency) {
+		super();
+		this.currency = currency;
+		this.valueInSmallestCurrency = valueInSmallestCurrency;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public Long getValueInSmallestCurrency() {
+		return valueInSmallestCurrency;
+	}
+
+	public void setValueInSmallestCurrency(Long valueInSmallestCurrency) {
+		this.valueInSmallestCurrency = valueInSmallestCurrency;
+	}
+
+	public Price getPrice() {
+		return price;
+	}
+
+	public void setPrice(Price price) {
+		this.price = price;
+	}
+
+	@Override
+	public int compareTo(Cost o) {
+		Long id = o.getId();
+
+		if (id == this.id)
+			return 0;
+		else if (id > this.id)
+			return 1;
+		else
+			return -1;
+	}
 }
