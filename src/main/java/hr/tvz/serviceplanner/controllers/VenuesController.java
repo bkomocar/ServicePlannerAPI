@@ -18,7 +18,7 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.AddUserToVenueViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -43,8 +43,7 @@ public class VenuesController {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		IdViewModel idViewModel = venueService.saveVenue(model,
-				authenticationFacade.getUserId());
+		IdViewModel idViewModel = venueService.saveVenue(model, authenticationFacade.getUserId());
 		if (idViewModel == null) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
 		}
@@ -78,10 +77,10 @@ public class VenuesController {
 
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.POST)
 	public ResponseEntity<Void> addUserToVenue(@PathVariable("id") long id,
-			@Valid @RequestBody AddUserToVenueViewModel model) {
+			@Valid @RequestBody CreateDeleteByNameViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			if (venueService.addUser(id, model.getName())) {
+			if (venueService.addUser(id, model)) {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
@@ -106,5 +105,24 @@ public class VenuesController {
 		}
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteVenue(@PathVariable("id") long id) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			venueService.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
+
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removeUser(@PathVariable("venueId") long venueId, @PathVariable("employeeId") long id) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, venueId)) {
+			venueService.removeUser(venueId, id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
 
 }

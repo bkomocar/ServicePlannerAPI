@@ -1,7 +1,6 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
 
 import java.util.List;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,55 +20,54 @@ import hr.tvz.serviceplanner.viewmodels.response.UserViewModel;
 
 @Service
 public class UserServiceImpl extends AbstractService<User> implements UserService, UserDetailsService {
-	
-    @Autowired
-    private UserDao dao;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    public UserServiceImpl() {
-        super();
-    }
-    
-    @Transactional
-    public List<UserViewModel> getAllUsers(){  
-    	return UserViewModel.fromUser(getDao().findAll());
-    }
+	@Autowired
+	private UserDao dao;
 
-    @Override
-    public IdViewModel saveUser(User user) {
-    	user.setPassword(passwordEncoder.encode(user.getPassword()));
-    	User daoUser = getDao().create(user);
-    	
-    	if(daoUser != null){
-    		return new IdViewModel(daoUser.getId());  
-    	}
-    	
-    	return null;  	
-    }
-    
-    @Override
-    protected Operations<User> getDao() {
-        return dao;
-    }
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Override
-    public boolean isUserValid(String name){
-    	if (dao.findByName(name) != null) {
-    		return true;
-    	}
-    	return false;
-    }
-    
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      User user = this.dao.findByName(username);
+	public UserServiceImpl() {
+		super();
+	}
 
-      if (user == null) {
-        throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-      } else {
-        return SecurityUserFactory.create(user);
-      }
-    }
+	public List<UserViewModel> getAllUsers() {
+		return UserViewModel.fromUser(getDao().findAll());
+	}
+
+	@Override
+	public IdViewModel saveUser(User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		User daoUser = getDao().create(user);
+
+		if (daoUser != null) {
+			return new IdViewModel(daoUser.getId());
+		}
+
+		return null;
+	}
+
+	@Override
+	protected Operations<User> getDao() {
+		return dao;
+	}
+
+	@Override
+	public boolean isUserValid(String name) {
+		if (dao.findByName(name) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = this.dao.findByName(username);
+
+		if (user == null) {
+			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+		} else {
+			return SecurityUserFactory.create(user);
+		}
+	}
 }

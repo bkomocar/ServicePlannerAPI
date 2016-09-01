@@ -2,16 +2,16 @@ package hr.tvz.serviceplanner.viewmodels.request;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class AddUserToVenueViewModel {
+public class CreateDeleteByNameViewModel {
 
 	@NotBlank
 	private String name;
 
-	public AddUserToVenueViewModel() {
+	public CreateDeleteByNameViewModel() {
 		super();
 	}
 
-	public AddUserToVenueViewModel(String name) {
+	public CreateDeleteByNameViewModel(String name) {
 		super();
 		this.name = name;
 	}

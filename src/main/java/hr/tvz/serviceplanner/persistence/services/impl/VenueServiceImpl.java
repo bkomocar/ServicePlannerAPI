@@ -12,6 +12,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
+import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -37,11 +38,11 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public boolean addUser(Long venueId, String userName) {
-		if (venueId == null || userName == null) {
-			return false;
+	public boolean addUser(Long venueId, CreateDeleteByNameViewModel model) {
+		if (venueId != null && model != null && model.getName() != null) {
+			return dao.addUser(venueId, model.getName());
 		}
-		return dao.addUser(venueId, userName);
+		return false;
 	}
 
 	@Override
@@ -57,6 +58,14 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	public boolean updateVenue(Long id, UpdateVenueViewModel venue) {
 		if (venue != null) {
 			return dao.updateVenue(id, UpdateVenueViewModel.toVenue(venue));
+		}
+		return false;
+	}
+
+	@Override
+	public boolean removeUser(Long venueId, Long userId) {
+		if (venueId != null && userId != null) {
+			return dao.removeUser(venueId, userId);
 		}
 		return false;
 	}

@@ -1,4 +1,5 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -48,6 +50,22 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	@Override
 	protected Operations<Category> getDao() {
 		return dao;
+	}
+
+	@Override
+	public boolean addEmployee(Long categoryId, CreateDeleteByIdViewModel model) {
+		if (categoryId != null && model != null && model.getId() != null) {
+			return dao.addEmployee(categoryId, model.getId());
+		}
+		return false;
+	}
+
+	@Override
+	public boolean removeEmployee(Long categoryId, Long employeeId) {
+		if (categoryId != null && employeeId != null) {
+			return dao.removeEmployee(categoryId, employeeId);
+		}
+		return false;
 	}
 
 }

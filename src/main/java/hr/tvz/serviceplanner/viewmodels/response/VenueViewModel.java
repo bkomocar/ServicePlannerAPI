@@ -6,14 +6,14 @@ import java.util.stream.Collectors;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
 public class VenueViewModel {
-	
+
 	private Long id;
 	private String name;
 	private String description;
 	private String owner;
 	private String openTime;
 	private String closeTime;
-	
+
 	public VenueViewModel() {
 		super();
 	}
@@ -28,21 +28,18 @@ public class VenueViewModel {
 		this.closeTime = closeTime;
 	}
 
-	public static VenueViewModel fromVenue (Venue venue) {
-		
-		if(venue != null){
-			return new VenueViewModel(venue.getId(), venue.getName(), venue.getDescription(), venue.getOwner(), venue.getOpenTime().toString(), venue.getCloseTime().toString());
+	public static VenueViewModel fromVenue(Venue venue) {
+		if (venue != null) {
+			return new VenueViewModel(venue.getId(), venue.getName(), venue.getDescription(), venue.getOwner(),
+					venue.getOpenTime().toString(), venue.getCloseTime().toString());
 		}
-		
 		return null;
 	}
-	
-	public static List <VenueViewModel> fromVenue (List <Venue> venues) {
-		
-		if(venues != null){
+
+	public static List<VenueViewModel> fromVenue(List<Venue> venues) {
+		if (venues != null) {
 			return venues.stream().map(v -> VenueViewModel.fromVenue(v)).collect(Collectors.toList());
 		}
-		
 		return null;
 	}
 
@@ -93,5 +90,5 @@ public class VenueViewModel {
 	public void setCloseTime(String closeTime) {
 		this.closeTime = closeTime;
 	}
-	
+
 }

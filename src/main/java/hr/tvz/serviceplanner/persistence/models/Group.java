@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SortNatural;
 
 import hr.tvz.serviceplanner.enums.GroupType;
@@ -42,10 +44,11 @@ public class Group implements Serializable, Comparable<Group> {
 	private GroupType type;
 
 	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Category> categories = new TreeSet<>();;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
 

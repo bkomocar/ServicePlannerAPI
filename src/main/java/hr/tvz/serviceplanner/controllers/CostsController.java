@@ -16,7 +16,6 @@ import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerSe
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCostViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCostViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdatePriceViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController

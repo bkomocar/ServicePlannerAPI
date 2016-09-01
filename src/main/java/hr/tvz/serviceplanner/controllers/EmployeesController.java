@@ -11,35 +11,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
+import hr.tvz.serviceplanner.persistence.services.interfaces.EmployeeService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.GroupViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateEmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.UpdateEmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.EmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
-@RequestMapping("venues/{venueId}/groups")
-public class GroupsController {
-	
+@RequestMapping("venues/{venueId}/employees")
+public class EmployeesController {
 	@Autowired
 	private UserRightsCheckerService userRightsCheckerService;
 
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
-	
+
 	@Autowired
-	private GroupService groupService;	
-	
+	private EmployeeService employeeService;
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createGroup(@PathVariable("venueId") long id,
-			@Valid @RequestBody CreateGroupViewModel model) {
+	public ResponseEntity<IdViewModel> createEmployee(@PathVariable("venueId") long id,
+			@Valid @RequestBody CreateEmployeeViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel groupId = groupService.createGroup(id, model);
-			if (groupId != null) {
-				return new ResponseEntity<IdViewModel>(groupId, HttpStatus.CREATED);
+			IdViewModel employeeId = employeeService.createEmployee(id, model);
+			if (employeeId != null) {
+				return new ResponseEntity<IdViewModel>(employeeId, HttpStatus.CREATED);
 			} else {
 				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
 			}
@@ -48,12 +47,12 @@ public class GroupsController {
 		}
 	}
 
-	@RequestMapping(value = "/{groupId}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateGroup(@PathVariable("venueId") long id, @PathVariable("groupId") long groupId,
-			@Valid @RequestBody UpdateGroupViewModel model) {
+	@RequestMapping(value = "/{employeeId}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateGroup(@PathVariable("venueId") long id,
+			@PathVariable("employeeId") long employeeId, @Valid @RequestBody UpdateEmployeeViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			if (groupService.updateGroup(groupId, model) != false) {
+			if (employeeService.updateEmployee(employeeId, model) != false) {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
@@ -62,29 +61,29 @@ public class GroupsController {
 			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
-	@RequestMapping(value = "/{groupId}", method = RequestMethod.GET)
-	public ResponseEntity<GroupViewModel> getGroup(@PathVariable("venueId") long id,
-			@PathVariable("groupId") long groupId) {
+
+	@RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
+	public ResponseEntity<EmployeeViewModel> getGroup(@PathVariable("venueId") long id,
+			@PathVariable("employeeId") long employeeId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			GroupViewModel model = groupService.getGroup(groupId);
+			EmployeeViewModel model = employeeService.getEmployee(employeeId);
 			if (model != null) {
-				return new ResponseEntity<GroupViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<EmployeeViewModel>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<GroupViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<EmployeeViewModel>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<GroupViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<EmployeeViewModel>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
-	@RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteGroup(@PathVariable("venueId") long id,
-			@PathVariable("groupId") long groupId) {
+
+	@RequestMapping(value = "/{employeeId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteEmployee(@PathVariable("venueId") long id,
+			@PathVariable("employeeId") long employeeId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			groupService.deleteById(groupId);
+			employeeService.deleteById(employeeId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);

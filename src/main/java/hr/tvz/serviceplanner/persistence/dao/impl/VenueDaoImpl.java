@@ -89,4 +89,20 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		return false;
 	}
 
+	@Override
+	public boolean removeUser(Long venueId, Long userId) {
+		Venue venue = findOne(venueId);
+		User user = getCurrentSession().get(User.class, userId);
+		if (venue != null && user != null) {
+			SortedSet<User> users = venue.getUsers();
+			if (users != null && !users.isEmpty() && users.contains(user)) {
+				users.remove(user);
+				venue.setUsers(users);
+				update(venue);
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

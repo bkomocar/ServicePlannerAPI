@@ -15,6 +15,7 @@ import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -79,4 +80,39 @@ public class CategoriesController {
 		}
 	}
 
+	@RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteCategory(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			categoryService.deleteById(categoryId);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
+
+	@RequestMapping(value = "/categories/{categoryId}/employees/{employeeId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removeEmployee(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId, @PathVariable("employeeId") long employeeId) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			categoryService.removeEmployee(categoryId, employeeId);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
+
+	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.POST)
+	public ResponseEntity<Void> addEmployee(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateDeleteByIdViewModel model) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			if(categoryService.addEmployee(categoryId, model)){
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}			
+		}
+		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
 }

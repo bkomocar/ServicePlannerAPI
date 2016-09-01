@@ -70,6 +70,5 @@ public class PricesController {
 			}
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
-
 	}
 }

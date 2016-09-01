@@ -3,7 +3,6 @@ package hr.tvz.serviceplanner.persistence.models;
 import java.io.Serializable;
 import java.util.SortedSet;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SortNatural;
 
 @Entity
@@ -41,18 +42,20 @@ public class Category implements Serializable, Comparable<Category> {
 	private String color;
 
 	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
 	private SortedSet<Product> products;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "groupId", nullable = false)
 	private Group group;
 
 	@SortNatural
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@Cascade(value = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "categoriesEmployees", joinColumns = { @JoinColumn(name = "categoryId") }, inverseJoinColumns = {
 			@JoinColumn(name = "employeeId") })
-	private SortedSet<Group> categoriesEmployees;
+	private SortedSet<Employee> employees;
 
 	public Category() {
 		super();
@@ -76,7 +79,7 @@ public class Category implements Serializable, Comparable<Category> {
 	}
 
 	public Category(Long id, String name, String description, String color, SortedSet<Product> products, Group group,
-			SortedSet<Group> categoriesEmployees) {
+			SortedSet<Employee> employees) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -84,7 +87,7 @@ public class Category implements Serializable, Comparable<Category> {
 		this.color = color;
 		this.products = products;
 		this.group = group;
-		this.categoriesEmployees = categoriesEmployees;
+		this.employees = employees;
 	}
 
 	public Long getId() {
@@ -135,12 +138,12 @@ public class Category implements Serializable, Comparable<Category> {
 		this.group = group;
 	}
 
-	public SortedSet<Group> getCategoriesEmployees() {
-		return categoriesEmployees;
+	public SortedSet<Employee> getEmployees() {
+		return employees;
 	}
 
-	public void setCategoriesEmployees(SortedSet<Group> categoriesEmployees) {
-		this.categoriesEmployees = categoriesEmployees;
+	public void setEmployees(SortedSet<Employee> employees) {
+		this.employees = employees;
 	}
 
 	@Override

@@ -10,6 +10,8 @@ public interface VenueDao extends Operations<Venue> {
 	
 	public boolean addUser(Long venueId, String userName);
 	
+	public boolean removeUser(Long venueId, Long userId);
+	
 	public SortedSet<Venue> getVenuesForUser(Long userId);	
 		
 	public boolean updateVenue(Long id, Venue venue);
