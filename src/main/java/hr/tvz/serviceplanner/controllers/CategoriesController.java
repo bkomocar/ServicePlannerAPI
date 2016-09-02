@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
@@ -114,5 +119,21 @@ public class CategoriesController {
 			}			
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
+	
+	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.GET) 
+	public ResponseEntity<List<EmployeeViewModel>> getEmployees(@PathVariable("venueId") long id, @PathVariable("categoryId") long categoryId,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<EmployeeViewModel> models = categoryService.getEmployees(id, categoryId, type);
+			if (models != null) {
+				return new ResponseEntity<List<EmployeeViewModel>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<EmployeeViewModel>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<EmployeeViewModel>>(HttpStatus.FORBIDDEN);
+		}
 	}
 }

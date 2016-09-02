@@ -1,9 +1,13 @@
 package hr.tvz.serviceplanner.persistence.services.interfaces;
 
+import java.util.List;
+
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Category;
-import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -15,8 +19,10 @@ public interface CategoryService extends Operations<Category> {
 	public IdViewModel createCategory(Long id, CreateCategoryViewModel model);
 
 	public boolean updateCategory(Long id, UpdateCategoryViewModel model);
-	
+
 	public boolean addEmployee(Long categoryId, CreateByIdViewModel model);
-	
+
 	public boolean removeEmployee(Long categoryId, Long employeeId);
+
+	public List<EmployeeViewModel> getEmployees(Long categoryId, Long employeeId, ViewModelType type);
 }

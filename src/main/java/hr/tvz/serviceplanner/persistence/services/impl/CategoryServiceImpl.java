@@ -1,14 +1,21 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.CategoryDao;
 import hr.tvz.serviceplanner.persistence.models.Category;
+import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
@@ -65,6 +72,15 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 			return dao.removeEmployee(categoryId, employeeId);
 		}
 		return false;
+	}
+
+	@Override
+	public List<EmployeeViewModel> getEmployees(Long venueId, Long categoryId, ViewModelType type) {
+		SortedSet<Employee> employees = dao.getEmployees(venueId, categoryId);
+		if (employees != null) {
+			return EmployeeViewModel.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
+		}
+		return null;
 	}
 
 }
