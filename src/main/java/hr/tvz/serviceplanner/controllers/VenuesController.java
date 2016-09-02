@@ -18,7 +18,7 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByNameViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -77,7 +77,7 @@ public class VenuesController {
 
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.POST)
 	public ResponseEntity<Void> addUserToVenue(@PathVariable("id") long id,
-			@Valid @RequestBody CreateDeleteByNameViewModel model) {
+			@Valid @RequestBody CreateByNameViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (venueService.addUser(id, model)) {

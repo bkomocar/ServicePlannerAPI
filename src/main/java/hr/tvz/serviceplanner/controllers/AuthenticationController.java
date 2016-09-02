@@ -69,12 +69,10 @@ public class AuthenticationController {
 	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest, Device device)
 			throws AuthenticationException {
 
-		// Perform the authentication
 		Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		// Reload password post-authentication so we can generate token
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		String token = this.tokenUtils.generateToken(userDetails, device);
 

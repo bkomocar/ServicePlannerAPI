@@ -15,7 +15,7 @@ import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByIdViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -104,7 +104,7 @@ public class CategoriesController {
 
 	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.POST)
 	public ResponseEntity<Void> addEmployee(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateDeleteByIdViewModel model) {
+			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateByIdViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if(categoryService.addEmployee(categoryId, model)){

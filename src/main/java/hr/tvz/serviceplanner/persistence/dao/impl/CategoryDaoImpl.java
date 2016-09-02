@@ -2,11 +2,7 @@ package hr.tvz.serviceplanner.persistence.dao.impl;
 
 import java.util.SortedSet;
 
-
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 
@@ -26,8 +22,8 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 	}
 
 	@Override
-	public boolean updateCategory(Long id, Category category) {
-		Category originalCategory = findOne(id);
+	public boolean updateCategory(Long categoryId, Category category) {
+		Category originalCategory = findOne(categoryId);
 		if (originalCategory != null) {
 			if (category.getName() != null) {
 				originalCategory.setName(category.getName());
@@ -45,8 +41,8 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 	}
 
 	@Override
-	public Long createCategory(Long id, Category category) {
-		Group group = getCurrentSession().get(Group.class, id);
+	public Long createCategory(Long groupId, Category category) {
+		Group group = getCurrentSession().get(Group.class, groupId);
 		if (group != null) {
 			category.setGroup(group);
 			create(category);
@@ -54,14 +50,14 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean addEmployee(Long categoryId, Long employeeId) {
 		Preconditions.checkNotNull(categoryId);
 		Preconditions.checkNotNull(employeeId);
 		Category category = findOne(categoryId);
 		Employee employee = getCurrentSession().get(Employee.class, employeeId);
-				
+
 		if (category != null && employee != null) {
 			Venue categoryVenue = category.getGroup().getVenue();
 			Venue employeeVenue = employee.getVenue();
@@ -83,12 +79,12 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 		Category category = findOne(categoryId);
 		Employee employee = getCurrentSession().get(Employee.class, employeeId);
 		SortedSet<Employee> employees = category.getEmployees();
-			if (employees != null && !employees.isEmpty() && employees.contains(employee)) {
-				employees.remove(employee);
-				category.setEmployees(employees);
-				update(category);
-				return true;
-			}
+		if (employees != null && !employees.isEmpty() && employees.contains(employee)) {
+			employees.remove(employee);
+			category.setEmployees(employees);
+			update(category);
+			return true;
+		}
 		return false;
 	}
 }

@@ -58,6 +58,11 @@ public class Price implements Serializable, Comparable<Price> {
 		super();
 	}
 
+	public Price(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Price(String name, String description, Long durationInMin, Long itemsCount) {
 		super();
 		this.name = name;

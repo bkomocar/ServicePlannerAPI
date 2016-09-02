@@ -7,5 +7,6 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 public interface UserDao extends Operations<User> {
 
 	public boolean hasUserRightsOnVenue(Long userId, Venue venue);
-	
+
+	public boolean updateUser(Long userId, User user);
 }

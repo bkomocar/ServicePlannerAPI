@@ -59,6 +59,11 @@ public class Product implements Serializable, Comparable<Product> {
 		super();
 	}
 
+	public Product(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Product(Integer maxCustomers, String name, String shortName, String description) {
 		super();
 		this.maxCustomers = maxCustomers;

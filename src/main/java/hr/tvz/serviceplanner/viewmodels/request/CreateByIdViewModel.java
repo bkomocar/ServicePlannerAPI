@@ -2,16 +2,16 @@ package hr.tvz.serviceplanner.viewmodels.request;
 
 import javax.validation.constraints.NotNull;
 
-public class CreateDeleteByIdViewModel {
+public class CreateByIdViewModel {
 
 	@NotNull
 	Long id;
 
-	public CreateDeleteByIdViewModel() {
+	public CreateByIdViewModel() {
 		super();
 	}
 
-	public CreateDeleteByIdViewModel(Long id) {
+	public CreateByIdViewModel(Long id) {
 		super();
 		this.id = id;
 	}

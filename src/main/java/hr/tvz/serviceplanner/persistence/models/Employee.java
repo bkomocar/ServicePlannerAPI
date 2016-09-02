@@ -67,6 +67,11 @@ public class Employee implements Serializable, Comparable<Employee> {
 		super();
 	}
 
+	public Employee(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Employee(String username, String firstName, String lastName, String color, String email, String phone,
 			String comment) {
 		super();

@@ -15,32 +15,129 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "customers")
-public class Customer implements Serializable {
-	
+public class Customer implements Serializable, Comparable<Customer> {
+
 	private static final long serialVersionUID = 2311135L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@NotNull
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "varchar(50)")
 	private String firstName;
-	
+
 	@NotNull
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "varchar(50)")
 	private String lastName;
-	
+
 	@Column(columnDefinition = "varchar(255)")
 	private String email;
-	
-	@Column(columnDefinition = "varchar(255)")
+
+	@Column(columnDefinition = "varchar(20)")
 	private String phone;
-	
+
 	@Column(columnDefinition = "varchar(500)")
 	private String comment;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
+
+	public Customer() {
+		super();
+	}
+
+	public Customer(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public Customer(Long id, String firstName, String lastName, String email, String phone, String comment,
+			Venue venue) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.comment = comment;
+		this.venue = venue;
+	}
+
+	public Customer(String firstName, String lastName, String email, String phone, String comment) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.comment = comment;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public Venue getVenue() {
+		return venue;
+	}
+
+	public void setVenue(Venue venue) {
+		this.venue = venue;
+	}
+
+	@Override
+	public int compareTo(Customer o) {
+		Long id = o.getId();
+		if (id == this.id)
+			return 0;
+		else if (id > this.id)
+			return 1;
+		else
+			return -1;
+	}
 }

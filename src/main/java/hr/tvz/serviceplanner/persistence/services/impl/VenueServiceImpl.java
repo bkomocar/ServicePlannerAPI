@@ -12,7 +12,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
-import hr.tvz.serviceplanner.viewmodels.request.CreateDeleteByNameViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -38,7 +38,7 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public boolean addUser(Long venueId, CreateDeleteByNameViewModel model) {
+	public boolean addUser(Long venueId, CreateByNameViewModel model) {
 		if (venueId != null && model != null && model.getName() != null) {
 			return dao.addUser(venueId, model.getName());
 		}
