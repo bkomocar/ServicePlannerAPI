@@ -12,17 +12,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.VenueViewModel;
+import interfaces.VenueViewModel;
 
 @RestController
 @RequestMapping("/venues")
@@ -51,12 +53,13 @@ public class VenuesController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<VenueViewModel> getVenue(@PathVariable("id") long id) {
+	public ResponseEntity<VenueViewModel> getVenue(@PathVariable("id") long id,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			Venue venue = venueService.findOne(id);
 			if (venue != null) {
-				return new ResponseEntity<VenueViewModel>(VenueViewModel.fromVenue(venue), HttpStatus.OK);
+				return new ResponseEntity<VenueViewModel>(VenueViewModel.toVenueViewModel(venue, type), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<VenueViewModel>(HttpStatus.NOT_FOUND);
 			}
@@ -66,11 +69,12 @@ public class VenuesController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<VenueViewModel>> getVenuesForUser() {
+	public ResponseEntity<List<VenueViewModel>> getVenuesForUser(
+			@RequestParam(name = "type", required = false) ViewModelType type) {
 		Long userId = authenticationFacade.getUserId();
-		List<Venue> venues = venueService.getVenuesForUser(userId.longValue());
+		List<VenueViewModel> venues = venueService.getVenuesForUser(userId.longValue(), type);
 		if (venues != null) {
-			return new ResponseEntity<List<VenueViewModel>>(VenueViewModel.fromVenue(venues), HttpStatus.OK);
+			return new ResponseEntity<List<VenueViewModel>>(venues, HttpStatus.OK);
 		}
 		return new ResponseEntity<List<VenueViewModel>>(HttpStatus.NOT_FOUND);
 	}

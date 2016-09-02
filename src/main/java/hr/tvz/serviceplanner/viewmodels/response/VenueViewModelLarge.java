@@ -1,11 +1,8 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import interfaces.VenueViewModel;
 
-import hr.tvz.serviceplanner.persistence.models.Venue;
-
-public class VenueViewModel {
+public class VenueViewModelLarge extends VenueViewModel {
 
 	private Long id;
 	private String name;
@@ -14,11 +11,12 @@ public class VenueViewModel {
 	private String openTime;
 	private String closeTime;
 
-	public VenueViewModel() {
+	public VenueViewModelLarge() {
 		super();
 	}
 
-	public VenueViewModel(Long id, String name, String description, String owner, String openTime, String closeTime) {
+	public VenueViewModelLarge(Long id, String name, String description, String owner, String openTime,
+			String closeTime) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -26,21 +24,6 @@ public class VenueViewModel {
 		this.owner = owner;
 		this.openTime = openTime;
 		this.closeTime = closeTime;
-	}
-
-	public static VenueViewModel fromVenue(Venue venue) {
-		if (venue != null) {
-			return new VenueViewModel(venue.getId(), venue.getName(), venue.getDescription(), venue.getOwner(),
-					venue.getOpenTime().toString(), venue.getCloseTime().toString());
-		}
-		return null;
-	}
-
-	public static List<VenueViewModel> fromVenue(List<Venue> venues) {
-		if (venues != null) {
-			return venues.stream().map(v -> VenueViewModel.fromVenue(v)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {
