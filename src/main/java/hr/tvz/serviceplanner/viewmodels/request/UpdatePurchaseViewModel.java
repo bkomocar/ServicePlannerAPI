@@ -2,8 +2,6 @@ package hr.tvz.serviceplanner.viewmodels.request;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 
 import hr.tvz.serviceplanner.persistence.models.Customer;
@@ -18,7 +16,9 @@ public class UpdatePurchaseViewModel {
 
 	private Long valueInSmallestCurrency;
 
-	private Date purchaseTime;
+	private Date purchaseDate;
+
+	private Date paymentDate;
 
 	private Long productId;
 
@@ -30,12 +30,13 @@ public class UpdatePurchaseViewModel {
 		super();
 	}
 
-	public UpdatePurchaseViewModel(String currency, Long valueInSmallestCurrency, Date purchaseTime, Long productId,
-			Long customerId, Long priceId) {
+	public UpdatePurchaseViewModel(String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate,
+			Long productId, Long customerId, Long priceId) {
 		super();
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
-		this.purchaseTime = purchaseTime;
+		this.purchaseDate = purchaseDate;
+		this.paymentDate = paymentDate;
 		this.productId = productId;
 		this.customerId = customerId;
 		this.priceId = priceId;
@@ -43,10 +44,10 @@ public class UpdatePurchaseViewModel {
 
 	public static Purchase toPurchase(UpdatePurchaseViewModel model) {
 		if (model != null) {
-			if(model.valueInSmallestCurrency != null && model.valueInSmallestCurrency <0){
+			if (model.valueInSmallestCurrency != null && model.valueInSmallestCurrency < 0) {
 				model.valueInSmallestCurrency = 0L;
 			}
-			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseTime,
+			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate, model.paymentDate,
 					new Product(model.productId), new Customer(model.customerId), new Price(model.priceId));
 		}
 		return null;
@@ -68,12 +69,20 @@ public class UpdatePurchaseViewModel {
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 	}
 
-	public Date getPurchaseTime() {
-		return purchaseTime;
+	public Date getPurchaseDate() {
+		return purchaseDate;
 	}
 
-	public void setPurchaseTime(Date purchaseTime) {
-		this.purchaseTime = purchaseTime;
+	public void setPurchaseDate(Date purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
 	}
 
 	public Long getProductId() {

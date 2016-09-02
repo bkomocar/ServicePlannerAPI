@@ -17,7 +17,7 @@ import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.CreatePurchaseViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdatePurchaseViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.PurchaseViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.PurchaseViewModelLarge;
 
 @RestController
 @RequestMapping("venues/{venueId}/purchases")
@@ -64,18 +64,18 @@ public class PurchasesController {
 	}
 
 	@RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET)
-	public ResponseEntity<PurchaseViewModel> getPurchase(@PathVariable("venueId") long id,
+	public ResponseEntity<PurchaseViewModelLarge> getPurchase(@PathVariable("venueId") long id,
 			@PathVariable("purchaseId") long purchaseId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			PurchaseViewModel model = purchaseService.getPurchase(purchaseId);
+			PurchaseViewModelLarge model = purchaseService.getPurchase(purchaseId);
 			if (model != null) {
-				return new ResponseEntity<PurchaseViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<PurchaseViewModelLarge>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<PurchaseViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<PurchaseViewModelLarge>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<PurchaseViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<PurchaseViewModelLarge>(HttpStatus.FORBIDDEN);
 		}
 	}
 

@@ -1,12 +1,14 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
 
-public class PurchaseViewModel {
+public class PurchaseViewModelLarge {
 
 	private Long id;
 	private String currency;
@@ -17,14 +19,15 @@ public class PurchaseViewModel {
 	private CustomerViewModel customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
+	private List<EventViewModelSmall> events = new ArrayList<>();
 
-	public PurchaseViewModel() {
+	public PurchaseViewModelLarge() {
 		super();
 	}
 
-	public PurchaseViewModel(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
+	public PurchaseViewModelLarge(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
 			Date paymentDate, ProductViewModel product, CustomerViewModel customer, PriceViewModel price,
-			Long totalDurationInMinutes) {
+			Long totalDurationInMinutes, List<EventViewModelSmall> events) {
 		super();
 		this.id = id;
 		this.currency = currency;
@@ -35,22 +38,25 @@ public class PurchaseViewModel {
 		this.customer = customer;
 		this.price = price;
 		this.totalDurationInMinutes = totalDurationInMinutes;
+		this.events = events;
 	}
 
-	public static PurchaseViewModel fromPurchase(Purchase purchase) {
+	public static PurchaseViewModelLarge fromPurchase(Purchase purchase) {
 		if (purchase != null) {
-			return new PurchaseViewModel(purchase.getId(), purchase.getCurrency(),
+			List<Event> events = new ArrayList<>(purchase.getEvents());
+			return new PurchaseViewModelLarge(purchase.getId(), purchase.getCurrency(),
 					purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
 					ProductViewModel.fromProduct(purchase.getProduct()),
 					CustomerViewModel.fromCustomer(purchase.getCustomer()),
-					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes());
+					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes(),
+					EventViewModelSmall.fromEvent(events));
 		}
 		return null;
 	}
 
-	public static List<PurchaseViewModel> fromPurchase(List<Purchase> purchases) {
+	public static List<PurchaseViewModelLarge> fromPurchase(List<Purchase> purchases) {
 		if (purchases != null) {
-			return purchases.stream().map(u -> PurchaseViewModel.fromPurchase(u)).collect(Collectors.toList());
+			return purchases.stream().map(u -> PurchaseViewModelLarge.fromPurchase(u)).collect(Collectors.toList());
 		}
 		return null;
 	}
@@ -125,6 +131,14 @@ public class PurchaseViewModel {
 
 	public void setTotalDurationInMinutes(Long totalDurationInMinutes) {
 		this.totalDurationInMinutes = totalDurationInMinutes;
+	}
+
+	public List<EventViewModelSmall> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<EventViewModelSmall> events) {
+		this.events = events;
 	}
 
 }

@@ -46,8 +46,11 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 			if (purchase.getValueInSmallestCurrency() != null) {
 				originalPurchase.setValueInSmallestCurrency(purchase.getValueInSmallestCurrency());
 			}
-			if (purchase.getPurchaseTime() != null) {
-				originalPurchase.setPurchaseTime(purchase.getPurchaseTime());
+			if (purchase.getPurchaseDate() != null) {
+				originalPurchase.setPurchaseDate(purchase.getPurchaseDate());
+			}
+			if (purchase.getPaymentDate() != null) {
+				originalPurchase.setPaymentDate(purchase.getPaymentDate());
 			}
 			if (purchase.getProduct() != null) {
 				Product product = getCurrentSession().get(Product.class, purchase.getProduct().getId());

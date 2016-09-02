@@ -41,7 +41,10 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 
 	@NotNull
 	@Column(columnDefinition = "DATETIME")
-	private Date purchaseTime;
+	private Date purchaseDate;
+
+	@Column(columnDefinition = "DATETIME")
+	private Date paymentDate;
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -79,14 +82,15 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		super();
 	}
 
-	public Purchase(Long id, String currency, Long valueInSmallestCurrency, Date purchaseTime, Venue venue,
-			Product product, Customer customer, Price price, SortedSet<Event> events, boolean closed,
+	public Purchase(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate,
+			Venue venue, Product product, Customer customer, Price price, SortedSet<Event> events, boolean closed,
 			Long totalDurationInMinutes) {
 		super();
 		this.id = id;
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
-		this.purchaseTime = purchaseTime;
+		this.purchaseDate = purchaseDate;
+		this.paymentDate = paymentDate;
 		this.venue = venue;
 		this.product = product;
 		this.customer = customer;
@@ -96,19 +100,21 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		this.totalDurationInMinutes = totalDurationInMinutes;
 	}
 
-	public Purchase(String currency, Long valueInSmallestCurrency, Date purchaseTime) {
+	public Purchase(String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate) {
 		super();
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
-		this.purchaseTime = purchaseTime;
+		this.purchaseDate = purchaseDate;
+		this.paymentDate = paymentDate;
 	}
-	
-	public Purchase(String currency, Long valueInSmallestCurrency, Date purchaseTime, Product product,
+
+	public Purchase(String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate, Product product,
 			Customer customer, Price price) {
 		super();
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
-		this.purchaseTime = purchaseTime;
+		this.purchaseDate = purchaseDate;
+		this.paymentDate = paymentDate;
 		this.product = product;
 		this.customer = customer;
 		this.price = price;
@@ -138,12 +144,12 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 	}
 
-	public Date getPurchaseTime() {
-		return purchaseTime;
+	public Date getPurchaseDate() {
+		return purchaseDate;
 	}
 
-	public void setPurchaseTime(Date purchaseTime) {
-		this.purchaseTime = purchaseTime;
+	public void setPurchaseDate(Date purchaseDate) {
+		this.purchaseDate = purchaseDate;
 	}
 
 	public Venue getVenue() {
@@ -200,6 +206,14 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 
 	public void setTotalDurationInMinutes(Long totalDurationInMinutes) {
 		this.totalDurationInMinutes = totalDurationInMinutes;
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
 	}
 
 	@Override

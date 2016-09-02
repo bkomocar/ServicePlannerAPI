@@ -21,7 +21,10 @@ public class CreatePurchaseViewModel {
 	private Long valueInSmallestCurrency;
 
 	@NotNull
-	private Date purchaseTime;
+	private Date purchaseDate;
+
+	@NotNull
+	private Date paymentDate;
 
 	@NotNull
 	private Long productId;
@@ -36,12 +39,13 @@ public class CreatePurchaseViewModel {
 		super();
 	}
 
-	public CreatePurchaseViewModel(String currency, Long valueInSmallestCurrency, Date purchaseTime, Long productId,
-			Long customerId, Long priceId) {
+	public CreatePurchaseViewModel(String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate,
+			Long productId, Long customerId, Long priceId) {
 		super();
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
-		this.purchaseTime = purchaseTime;
+		this.purchaseDate = purchaseDate;
+		this.paymentDate = paymentDate;
 		this.productId = productId;
 		this.customerId = customerId;
 		this.priceId = priceId;
@@ -49,10 +53,10 @@ public class CreatePurchaseViewModel {
 
 	public static Purchase toPurchase(CreatePurchaseViewModel model) {
 		if (model != null) {
-			if(model.valueInSmallestCurrency <0){
+			if (model.valueInSmallestCurrency < 0) {
 				model.valueInSmallestCurrency = 0L;
 			}
-			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseTime,
+			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate, model.paymentDate,
 					new Product(model.productId), new Customer(model.customerId), new Price(model.priceId));
 		}
 		return null;
@@ -74,12 +78,20 @@ public class CreatePurchaseViewModel {
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 	}
 
-	public Date getPurchaseTime() {
-		return purchaseTime;
+	public Date getPurchaseDate() {
+		return purchaseDate;
 	}
 
-	public void setPurchaseTime(Date purchaseTime) {
-		this.purchaseTime = purchaseTime;
+	public void setPurchaseDate(Date purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
 	}
 
 	public Long getProductId() {
