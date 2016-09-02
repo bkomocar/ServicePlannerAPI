@@ -15,6 +15,7 @@ import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserService;
 import hr.tvz.serviceplanner.security.factory.SecurityUserFactory;
+import hr.tvz.serviceplanner.viewmodels.request.UpdateUserViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.UserViewModel;
 
@@ -39,11 +40,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	public IdViewModel saveUser(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		User daoUser = getDao().create(user);
-
 		if (daoUser != null) {
 			return new IdViewModel(daoUser.getId());
 		}
-
 		return null;
 	}
 
@@ -69,5 +68,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 		} else {
 			return SecurityUserFactory.create(user);
 		}
+	}
+
+	@Override
+	public boolean updateUser(Long userId, UpdateUserViewModel model) {
+		if (model != null) {
+			User user = UpdateUserViewModel.toUser(model);
+			if (user.getPassword() != null) {
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+			}
+			return dao.updateUser(userId, user);
+		}
+		return false;
 	}
 }

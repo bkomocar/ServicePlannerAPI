@@ -47,32 +47,25 @@ public class AuthenticationController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<IdViewModel> register(@Valid @RequestBody RegisterViewModel model,
 			BindingResult bindingResult) {
-
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-
 		if (userDetailsService.isUserValid(model.getName())) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-
 		IdViewModel idViewModel = userDetailsService.saveUser(RegisterViewModel.toUser(model));
-
 		if (idViewModel == null) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<IdViewModel>(idViewModel, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest, Device device)
 			throws AuthenticationException {
-
 		Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		String token = this.tokenUtils.generateToken(userDetails, device);
 
