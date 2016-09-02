@@ -19,12 +19,12 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import interfaces.VenueViewModel;
 
 @RestController
 @RequestMapping("/venues")
@@ -119,8 +119,8 @@ public class VenuesController {
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
 
-	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> removeUser(@PathVariable("venueId") long venueId, @PathVariable("employeeId") long id) {
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removeUser(@PathVariable("venueId") long venueId, @PathVariable("userId") long id) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, venueId)) {
 			venueService.removeUser(venueId, id);

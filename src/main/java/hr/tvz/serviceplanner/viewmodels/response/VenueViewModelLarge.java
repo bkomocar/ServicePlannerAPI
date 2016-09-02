@@ -1,6 +1,6 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
-import interfaces.VenueViewModel;
+import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 
 public class VenueViewModelLarge extends VenueViewModel {
 

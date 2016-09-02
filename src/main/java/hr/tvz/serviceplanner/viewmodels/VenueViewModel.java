@@ -1,10 +1,9 @@
-package interfaces;
+package hr.tvz.serviceplanner.viewmodels;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Venue;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.response.VenueViewModelLarge;
 import hr.tvz.serviceplanner.viewmodels.response.VenueViewModelSmall;
 

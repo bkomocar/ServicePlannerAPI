@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.util.SortedSet;
+
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
@@ -55,5 +57,11 @@ public class EmployeeDaoImpl extends AbstractHibernateDao<Employee> implements E
 			return employee.getId();
 		}
 		return null;
+	}
+
+	@Override
+	public SortedSet<Employee> getEmployeesForVenue(Long venueId) {
+		Venue venue = getCurrentSession().get(Venue.class, venueId);
+		return venue.getEmployees();
 	}
 }

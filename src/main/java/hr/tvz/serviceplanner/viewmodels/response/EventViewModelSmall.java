@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Event;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 
 public class EventViewModelSmall {
 
@@ -12,10 +14,10 @@ public class EventViewModelSmall {
 	private Date startTime;
 	private Date endTime;
 	private ProductViewModelSmall product;
-	private EmployeeViewModelSmall employee;
+	private EmployeeViewModel employee;
 
 	public EventViewModelSmall(Long id, Date startTime, Date endTime, ProductViewModelSmall product,
-			EmployeeViewModelSmall employee) {
+			EmployeeViewModel employee) {
 		super();
 		this.id = id;
 		this.startTime = startTime;
@@ -28,7 +30,7 @@ public class EventViewModelSmall {
 		if (event != null) {
 			return new EventViewModelSmall(event.getId(), event.getStartTime(), event.getEndTime(),
 					ProductViewModelSmall.fromProduct(event.getProduct()),
-					EmployeeViewModelSmall.fromEmployee(event.getEmployee()));
+					EmployeeViewModel.toEmployeeViewModel(event.getEmployee(), ViewModelType.medium));
 		}
 		return null;
 	}
@@ -72,11 +74,11 @@ public class EventViewModelSmall {
 		this.product = product;
 	}
 
-	public EmployeeViewModelSmall getEmployee() {
+	public EmployeeViewModel getEmployee() {
 		return employee;
 	}
 
-	public void setEmployee(EmployeeViewModelSmall employee) {
+	public void setEmployee(EmployeeViewModel employee) {
 		this.employee = employee;
 	}
 

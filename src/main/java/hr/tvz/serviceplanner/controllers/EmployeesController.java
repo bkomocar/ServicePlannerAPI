@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.tvz.serviceplanner.persistence.services.interfaces.EmployeeService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEmployeeViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.EmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
@@ -48,7 +52,7 @@ public class EmployeesController {
 	}
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateGroup(@PathVariable("venueId") long id,
+	public ResponseEntity<Void> updateEmployee(@PathVariable("venueId") long id,
 			@PathVariable("employeeId") long employeeId, @Valid @RequestBody UpdateEmployeeViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
@@ -63,11 +67,12 @@ public class EmployeesController {
 	}
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
-	public ResponseEntity<EmployeeViewModel> getGroup(@PathVariable("venueId") long id,
-			@PathVariable("employeeId") long employeeId) {
+	public ResponseEntity<EmployeeViewModel> getEmployee(@PathVariable("venueId") long id,
+			@PathVariable("employeeId") long employeeId,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			EmployeeViewModel model = employeeService.getEmployee(employeeId);
+			EmployeeViewModel model = employeeService.getEmployee(employeeId, type);
 			if (model != null) {
 				return new ResponseEntity<EmployeeViewModel>(model, HttpStatus.OK);
 			} else {
@@ -75,6 +80,22 @@ public class EmployeesController {
 			}
 		} else {
 			return new ResponseEntity<EmployeeViewModel>(HttpStatus.FORBIDDEN);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<EmployeeViewModel>> getEmployees(@PathVariable("venueId") long id,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<EmployeeViewModel> models = employeeService.getEmployeesForVenue(id, type);
+			if (models != null) {
+				return new ResponseEntity<List<EmployeeViewModel>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<EmployeeViewModel>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<EmployeeViewModel>>(HttpStatus.FORBIDDEN);
 		}
 	}
 

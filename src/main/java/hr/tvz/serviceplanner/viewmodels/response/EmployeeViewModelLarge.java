@@ -1,11 +1,8 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 
-import hr.tvz.serviceplanner.persistence.models.Employee;
-
-public class EmployeeViewModel {
+public class EmployeeViewModelLarge extends EmployeeViewModel {
 
 	private Long id;
 	private String username;
@@ -16,12 +13,12 @@ public class EmployeeViewModel {
 	private String phone;
 	private String comment;
 
-	public EmployeeViewModel() {
+	public EmployeeViewModelLarge() {
 		super();
 	}
 
-	public EmployeeViewModel(Long id, String username, String firstName, String lastName, String color, String email,
-			String phone, String comment) {
+	public EmployeeViewModelLarge(Long id, String username, String firstName, String lastName, String color,
+			String email, String phone, String comment) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -31,22 +28,6 @@ public class EmployeeViewModel {
 		this.email = email;
 		this.phone = phone;
 		this.comment = comment;
-	}
-
-	public static EmployeeViewModel fromEmployee(Employee employee) {
-		if (employee != null) {
-			return new EmployeeViewModel(employee.getId(), employee.getUsername(), employee.getFirstName(),
-					employee.getLastName(), employee.getColor(), employee.getEmail(), employee.getPhone(),
-					employee.getComment());
-		}
-		return null;
-	}
-
-	public static List<EmployeeViewModel> fromEmployee(List<Employee> employees) {
-		if (employees != null) {
-			return employees.stream().map(v -> EmployeeViewModel.fromEmployee(v)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {

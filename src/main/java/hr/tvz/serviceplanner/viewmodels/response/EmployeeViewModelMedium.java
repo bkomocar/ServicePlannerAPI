@@ -2,19 +2,21 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 
-public class EmployeeViewModelSmall extends EmployeeViewModel {
+public class EmployeeViewModelMedium extends EmployeeViewModel {
 
 	private Long id;
 	private String username;
+	private String color;
 
-	public EmployeeViewModelSmall() {
+	public EmployeeViewModelMedium() {
 		super();
 	}
 
-	public EmployeeViewModelSmall(Long id, String username) {
+	public EmployeeViewModelMedium(Long id, String username, String color) {
 		super();
 		this.id = id;
 		this.username = username;
+		this.color = color;
 	}
 
 	public Long getId() {
@@ -32,4 +34,13 @@ public class EmployeeViewModelSmall extends EmployeeViewModel {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 }

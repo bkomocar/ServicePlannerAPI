@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 
 public class EventViewModel {
 
@@ -14,11 +16,11 @@ public class EventViewModel {
 	private Date startTime;
 	private Date endTime;
 	private ProductViewModelSmall product;
-	private EmployeeViewModelSmall employee;
+	private EmployeeViewModel employee;
 	private List<PurchaseViewModelSmall> purchases = new ArrayList<>();
 
 	public EventViewModel(Long id, Date startTime, Date endTime, ProductViewModelSmall product,
-			EmployeeViewModelSmall employee, List<PurchaseViewModelSmall> purchases) {
+			EmployeeViewModel employee, List<PurchaseViewModelSmall> purchases) {
 		super();
 		this.id = id;
 		this.startTime = startTime;
@@ -33,7 +35,7 @@ public class EventViewModel {
 			List<Purchase> purchases = new ArrayList<>(event.getPurchases());
 			return new EventViewModel(event.getId(), event.getStartTime(), event.getEndTime(),
 					ProductViewModelSmall.fromProduct(event.getProduct()),
-					EmployeeViewModelSmall.fromEmployee(event.getEmployee()),
+					EmployeeViewModel.toEmployeeViewModel(event.getEmployee(), ViewModelType.medium),
 					PurchaseViewModelSmall.fromPurchase(purchases));
 		}
 		return null;
@@ -78,11 +80,11 @@ public class EventViewModel {
 		this.product = product;
 	}
 
-	public EmployeeViewModelSmall getEmployee() {
+	public EmployeeViewModel getEmployee() {
 		return employee;
 	}
 
-	public void setEmployee(EmployeeViewModelSmall employee) {
+	public void setEmployee(EmployeeViewModel employee) {
 		this.employee = employee;
 	}
 
