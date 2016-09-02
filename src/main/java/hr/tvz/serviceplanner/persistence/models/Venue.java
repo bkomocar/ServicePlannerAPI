@@ -48,7 +48,7 @@ public class Venue implements Serializable, Comparable<Venue> {
 
 	@Column
 	private Time closeTime;
-
+	
 	@SortNatural
 	@Cascade(value = CascadeType.ALL)
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -193,12 +193,20 @@ public class Venue implements Serializable, Comparable<Venue> {
 	public void setPurchases(SortedSet<Purchase> purchases) {
 		this.purchases = purchases;
 	}
+	
+	public SortedSet<Group> getGroups() {
+		return groups;
+	}
 
-	public SortedSet<Event> getGroups() {
+	public void setGroups(SortedSet<Group> groups) {
+		this.groups = groups;
+	}
+
+	public SortedSet<Event> getEvents() {
 		return events;
 	}
 
-	public void setGroups(SortedSet<Event> events) {
+	public void setEvents(SortedSet<Event> events) {
 		this.events = events;
 	}
 

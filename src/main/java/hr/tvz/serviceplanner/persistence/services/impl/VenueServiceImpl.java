@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
+import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
+import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
@@ -70,6 +72,15 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 			return dao.removeUser(venueId, userId);
 		}
 		return false;
+	}
+
+	@Override
+	public GroupViewModel getGroup(Long venueId, String name, ViewModelType type) {
+		Group group = dao.getGroup(venueId, name);
+		if (group != null) {
+			return GroupViewModel.toGroupViewModel(group, type);
+		}
+		return null;
 	}
 
 }

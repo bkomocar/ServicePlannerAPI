@@ -13,12 +13,12 @@ import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
-import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
@@ -28,10 +28,10 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	private CategoryDao dao;
 
 	@Override
-	public CategoryViewModel getCategory(Long id) {
+	public CategoryViewModel getCategory(Long id, ViewModelType type) {
 		Category category = dao.findOne(id);
 		if (category != null) {
-			return CategoryViewModel.fromCategory(category);
+			return CategoryViewModel.toCategoryViewModel(category, type);
 		}
 		return null;
 	}

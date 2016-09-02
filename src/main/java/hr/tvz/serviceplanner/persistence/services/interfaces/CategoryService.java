@@ -4,17 +4,17 @@ import java.util.List;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Category;
+import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 public interface CategoryService extends Operations<Category> {
 
-	public CategoryViewModel getCategory(Long id);
+	public CategoryViewModel getCategory(Long id, ViewModelType type);
 
 	public IdViewModel createCategory(Long id, CreateCategoryViewModel model);
 

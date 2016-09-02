@@ -9,12 +9,12 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 
 @Repository
 public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDao {
-	
+
 	public GroupDaoImpl() {
 		super();
 		setClazz(Group.class);
 	}
-	
+
 	@Override
 	public Long createGroup(Long id, Group group) {
 		Venue venue = getCurrentSession().get(Venue.class, id);
@@ -25,7 +25,7 @@ public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDa
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean updateGroup(Long id, Group group) {
 		Group originalGroup = findOne(id);

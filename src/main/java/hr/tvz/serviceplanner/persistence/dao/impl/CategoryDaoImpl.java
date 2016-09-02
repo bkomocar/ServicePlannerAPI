@@ -57,7 +57,6 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 		Preconditions.checkNotNull(employeeId);
 		Category category = findOne(categoryId);
 		Employee employee = getCurrentSession().get(Employee.class, employeeId);
-
 		if (category != null && employee != null) {
 			Venue categoryVenue = category.getGroup().getVenue();
 			Venue employeeVenue = employee.getVenue();
@@ -91,7 +90,9 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 	@Override
 	public SortedSet<Employee> getEmployees(Long venueId, Long categoryId) {
 		Category category = findOne(categoryId);
-		if (category != null && category.getGroup() != null && category.getGroup().getVenue() != null && category.getGroup().getVenue().getId() != null && category.getGroup().getVenue().getId() == venueId) {
+		if (category != null && category.getGroup() != null && category.getGroup().getVenue() != null
+				&& category.getGroup().getVenue().getId() != null
+				&& category.getGroup().getVenue().getId() == venueId) {
 			return category.getEmployees();
 		}
 		return null;

@@ -11,7 +11,7 @@ public class VenueViewModel {
 
 	public static VenueViewModel toVenueViewModel(Venue venue, ViewModelType type) {
 		if (venue != null) {
-			if (type == null || type == ViewModelType.large || type == ViewModelType.medium) {
+			if (type == null || type == ViewModelType.large || type == ViewModelType.medium || type == ViewModelType.extended) {
 				return new VenueViewModelLarge(venue.getId(), venue.getName(), venue.getDescription(), venue.getOwner(),
 						venue.getOpenTime().toString(), venue.getCloseTime().toString());
 			} else {

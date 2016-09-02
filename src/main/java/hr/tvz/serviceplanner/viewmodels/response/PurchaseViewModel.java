@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Purchase;
+import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 
 public class PurchaseViewModel {
 
@@ -41,7 +43,7 @@ public class PurchaseViewModel {
 		if (purchase != null) {
 			return new PurchaseViewModel(purchase.getId(), purchase.getCurrency(),
 					purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
-					ProductViewModel.fromProduct(purchase.getProduct()),
+					ProductViewModel.toProductViewModel(purchase.getProduct(), ViewModelType.large),
 					CustomerViewModel.fromCustomer(purchase.getCustomer()),
 					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes());
 		}

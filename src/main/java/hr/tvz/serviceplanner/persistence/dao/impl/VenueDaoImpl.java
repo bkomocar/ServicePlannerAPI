@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.base.Preconditions;
 
+import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
+import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
@@ -31,6 +33,12 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		TreeSet<User> users = new TreeSet<>();
 		users.add(u);
 		venue.setUsers(users);
+		Group courses = new Group("Courses", GroupType.SERVICE);
+		Group rents = new Group("Rents", GroupType.RENT);
+		TreeSet<Group> groups = new TreeSet<>();
+		groups.add(courses);
+		groups.add(rents);
+		venue.setGroups(groups);
 		create(venue);
 		return venue;
 	}
@@ -103,6 +111,18 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public Group getGroup(Long venueId, String name) {
+		Venue venue = findOne(venueId);
+		SortedSet<Group> groups = venue.getGroups();
+		for (Group group : groups) {
+			if (group.getName().equalsIgnoreCase(name)) {
+				return group;
+			}
+		}
+		return null;
 	}
 
 }

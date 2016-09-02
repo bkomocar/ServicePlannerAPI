@@ -12,7 +12,7 @@ public class EmployeeViewModel {
 
 	public static EmployeeViewModel toEmployeeViewModel(Employee employee, ViewModelType type) {
 		if (employee != null) {
-			if (type == null || type == ViewModelType.large) {
+			if (type == null || type == ViewModelType.large || type == ViewModelType.extended) {
 				return new EmployeeViewModelLarge(employee.getId(), employee.getUsername(), employee.getFirstName(),
 						employee.getLastName(), employee.getColor(), employee.getEmail(), employee.getPhone(),
 						employee.getComment());

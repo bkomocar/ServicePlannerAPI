@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
+import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
@@ -71,10 +71,11 @@ public class CategoriesController {
 
 	@RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.GET)
 	public ResponseEntity<CategoryViewModel> getCategory(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId) {
+			@PathVariable("categoryId") long categoryId,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			CategoryViewModel model = categoryService.getCategory(categoryId);
+			CategoryViewModel model = categoryService.getCategory(categoryId, type);
 			if (model != null) {
 				return new ResponseEntity<CategoryViewModel>(model, HttpStatus.OK);
 			} else {
@@ -112,17 +113,18 @@ public class CategoriesController {
 			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateByIdViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			if(categoryService.addEmployee(categoryId, model)){
+			if (categoryService.addEmployee(categoryId, model)) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}			
+			}
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
-	
-	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.GET) 
-	public ResponseEntity<List<EmployeeViewModel>> getEmployees(@PathVariable("venueId") long id, @PathVariable("categoryId") long categoryId,
+
+	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.GET)
+	public ResponseEntity<List<EmployeeViewModel>> getEmployees(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId,
 			@RequestParam(name = "type", required = false) ViewModelType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {

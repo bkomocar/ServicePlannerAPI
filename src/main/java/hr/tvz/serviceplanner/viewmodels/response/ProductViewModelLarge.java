@@ -2,12 +2,10 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import hr.tvz.serviceplanner.persistence.models.Price;
-import hr.tvz.serviceplanner.persistence.models.Product;
+import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 
-public class ProductViewModel {
+public class ProductViewModelLarge extends ProductViewModel {
 
 	private Long id;
 	private Integer maxCustomers;
@@ -16,11 +14,11 @@ public class ProductViewModel {
 	private String description;
 	private List<PriceViewModel> prices = new ArrayList<>();
 
-	public ProductViewModel() {
+	public ProductViewModelLarge() {
 		super();
 	}
 
-	public ProductViewModel(Long id, Integer maxCustomers, String name, String shortName, String description,
+	public ProductViewModelLarge(Long id, Integer maxCustomers, String name, String shortName, String description,
 			List<PriceViewModel> prices) {
 		super();
 		this.id = id;
@@ -29,22 +27,6 @@ public class ProductViewModel {
 		this.shortName = shortName;
 		this.description = description;
 		this.prices = prices;
-	}
-
-	public static ProductViewModel fromProduct(Product product) {
-		if (product != null) {
-			List<Price> prices = new ArrayList<>(product.getPrices());
-			return new ProductViewModel(product.getId(), product.getMaxCustomers(), product.getName(),
-					product.getShortName(), product.getDescription(), PriceViewModel.fromPrice(prices));
-		}
-		return null;
-	}
-
-	public static List<ProductViewModel> fromProduct(List<Product> products) {
-		if (products != null) {
-			return products.stream().map(u -> ProductViewModel.fromProduct(u)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {

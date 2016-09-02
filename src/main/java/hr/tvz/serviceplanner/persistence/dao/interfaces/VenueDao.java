@@ -3,6 +3,7 @@ package hr.tvz.serviceplanner.persistence.dao.interfaces;
 import java.util.SortedSet;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
+import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
 public interface VenueDao extends Operations<Venue> {
@@ -17,4 +18,5 @@ public interface VenueDao extends Operations<Venue> {
 
 	public boolean updateVenue(Long id, Venue venue);
 
+	public Group getGroup(Long venueId, String name);
 }

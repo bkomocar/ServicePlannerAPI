@@ -8,10 +8,11 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.ProductDao;
 import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.ProductService;
+import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateProductViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateProductViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.ProductViewModel;
 
 @Service
 public class ProductServiceImpl extends AbstractService<Product> implements ProductService {
@@ -20,10 +21,10 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
 	private ProductDao dao;
 
 	@Override
-	public ProductViewModel getProduct(Long id) {
+	public ProductViewModel getProduct(Long id, ViewModelType type) {
 		Product product = dao.findOne(id);
 		if (product != null) {
-			return ProductViewModel.fromProduct(product);
+			return ProductViewModel.toProductViewModel(product, type);
 		}
 		return null;
 	}

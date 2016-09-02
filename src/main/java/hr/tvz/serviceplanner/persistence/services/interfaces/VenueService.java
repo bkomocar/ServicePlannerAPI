@@ -4,6 +4,7 @@ import java.util.List;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Venue;
+import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
@@ -22,5 +23,7 @@ public interface VenueService extends Operations<Venue> {
 	public List<VenueViewModel> getVenuesForUser(Long userId, ViewModelType type);
 
 	public boolean updateVenue(Long id, UpdateVenueViewModel venue);
+
+	public GroupViewModel getGroup(Long venueId, String name, ViewModelType type);
 
 }

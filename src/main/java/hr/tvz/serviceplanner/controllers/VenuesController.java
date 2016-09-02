@@ -19,6 +19,7 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
@@ -127,6 +128,23 @@ public class VenuesController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
+
+	@RequestMapping(value = "/{venueId}/{groupName}", method = RequestMethod.GET)
+	public ResponseEntity<GroupViewModel> getGroup(@PathVariable("venueId") long id,
+			@PathVariable("groupName") String groupName,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			GroupViewModel model = venueService.getGroup(id, groupName, type);
+			if (model != null) {
+				return new ResponseEntity<GroupViewModel>(model, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<GroupViewModel>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<GroupViewModel>(HttpStatus.FORBIDDEN);
+		}
 	}
 
 }

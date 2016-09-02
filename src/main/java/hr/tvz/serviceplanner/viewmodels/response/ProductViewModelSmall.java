@@ -1,11 +1,8 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 
-import hr.tvz.serviceplanner.persistence.models.Product;
-
-public class ProductViewModelSmall {
+public class ProductViewModelSmall extends ProductViewModel{
 
 	private Long id;
 	private Integer maxCustomers;
@@ -26,20 +23,6 @@ public class ProductViewModelSmall {
 		this.description = description;
 	}
 
-	public static ProductViewModelSmall fromProduct(Product product) {
-		if (product != null) {
-			return new ProductViewModelSmall(product.getId(), product.getMaxCustomers(), product.getName(),
-					product.getShortName(), product.getDescription());
-		}
-		return null;
-	}
-
-	public static List<ProductViewModelSmall> fromProduct(List<Product> products) {
-		if (products != null) {
-			return products.stream().map(u -> ProductViewModelSmall.fromProduct(u)).collect(Collectors.toList());
-		}
-		return null;
-	}
 
 	public Long getId() {
 		return id;

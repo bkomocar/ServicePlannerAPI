@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
+import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 
 public class PurchaseViewModelLarge {
 
@@ -46,7 +48,7 @@ public class PurchaseViewModelLarge {
 			List<Event> events = new ArrayList<>(purchase.getEvents());
 			return new PurchaseViewModelLarge(purchase.getId(), purchase.getCurrency(),
 					purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
-					ProductViewModel.fromProduct(purchase.getProduct()),
+					ProductViewModel.toProductViewModel(purchase.getProduct(), ViewModelType.large),
 					CustomerViewModel.fromCustomer(purchase.getCustomer()),
 					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes(),
 					EventViewModelSmall.fromEvent(events));
