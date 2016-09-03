@@ -8,6 +8,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.EventDao;
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EventService;
+import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.EventViewModel;
@@ -58,6 +59,11 @@ public class EventServiceImpl extends AbstractService<Event> implements EventSer
 	@Override
 	public boolean removePurchase(Long eventId, Long purchaseId) {
 		return dao.removePurchase(eventId, purchaseId);
+	}
+
+	@Override
+	public boolean addPurchase(Long eventId, CreateByIdViewModel model) {
+		return dao.addPurchase(eventId, model.getId());
 	}
 
 }

@@ -1,6 +1,7 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +9,7 @@ import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.EventDao;
 import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.models.Event;
+import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
 import hr.tvz.serviceplanner.persistence.models.Venue;
@@ -25,13 +27,30 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 		Product product = getCurrentSession().get(Product.class, event.getProduct().getId());
 		Employee employee = getCurrentSession().get(Employee.class, event.getEmployee().getId());
 		Venue venue = getCurrentSession().get(Venue.class, venueId);
+		
 
-		if (product != null && employee != null && venue != null) {
-			event.setProduct(product);
-			event.setEmployee(employee);
-			event.setVenue(venue);
-			create(event);
-			return event.getId();
+		if (event.getPurchases() != null && !event.getPurchases().isEmpty()) {
+			SortedSet<Purchase> purchases = new TreeSet<>();
+			for (Purchase purchase : event.getPurchases()) {
+				if (purchase.getId() != null) {
+					purchases.add(getCurrentSession().get(Purchase.class, purchase.getId()));
+				}
+			}
+			event.setPurchases(purchases);
+		}
+
+		if (product != null && product.getCategory() != null && product.getCategory().getGroup() != null
+				&& product.getCategory().getGroup().getId() != null) {
+			Group group = getCurrentSession().get(Group.class, product.getCategory().getGroup().getId());
+			if (employee != null && venue != null && group != null) {
+				if (employee.getVenue().equals(venue) && group.getVenue().equals(venue)) {
+					event.setProduct(product);
+					event.setEmployee(employee);
+					event.setGroup(group);
+					create(event);
+					return event.getId();
+				}
+			}
 		}
 		return null;
 	}
@@ -63,7 +82,8 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 	@Override
 	public boolean deleteEvent(Long venueId, Long eventId) {
 		Event event = findOne(eventId);
-		if (event.getVenue().getId() == venueId) {
+		if (event.getGroup() != null && event.getGroup().getVenue() != null
+				&& event.getGroup().getVenue().getId() != null && event.getGroup().getVenue().getId() == venueId) {
 			deleteById(eventId);
 			return true;
 		}
@@ -83,6 +103,22 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 			SortedSet<Purchase> purchases = event.getPurchases();
 			if (purchases != null && !purchases.isEmpty() && purchases.contains(purchase)) {
 				purchases.remove(purchase);
+				event.setPurchases(purchases);
+				update(event);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean addPurchase(Long eventId, Long purchaseId) {
+		Event event = findOne(eventId);
+		Purchase purchase = getCurrentSession().get(Purchase.class, purchaseId);
+		if (event != null && purchase != null) {
+			SortedSet<Purchase> purchases = event.getPurchases();
+			if (purchases != null) {
+				purchases.add(purchase);
 				event.setPurchases(purchases);
 				update(event);
 				return true;

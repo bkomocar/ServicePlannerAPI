@@ -1,6 +1,7 @@
 package hr.tvz.serviceplanner.persistence.models;
 
 import java.io.Serializable;
+import java.util.SortedSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.SortNatural;
 
 @Entity
 @Table(name = "customers")
@@ -40,9 +44,13 @@ public class Customer implements Serializable, Comparable<Customer> {
 	@Column(columnDefinition = "varchar(500)")
 	private String comment;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
+	
+	@SortNatural
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	private SortedSet<Purchase> purchases;
 
 	public Customer() {
 		super();

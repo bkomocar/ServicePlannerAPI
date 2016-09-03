@@ -16,11 +16,11 @@ import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerSe
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCustomerViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.CustomerViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.CustomerViewModelLarge;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
-@RequestMapping("venues/{venueId}customers")
+@RequestMapping("venues/{venueId}/customers")
 public class CustomersController {
 	@Autowired
 	private UserRightsCheckerService userRightsCheckerService;
@@ -63,18 +63,18 @@ public class CustomersController {
 	}
 
 	@RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
-	public ResponseEntity<CustomerViewModel> getCustomer(@PathVariable("venueId") long id,
+	public ResponseEntity<CustomerViewModelLarge> getCustomer(@PathVariable("venueId") long id,
 			@PathVariable("customerId") long customerId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			CustomerViewModel model = customerService.getCustomer(customerId);
+			CustomerViewModelLarge model = customerService.getCustomer(customerId);
 			if (model != null) {
-				return new ResponseEntity<CustomerViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<CustomerViewModelLarge>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<CustomerViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<CustomerViewModelLarge>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<CustomerViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<CustomerViewModelLarge>(HttpStatus.FORBIDDEN);
 		}
 	}
 

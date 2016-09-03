@@ -47,18 +47,18 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 	private Date paymentDate;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "venueId", nullable = false)
-	private Venue venue;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "groupId", nullable = false)
+	private Group group;
 
 	@NotNull
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "productId")
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "productId", nullable = true)
 	private Product product;
 
 	@NotNull
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "customerId")
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "customerId", nullable = true)
 	private Customer customer;
 
 	@NotNull
@@ -82,8 +82,13 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		super();
 	}
 
+	public Purchase(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Purchase(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate,
-			Venue venue, Product product, Customer customer, Price price, SortedSet<Event> events, boolean closed,
+			Group group, Product product, Customer customer, Price price, SortedSet<Event> events, boolean closed,
 			Long totalDurationInMinutes) {
 		super();
 		this.id = id;
@@ -91,7 +96,7 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 		this.purchaseDate = purchaseDate;
 		this.paymentDate = paymentDate;
-		this.venue = venue;
+		this.group = group;
 		this.product = product;
 		this.customer = customer;
 		this.price = price;
@@ -152,12 +157,12 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		this.purchaseDate = purchaseDate;
 	}
 
-	public Venue getVenue() {
-		return venue;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void setVenue(Venue venue) {
-		this.venue = venue;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 
 	public Product getProduct() {

@@ -31,7 +31,7 @@ public class CostsController {
 	private CostService costService;
 
 	@RequestMapping(value = "/prices/{priceId}/costs", method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createProduct(@PathVariable("venueId") long id,
+	public ResponseEntity<IdViewModel> createCost(@PathVariable("venueId") long id,
 			@PathVariable("priceId") long priceId, @Valid @RequestBody CreateCostViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
@@ -47,7 +47,7 @@ public class CostsController {
 	}
 
 	@RequestMapping(value = "/costs/{costId}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateProduct(@PathVariable("venueId") long id, @PathVariable("costId") long costId,
+	public ResponseEntity<Void> updateCost(@PathVariable("venueId") long id, @PathVariable("costId") long costId,
 			@Valid @RequestBody UpdateCostViewModel model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
@@ -62,7 +62,7 @@ public class CostsController {
 	}
 
 	@RequestMapping(value = "/costs/{costId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteProduct(@PathVariable("venueId") long id, @PathVariable("costId") long costId) {
+	public ResponseEntity<Void> deleteCost(@PathVariable("venueId") long id, @PathVariable("costId") long costId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (costService.deleteCost(costId)) {

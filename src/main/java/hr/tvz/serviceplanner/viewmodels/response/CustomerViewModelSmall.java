@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import hr.tvz.serviceplanner.persistence.models.Customer;
+import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
 
-public class CustomerViewModelSmall {
+public class CustomerViewModelSmall extends CustomerViewModel {
 
 	private Long id;
 	private String firstName;

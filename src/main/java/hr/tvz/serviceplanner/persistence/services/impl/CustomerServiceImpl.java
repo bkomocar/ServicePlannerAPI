@@ -10,7 +10,7 @@ import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CustomerService;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCustomerViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.CustomerViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.CustomerViewModelLarge;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
@@ -42,10 +42,10 @@ public class CustomerServiceImpl extends AbstractService<Customer> implements Cu
 	}
 
 	@Override
-	public CustomerViewModel getCustomer(Long customerId) {
+	public CustomerViewModelLarge getCustomer(Long customerId) {
 		Customer customer = dao.getCustomer(customerId);
 		if (customer != null) {
-			return CustomerViewModel.fromCustomer(customer);
+			return CustomerViewModelLarge.fromCustomer(customer);
 		}
 		return null;
 	}

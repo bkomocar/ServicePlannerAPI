@@ -18,7 +18,7 @@ public class PurchaseViewModelLarge {
 	private Date purchaseDate;
 	private Date paymentDate;
 	private ProductViewModel product;
-	private CustomerViewModel customer;
+	private CustomerViewModelLarge customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
 	private List<EventViewModelSmall> events = new ArrayList<>();
@@ -28,7 +28,7 @@ public class PurchaseViewModelLarge {
 	}
 
 	public PurchaseViewModelLarge(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
-			Date paymentDate, ProductViewModel product, CustomerViewModel customer, PriceViewModel price,
+			Date paymentDate, ProductViewModel product, CustomerViewModelLarge customer, PriceViewModel price,
 			Long totalDurationInMinutes, List<EventViewModelSmall> events) {
 		super();
 		this.id = id;
@@ -49,7 +49,7 @@ public class PurchaseViewModelLarge {
 			return new PurchaseViewModelLarge(purchase.getId(), purchase.getCurrency(),
 					purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
 					ProductViewModel.toProductViewModel(purchase.getProduct(), ViewModelType.large),
-					CustomerViewModel.fromCustomer(purchase.getCustomer()),
+					CustomerViewModelLarge.fromCustomer(purchase.getCustomer()),
 					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes(),
 					EventViewModelSmall.fromEvent(events));
 		}
@@ -111,11 +111,11 @@ public class PurchaseViewModelLarge {
 		this.product = product;
 	}
 
-	public CustomerViewModel getCustomer() {
+	public CustomerViewModelLarge getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerViewModel customer) {
+	public void setCustomer(CustomerViewModelLarge customer) {
 		this.customer = customer;
 	}
 

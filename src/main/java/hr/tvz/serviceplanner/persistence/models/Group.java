@@ -51,6 +51,16 @@ public class Group implements Serializable, Comparable<Group> {
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
+	
+	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	private SortedSet<Purchase> purchases = new TreeSet<>();
+
+	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	private SortedSet<Event> events = new TreeSet<>();
 
 	public Group() {
 		super();

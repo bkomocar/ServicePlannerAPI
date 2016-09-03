@@ -30,8 +30,8 @@ public class Event implements Serializable, Comparable<Event> {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "venueId", nullable = false)
-	private Venue venue;
+	@JoinColumn(name = "groupId", nullable = false)
+	private Group group;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "productId")
@@ -65,6 +65,15 @@ public class Event implements Serializable, Comparable<Event> {
 		this.endTime = endTime;
 	}
 
+	public Event(Product product, Employee employee, Date startTime, Date endTime, SortedSet<Purchase> purchases) {
+		super();
+		this.product = product;
+		this.employee = employee;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.purchases = purchases;
+	}
+	
 	public Event(Employee employee, Date startTime, Date endTime) {
 		super();
 		this.employee = employee;
@@ -72,18 +81,18 @@ public class Event implements Serializable, Comparable<Event> {
 		this.endTime = endTime;
 	}
 
-	public Event(Long id, Venue venue, Product product, Employee employee, SortedSet<Purchase> purchases) {
+	public Event(Long id, Group group, Product product, Employee employee, SortedSet<Purchase> purchases) {
 		super();
 		this.id = id;
-		this.venue = venue;
+		this.group = group;
 		this.product = product;
 		this.employee = employee;
 		this.purchases = purchases;
 	}
 
-	public Event(Venue venue, Product product, Employee employee) {
+	public Event(Group group, Product product, Employee employee) {
 		super();
-		this.venue = venue;
+		this.group = group;
 		this.product = product;
 		this.employee = employee;
 	}
@@ -96,12 +105,12 @@ public class Event implements Serializable, Comparable<Event> {
 		this.id = id;
 	}
 
-	public Venue getVenue() {
-		return venue;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void setVenue(Venue venue) {
-		this.venue = venue;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 
 	public Product getProduct() {
@@ -127,7 +136,7 @@ public class Event implements Serializable, Comparable<Event> {
 	public void setPurchases(SortedSet<Purchase> purchases) {
 		this.purchases = purchases;
 	}
-	
+
 	public Date getStartTime() {
 		return startTime;
 	}

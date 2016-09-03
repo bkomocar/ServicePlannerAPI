@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EventService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.EventViewModel;
@@ -82,7 +83,7 @@ public class EventsController {
 	public ResponseEntity<Void> deleteEvent(@PathVariable("venueId") long id, @PathVariable("eventId") long eventId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			eventService.deleteEvent(id, eventId);			
+			eventService.deleteEvent(id, eventId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
@@ -96,6 +97,21 @@ public class EventsController {
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			eventService.removePurchase(eventId, purchaseId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		}
+	}
+
+	@RequestMapping(value = "/{eventId}/purchases", method = RequestMethod.POST)
+	public ResponseEntity<Void> addPurchase(@PathVariable("venueId") long id, @PathVariable("eventId") long eventId,
+			@Valid @RequestBody CreateByIdViewModel model) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			if (eventService.addPurchase(eventId, model)) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 		}

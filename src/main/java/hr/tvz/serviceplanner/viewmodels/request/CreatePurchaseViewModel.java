@@ -23,7 +23,6 @@ public class CreatePurchaseViewModel {
 	@NotNull
 	private Date purchaseDate;
 
-	@NotNull
 	private Date paymentDate;
 
 	@NotNull

@@ -31,9 +31,9 @@ public class UpdateProductViewModel {
 
 	public static Product toProduct(UpdateProductViewModel model) {
 		if (model != null) {
-			if(model.maxCustomers != null && model.maxCustomers < 1){
+			if (model.maxCustomers != null && model.maxCustomers < 1) {
 				model.maxCustomers = 1;
-			} 
+			}
 			return new Product(model.maxCustomers, model.name, model.shortName, model.description);
 		}
 		return null;

@@ -54,6 +54,10 @@ public class Product implements Serializable, Comparable<Product> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoryId", nullable = false)
 	private Category category;
+	
+	@SortNatural
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+	private SortedSet<Purchase> purchases;
 
 	public Product() {
 		super();

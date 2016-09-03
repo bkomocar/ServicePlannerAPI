@@ -8,7 +8,7 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 
-public class PurchaseViewModel {
+public class PurchaseViewModelMedium {
 
 	private Long id;
 	private String currency;
@@ -16,16 +16,16 @@ public class PurchaseViewModel {
 	private Date purchaseDate;
 	private Date paymentDate;
 	private ProductViewModel product;
-	private CustomerViewModel customer;
+	private CustomerViewModelLarge customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
 
-	public PurchaseViewModel() {
+	public PurchaseViewModelMedium() {
 		super();
 	}
 
-	public PurchaseViewModel(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
-			Date paymentDate, ProductViewModel product, CustomerViewModel customer, PriceViewModel price,
+	public PurchaseViewModelMedium(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
+			Date paymentDate, ProductViewModel product, CustomerViewModelLarge customer, PriceViewModel price,
 			Long totalDurationInMinutes) {
 		super();
 		this.id = id;
@@ -39,20 +39,20 @@ public class PurchaseViewModel {
 		this.totalDurationInMinutes = totalDurationInMinutes;
 	}
 
-	public static PurchaseViewModel fromPurchase(Purchase purchase) {
+	public static PurchaseViewModelMedium fromPurchase(Purchase purchase) {
 		if (purchase != null) {
-			return new PurchaseViewModel(purchase.getId(), purchase.getCurrency(),
+			return new PurchaseViewModelMedium(purchase.getId(), purchase.getCurrency(),
 					purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
 					ProductViewModel.toProductViewModel(purchase.getProduct(), ViewModelType.large),
-					CustomerViewModel.fromCustomer(purchase.getCustomer()),
+					CustomerViewModelLarge.fromCustomer(purchase.getCustomer()),
 					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes());
 		}
 		return null;
 	}
 
-	public static List<PurchaseViewModel> fromPurchase(List<Purchase> purchases) {
+	public static List<PurchaseViewModelMedium> fromPurchase(List<Purchase> purchases) {
 		if (purchases != null) {
-			return purchases.stream().map(u -> PurchaseViewModel.fromPurchase(u)).collect(Collectors.toList());
+			return purchases.stream().map(u -> PurchaseViewModelMedium.fromPurchase(u)).collect(Collectors.toList());
 		}
 		return null;
 	}
@@ -105,11 +105,11 @@ public class PurchaseViewModel {
 		this.product = product;
 	}
 
-	public CustomerViewModel getCustomer() {
+	public CustomerViewModelLarge getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerViewModel customer) {
+	public void setCustomer(CustomerViewModelLarge customer) {
 		this.customer = customer;
 	}
 
