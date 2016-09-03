@@ -25,9 +25,8 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 	@Override
 	public Long createEvent(Long venueId, Event event) {
 		Product product = getCurrentSession().get(Product.class, event.getProduct().getId());
-		Employee employee = getCurrentSession().get(Employee.class, event.getEmployee().getId());
+
 		Venue venue = getCurrentSession().get(Venue.class, venueId);
-		
 
 		if (event.getPurchases() != null && !event.getPurchases().isEmpty()) {
 			SortedSet<Purchase> purchases = new TreeSet<>();
@@ -42,10 +41,17 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 		if (product != null && product.getCategory() != null && product.getCategory().getGroup() != null
 				&& product.getCategory().getGroup().getId() != null) {
 			Group group = getCurrentSession().get(Group.class, product.getCategory().getGroup().getId());
-			if (employee != null && venue != null && group != null) {
-				if (employee.getVenue().equals(venue) && group.getVenue().equals(venue)) {
+			if (venue != null && group != null) {
+				if (group.getVenue().equals(venue)) {
 					event.setProduct(product);
-					event.setEmployee(employee);
+					if (event.getEmployee() != null && event.getEmployee().getId() != null) {
+						Employee employee = getCurrentSession().get(Employee.class, event.getEmployee().getId());
+						if (employee != null && employee.getVenue().equals(venue)) {
+							event.setEmployee(employee);
+						} else {
+							return null;
+						}
+					}
 					event.setGroup(group);
 					create(event);
 					return event.getId();

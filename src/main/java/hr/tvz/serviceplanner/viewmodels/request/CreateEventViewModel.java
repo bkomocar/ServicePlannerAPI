@@ -15,7 +15,6 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 
 public class CreateEventViewModel {
 
-	@NotNull
 	private Long employeeId;
 
 	@NotNull
@@ -50,8 +49,13 @@ public class CreateEventViewModel {
 				purchases.add(new Purchase(id));
 			}
 
-			return new Event(new Product(model.productId), new Employee(model.employeeId), model.startTime,
-					model.endTime, purchases);
+			Event event = new Event(new Product(model.productId), model.startTime, model.endTime, purchases);
+
+			if (model.employeeId != null) {
+				event.setEmployee(new Employee(model.employeeId));
+			}
+
+			return event;
 		}
 		return null;
 	}

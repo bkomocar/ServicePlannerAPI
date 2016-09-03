@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.SortNatural;
 
@@ -33,17 +34,19 @@ public class Event implements Serializable, Comparable<Event> {
 	@JoinColumn(name = "groupId", nullable = false)
 	private Group group;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "productId")
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "productId", nullable = true)
 	private Product product;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "employeeId")
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "employeeId", nullable = true)
 	private Employee employee;
 
+	@NotNull
 	@Column(columnDefinition = "DATETIME")
 	private Date startTime;
 
+	@NotNull
 	@Column(columnDefinition = "DATETIME")
 	private Date endTime;
 
@@ -63,6 +66,14 @@ public class Event implements Serializable, Comparable<Event> {
 		this.employee = employee;
 		this.startTime = startTime;
 		this.endTime = endTime;
+	}
+	
+	public Event(Product product, Date startTime, Date endTime, SortedSet<Purchase> purchases) {
+		super();
+		this.product = product;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.purchases = purchases;
 	}
 
 	public Event(Product product, Employee employee, Date startTime, Date endTime, SortedSet<Purchase> purchases) {

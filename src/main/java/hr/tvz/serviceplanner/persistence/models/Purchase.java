@@ -51,12 +51,10 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 	@JoinColumn(name = "groupId", nullable = false)
 	private Group group;
 
-	@NotNull
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "productId", nullable = true)
 	private Product product;
 
-	@NotNull
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "customerId", nullable = true)
 	private Customer customer;
@@ -122,6 +120,17 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 		this.paymentDate = paymentDate;
 		this.product = product;
 		this.customer = customer;
+		this.price = price;
+	}
+
+	public Purchase(String currency, Long valueInSmallestCurrency, Date purchaseDate, Date paymentDate, Product product,
+			Price price) {
+		super();
+		this.currency = currency;
+		this.valueInSmallestCurrency = valueInSmallestCurrency;
+		this.purchaseDate = purchaseDate;
+		this.paymentDate = paymentDate;
+		this.product = product;
 		this.price = price;
 	}
 

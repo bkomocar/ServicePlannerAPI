@@ -28,7 +28,6 @@ public class CreatePurchaseViewModel {
 	@NotNull
 	private Long productId;
 
-	@NotNull
 	private Long customerId;
 
 	@NotNull
@@ -55,8 +54,15 @@ public class CreatePurchaseViewModel {
 			if (model.valueInSmallestCurrency < 0) {
 				model.valueInSmallestCurrency = 0L;
 			}
-			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate, model.paymentDate,
-					new Product(model.productId), new Customer(model.customerId), new Price(model.priceId));
+
+			Purchase purchase = new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate,
+					model.paymentDate, new Product(model.productId), new Price(model.priceId));
+
+			if (model.customerId != null) {
+				purchase.setCustomer(new Customer(model.customerId));
+			}
+
+			return purchase;
 		}
 		return null;
 	}

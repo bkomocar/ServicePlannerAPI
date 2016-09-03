@@ -2,6 +2,7 @@ package hr.tvz.serviceplanner.persistence.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
+import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.PurchaseDao;
 import hr.tvz.serviceplanner.persistence.models.Customer;
@@ -22,17 +23,27 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 	@Override
 	public Long createPurchase(Long venueId, Purchase purchase) {
 		Product product = getCurrentSession().get(Product.class, purchase.getProduct().getId());
-		Customer customer = getCurrentSession().get(Customer.class, purchase.getCustomer().getId());
+
 		Price price = getCurrentSession().get(Price.class, purchase.getPrice().getId());
 		Venue venue = getCurrentSession().get(Venue.class, venueId);
 		if (product != null && product.getCategory() != null && product.getCategory().getGroup() != null
 				&& product.getCategory().getGroup().getId() != null) {
 			Group group = getCurrentSession().get(Group.class, product.getCategory().getGroup().getId());
-			if (group != null && customer != null && price != null && venue != null) {
-				if (customer.getVenue().equals(venue) && group.getVenue().equals(venue)) {
+			if (group != null && price != null && venue != null) {
+				if (group.getVenue().equals(venue)) {
+					if (purchase.getCustomer() != null && purchase.getCustomer().getId() != null) {
+						Customer customer = getCurrentSession().get(Customer.class, purchase.getCustomer().getId());
+						if (customer != null && customer.getVenue().equals(venue)) {
+							purchase.setCustomer(customer);
+						} else {
+							return null;
+						}
+					} else if (group.getType() == GroupType.SERVICE) {
+						return null;
+					}
+
 					purchase.setProduct(product);
 					purchase.setPrice(price);
-					purchase.setCustomer(customer);
 					purchase.setGroup(group);
 					create(purchase);
 					return purchase.getId();
@@ -80,7 +91,8 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 	public boolean deletePurchase(Long venueId, Long purchaseId) {
 		Purchase purchase = findOne(purchaseId);
 		if (purchase.getGroup() != null && purchase.getGroup().getVenue() != null
-				&& purchase.getGroup().getVenue().getId() != null && purchase.getGroup().getVenue().getId() == venueId) {
+				&& purchase.getGroup().getVenue().getId() != null
+				&& purchase.getGroup().getVenue().getId() == venueId) {
 			deleteById(purchaseId);
 			return true;
 		}
