@@ -2,7 +2,7 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 
-public class ProductViewModelSmall extends ProductViewModel{
+public class ProductViewModelSmall implements ProductViewModel{
 
 	private Long id;
 	private Integer maxCustomers;

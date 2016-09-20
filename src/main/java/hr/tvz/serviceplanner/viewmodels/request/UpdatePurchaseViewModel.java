@@ -3,6 +3,7 @@ package hr.tvz.serviceplanner.viewmodels.request;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.persistence.models.Price;
@@ -11,9 +12,10 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 
 public class UpdatePurchaseViewModel {
 
-	@Length(max = 5)
+	@Length(min = 1, max = 5, message = "Currency length should be between {min} and {max} characters")
 	private String currency;
 
+	@Range(min = 0, message = "Value in smallest currency can not be less than {min}")
 	private Long valueInSmallestCurrency;
 
 	private Date purchaseDate;
@@ -44,9 +46,6 @@ public class UpdatePurchaseViewModel {
 
 	public static Purchase toPurchase(UpdatePurchaseViewModel model) {
 		if (model != null) {
-			if (model.valueInSmallestCurrency != null && model.valueInSmallestCurrency < 0) {
-				model.valueInSmallestCurrency = 0L;
-			}
 			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate, model.paymentDate,
 					new Product(model.productId), new Customer(model.customerId), new Price(model.priceId));
 		}

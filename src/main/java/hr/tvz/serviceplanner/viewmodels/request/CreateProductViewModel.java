@@ -5,30 +5,31 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
 
 public class CreateProductViewModel {
 
+	@Range(min = 1, message = "Maximum customers can not be less than {min}")
 	private Integer maxCustomers;
 
-	@NotNull
-	@Length(max = 255)
+	@NotBlank(message = "Name field can not be empty")
+	@Length(max = 50, message = "Name can not be longer than {max} characters")
 	private String name;
 
-	@NotNull
-	@Length(max = 10)
+	@NotBlank(message = "Short name field can not be empty")
+	@Length(max = 10, message = "Short name can not be longer than {max} characters")
 	private String shortName;
 
-	@NotEmpty
+	@NotEmpty(message = "Price has to be set")
 	public List<CreatePriceViewModel> prices = new ArrayList<>();
 
-	@Length(max = 500)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
 	public CreateProductViewModel() {
@@ -55,7 +56,7 @@ public class CreateProductViewModel {
 
 	public static Product toProduct(CreateProductViewModel model) {
 		if (model != null) {
-			if (model.maxCustomers == null || model.maxCustomers < 1) {
+			if (model.maxCustomers == null) {
 				model.maxCustomers = 1;
 			}
 			SortedSet<Price> prices = new TreeSet<>(CreatePriceViewModel.toPrice(model.prices));

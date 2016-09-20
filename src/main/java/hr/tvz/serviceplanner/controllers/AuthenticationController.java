@@ -14,19 +14,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import hr.tvz.serviceplanner.json.AuthenticationRequest;
-import hr.tvz.serviceplanner.json.AuthenticationResponse;
 import hr.tvz.serviceplanner.persistence.services.impl.UserServiceImpl;
 import hr.tvz.serviceplanner.security.TokenUtils;
 import hr.tvz.serviceplanner.security.model.SecurityUser;
+import hr.tvz.serviceplanner.viewmodels.request.AuthenticationViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.RegisterViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.TokenViewModel;
 
 @RestController
 @RequestMapping("${route.authentication}")
@@ -45,11 +44,7 @@ public class AuthenticationController {
 	private UserServiceImpl userDetailsService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> register(@Valid @RequestBody RegisterViewModel model,
-			BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+	public ResponseEntity<IdViewModel> register(@Valid @RequestBody RegisterViewModel model) {
 		if (userDetailsService.isUserValid(model.getUsername())) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
@@ -61,20 +56,16 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest, Device device,
-			BindingResult bindingResult)
+	public ResponseEntity<?> login(@Valid @RequestBody AuthenticationViewModel authenticationRequest, Device device)
 			throws AuthenticationException {
-		if (bindingResult.hasErrors()) {
-			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
 		Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		String token = this.tokenUtils.generateToken(userDetails, device);
-		
+
 		// Return the token
-		return ResponseEntity.ok(new AuthenticationResponse(token));
+		return ResponseEntity.ok(new TokenViewModel(token));
 	}
 
 	@RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
@@ -84,7 +75,7 @@ public class AuthenticationController {
 		SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
 			String refreshedToken = this.tokenUtils.refreshToken(token);
-			return ResponseEntity.ok(new AuthenticationResponse(refreshedToken));
+			return ResponseEntity.ok(new TokenViewModel(refreshedToken));
 		} else {
 			return ResponseEntity.badRequest().body(null);
 		}

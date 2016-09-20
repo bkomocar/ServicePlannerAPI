@@ -1,17 +1,17 @@
-package hr.tvz.serviceplanner.json;
+package hr.tvz.serviceplanner.viewmodels.response;
 
 import java.io.Serializable;
 
-public class AuthenticationResponse implements Serializable {
+public class TokenViewModel implements Serializable {
 	
 	private static final long serialVersionUID = -6624726180748515507L;
 	private String token;
 
-	public AuthenticationResponse() {
+	public TokenViewModel() {
 		super();
 	}
 
-	public AuthenticationResponse(String token) {
+	public TokenViewModel(String token) {
 		this.setToken(token);
 	}
 

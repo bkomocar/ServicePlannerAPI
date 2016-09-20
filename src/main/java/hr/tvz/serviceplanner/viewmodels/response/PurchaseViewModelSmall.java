@@ -1,17 +1,14 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import hr.tvz.serviceplanner.persistence.models.Purchase;
+import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
+import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
 
-public class PurchaseViewModelSmall {
+public class PurchaseViewModelSmall implements PurchaseViewModel {
 
 	private Long id;
 	private ProductViewModel product;
-	private CustomerViewModelSmall customer;
+	private CustomerViewModel customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
 
@@ -19,7 +16,7 @@ public class PurchaseViewModelSmall {
 		super();
 	}
 
-	public PurchaseViewModelSmall(Long id, ProductViewModel product, CustomerViewModelSmall customer,
+	public PurchaseViewModelSmall(Long id, ProductViewModel product, CustomerViewModel customer,
 			Long totalDurationInMinutes, PriceViewModel price) {
 		super();
 		this.id = id;
@@ -27,23 +24,6 @@ public class PurchaseViewModelSmall {
 		this.customer = customer;
 		this.price = price;
 		this.totalDurationInMinutes = totalDurationInMinutes;
-	}
-
-	public static PurchaseViewModelSmall fromPurchase(Purchase purchase) {
-		if (purchase != null) {
-			return new PurchaseViewModelSmall(purchase.getId(),
-					ProductViewModel.toProductViewModel(purchase.getProduct(), ViewModelType.small),
-					CustomerViewModelSmall.fromCustomer(purchase.getCustomer()), purchase.getTotalDurationInMinutes(),
-					PriceViewModel.fromPrice(purchase.getPrice()));
-		}
-		return null;
-	}
-
-	public static List<PurchaseViewModelSmall> fromPurchase(List<Purchase> purchases) {
-		if (purchases != null) {
-			return purchases.stream().map(u -> PurchaseViewModelSmall.fromPurchase(u)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {
@@ -62,11 +42,11 @@ public class PurchaseViewModelSmall {
 		this.product = product;
 	}
 
-	public CustomerViewModelSmall getCustomer() {
+	public CustomerViewModel getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerViewModelSmall customer) {
+	public void setCustomer(CustomerViewModel customer) {
 		this.customer = customer;
 	}
 

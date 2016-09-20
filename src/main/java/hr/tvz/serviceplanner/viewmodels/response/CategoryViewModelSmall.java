@@ -2,7 +2,7 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 
-public class CategoryViewModelSmall extends CategoryViewModel {
+public class CategoryViewModelSmall implements CategoryViewModel {
 
 	private Long id;
 	private String name;

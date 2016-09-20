@@ -9,6 +9,7 @@ import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.ProductService;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
+import hr.tvz.serviceplanner.viewmodels.ProductViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateProductViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateProductViewModel;
@@ -24,7 +25,7 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
 	public ProductViewModel getProduct(Long id, ViewModelType type) {
 		Product product = dao.findOne(id);
 		if (product != null) {
-			return ProductViewModel.toProductViewModel(product, type);
+			return ProductViewModelFactory.toProductViewModel(product, type);
 		}
 		return null;
 	}

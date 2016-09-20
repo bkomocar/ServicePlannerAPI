@@ -1,22 +1,20 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import hr.tvz.serviceplanner.persistence.models.Category;
 
 public class CreateCategoryViewModel {
 
-	@NotNull
-	@Length(max = 255)
+	@NotBlank(message = "Name field can not be empty")
+	@Length(max = 50, message = "Name can not be longer than {max} characters")
 	private String name;
 
-	@Length(max = 500)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
-	@NotNull
-	@Length(max = 20)
+	@Length(max = 20, message = "Color can not be longer than {max} characters")
 	private String color;
 
 	public CreateCategoryViewModel() {

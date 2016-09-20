@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.persistence.models.Price;
@@ -13,19 +15,20 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 
 public class CreatePurchaseViewModel {
 
-	@NotNull
-	@Length(max = 5)
+	@NotBlank(message = "Currency field can not be empty")
+	@Length(max = 5, message = "Currency can not be longer than {max} characters")
 	private String currency;
 
-	@NotNull
+	@NotNull(message = "Value in smallest currency is a required field")
+	@Range(min = 0, message = "Value in smallest currency can not be less than {min}")
 	private Long valueInSmallestCurrency;
 
-	@NotNull
+	@NotNull(message = "Purchase Date is a required field")
 	private Date purchaseDate;
 
 	private Date paymentDate;
 
-	@NotNull
+	@NotNull(message = "Product id is a required field")
 	private Long productId;
 
 	private Long customerId;
@@ -51,10 +54,6 @@ public class CreatePurchaseViewModel {
 
 	public static Purchase toPurchase(CreatePurchaseViewModel model) {
 		if (model != null) {
-			if (model.valueInSmallestCurrency < 0) {
-				model.valueInSmallestCurrency = 0L;
-			}
-
 			Purchase purchase = new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate,
 					model.paymentDate, new Product(model.productId), new Price(model.priceId));
 

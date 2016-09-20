@@ -1,4 +1,4 @@
-package hr.tvz.serviceplanner.json;
+package hr.tvz.serviceplanner.viewmodels.request;
 
 import java.io.Serializable;
 
@@ -6,22 +6,22 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-public class AuthenticationRequest implements Serializable {
+public class AuthenticationViewModel implements Serializable {
 	private static final long serialVersionUID = 6624726180748515507L;
 	
-	@NotNull(message = "The name can not be null")
-	@Length(min = 5, max = 20, message = "Name length should be between {min} and {max}")
+	@NotNull(message = "Name is a required field")
+	@Length(min = 5, max = 20, message = "Name length should be between {min} and {max} characters")
 	private String username;
 	
-	@NotNull(message = "The password can not be null")
-    @Length(min = 5, max = 30, message = "Password length should be between {min} and {max}")
+	@NotNull(message = "Password is a required field")
+    @Length(min = 5, max = 30, message = "Password length should be between {min} and {max} characters")
 	private String password;
 
-	public AuthenticationRequest() {
+	public AuthenticationViewModel() {
 		super();
 	}
 
-	public AuthenticationRequest(String username, String password) {
+	public AuthenticationViewModel(String username, String password) {
 		this.setUsername(username);
 		this.setPassword(password);
 	}

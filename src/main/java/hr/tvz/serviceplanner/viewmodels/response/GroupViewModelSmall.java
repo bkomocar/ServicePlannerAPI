@@ -2,7 +2,7 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 
-public class GroupViewModelSmall extends GroupViewModel {
+public class GroupViewModelSmall implements GroupViewModel {
 
 	private Long id;
 

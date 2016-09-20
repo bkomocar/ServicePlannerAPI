@@ -6,13 +6,13 @@ import hr.tvz.serviceplanner.persistence.models.Category;
 
 public class UpdateCategoryViewModel {
 
-	@Length(max = 255)
+	@Length(min = 1, max = 50, message = "Name length should be between {min} and {max} characters")
 	private String name;
 
-	@Length(max = 500)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
-	@Length(max = 20)
+	@Length(max = 20, message = "Color can not be longer than {max} characters")
 	private String color;
 
 	public UpdateCategoryViewModel() {

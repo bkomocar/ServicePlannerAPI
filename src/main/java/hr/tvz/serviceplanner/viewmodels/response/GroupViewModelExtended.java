@@ -6,7 +6,7 @@ import java.util.List;
 import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 
-public class GroupViewModelExtended extends GroupViewModel {
+public class GroupViewModelExtended implements GroupViewModel {
 
 	private Long id;
 	private String name;

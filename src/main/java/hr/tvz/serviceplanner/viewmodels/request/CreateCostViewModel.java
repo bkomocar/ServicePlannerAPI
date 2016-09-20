@@ -3,18 +3,22 @@ package hr.tvz.serviceplanner.viewmodels.request;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import hr.tvz.serviceplanner.persistence.models.Cost;
 
 public class CreateCostViewModel {
 
-	@NotNull
+	@NotBlank(message = "Currency field can not be empty")
+	@Length(max = 5, message = "Currency can not be longer than {max} characters")
 	private String currency;
 
-	@NotNull
-	@Min(0)
+	@NotNull(message = "Value in smallest currency is a required field")
+	@Range(min = 0, message = "Value in smallest currency can not be less than {min}")
 	private Long valueInSmallestCurrency;
 
 	public CreateCostViewModel(String currency, Long valueInSmallestCurrency) {

@@ -3,18 +3,17 @@ package hr.tvz.serviceplanner.viewmodels.request;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.persistence.models.Group;
 
 public class CreateGroupViewModel {
 
-	@NotBlank
-	@Length(min = 4, max = 255)
+	@NotNull(message = "Name is a required field")
+	@Length(min = 4, max = 255, message = "Name length should be between {min} and {max} characters")
 	private String name;
 
-	@NotNull
+	@NotNull(message = "Type is a required field")
 	private GroupType type;
 
 	public CreateGroupViewModel() {
@@ -26,11 +25,11 @@ public class CreateGroupViewModel {
 		this.name = name;
 		this.type = type;
 	}
-	
+
 	public static Group toGroup(CreateGroupViewModel model) {
 		if (model != null) {
-		return new Group(model.name, model.type);
-	} 
+			return new Group(model.name, model.type);
+		}
 		return null;
 	}
 

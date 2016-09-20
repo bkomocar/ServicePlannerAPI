@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EventService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController

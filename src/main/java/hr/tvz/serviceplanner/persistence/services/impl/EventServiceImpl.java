@@ -8,10 +8,12 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.EventDao;
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EventService;
+import hr.tvz.serviceplanner.viewmodels.EventViewModel;
+import hr.tvz.serviceplanner.viewmodels.EventViewModelFactory;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
@@ -51,7 +53,7 @@ public class EventServiceImpl extends AbstractService<Event> implements EventSer
 	public EventViewModel getEvent(Long eventId) {
 		Event event = dao.getEvent(eventId);
 		if (event != null) {
-			return EventViewModel.fromEvent(event);
+			return EventViewModelFactory.toEventViewModel(event, ViewModelType.large);
 		}
 		return null;
 	}

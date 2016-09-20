@@ -5,7 +5,7 @@ import java.util.List;
 
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 
-public class ProductViewModelLarge extends ProductViewModel {
+public class ProductViewModelLarge implements ProductViewModel {
 
 	private Long id;
 	private Integer maxCustomers;

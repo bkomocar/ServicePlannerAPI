@@ -14,7 +14,9 @@ import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
+import hr.tvz.serviceplanner.viewmodels.CategoryViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
@@ -31,7 +33,7 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	public CategoryViewModel getCategory(Long id, ViewModelType type) {
 		Category category = dao.findOne(id);
 		if (category != null) {
-			return CategoryViewModel.toCategoryViewModel(category, type);
+			return CategoryViewModelFactory.toCategoryViewModel(category, type);
 		}
 		return null;
 	}
@@ -78,7 +80,7 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	public List<EmployeeViewModel> getEmployees(Long venueId, Long categoryId, ViewModelType type) {
 		SortedSet<Employee> employees = dao.getEmployees(venueId, categoryId);
 		if (employees != null) {
-			return EmployeeViewModel.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
+			return EmployeeViewModelFactory.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
 		}
 		return null;
 	}

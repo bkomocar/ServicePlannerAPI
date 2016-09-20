@@ -12,13 +12,13 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 
 public class UpdateVenueViewModel {
 
-	@Length(min = 5, max = 255)
+	@Length(min = 1, max = 50, message = "Name length should be between {min} and {max} characters")
 	private String name;
 
-	@Length(min = 5, max = 255)
+	@Length(min = 1, max = 100, message = "Owner length should be between {min} and {max} characters")
 	private String owner;
 
-	@Length(max = 255)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
 	@JsonFormat(pattern = "HH:mm")

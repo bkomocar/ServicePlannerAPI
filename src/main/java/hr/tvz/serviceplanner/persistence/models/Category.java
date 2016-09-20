@@ -32,7 +32,7 @@ public class Category implements Serializable, Comparable<Category> {
 	private Long id;
 
 	@NotNull
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "varchar(50)")
 	private String name;
 
 	@Column(columnDefinition = "varchar(500)")

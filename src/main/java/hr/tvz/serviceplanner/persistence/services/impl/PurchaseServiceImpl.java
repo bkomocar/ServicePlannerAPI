@@ -8,10 +8,12 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.PurchaseDao;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.PurchaseService;
+import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
+import hr.tvz.serviceplanner.viewmodels.PurchaseViewModelFactory;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreatePurchaseViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdatePurchaseViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.PurchaseViewModelLarge;
 
 @Service
 public class PurchaseServiceImpl extends AbstractService<Purchase> implements PurchaseService {
@@ -47,10 +49,10 @@ public class PurchaseServiceImpl extends AbstractService<Purchase> implements Pu
 	}
 
 	@Override
-	public PurchaseViewModelLarge getPurchase(Long purchaseId) {
+	public PurchaseViewModel getPurchase(Long purchaseId) {
 		Purchase purchase = dao.getPurchase(purchaseId);
 		if (purchase != null) {
-			return PurchaseViewModelLarge.fromPurchase(purchase);
+			return PurchaseViewModelFactory.toPurchaseViewModel(purchase, ViewModelType.large);
 		}
 		return null;
 	}

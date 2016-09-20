@@ -13,15 +13,16 @@ public class RegisterViewModel implements Serializable {
 
 	private static final long serialVersionUID = 14564546L;
 
-	@NotNull(message = "The name can not be null")
+	@NotNull(message = "Name is a required field")
     @Length(min = 5, max = 20, message = "Name length should be between {min} and {max}")
 	private String username;
 	
-	@NotNull(message = "The email can not be null")
-	@Email(message = "The email has to be a valid email adress.")
+	@NotNull(message = "Email is a required field")
+	@Email(message = "Email has to be a valid email adress.")
+	@Length(max = 255, message = "Email can not be longer than {max} characters")
 	private String email;
 	
-	@NotNull(message = "The password can not be null")
+	@NotNull(message = "Password is a required field")
     @Length(min = 5, max = 30, message = "Password length should be between {min} and {max}")
 	private String password;
 	

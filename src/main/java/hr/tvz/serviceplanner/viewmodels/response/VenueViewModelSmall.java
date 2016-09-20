@@ -2,7 +2,7 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 
-public class VenueViewModelSmall extends VenueViewModel {
+public class VenueViewModelSmall implements VenueViewModel {
 
 	private Long id;
 	private String name;

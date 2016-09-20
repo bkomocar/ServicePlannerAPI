@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +20,7 @@ import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
+import hr.tvz.serviceplanner.viewmodels.VenueViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
@@ -41,11 +41,7 @@ public class VenuesController {
 	private AuthenticationFacade authenticationFacade;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createVenue(@Valid @RequestBody CreateVenueViewModel model,
-			BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+	public ResponseEntity<IdViewModel> createVenue(@Valid @RequestBody CreateVenueViewModel model) {
 		IdViewModel idViewModel = venueService.saveVenue(model, authenticationFacade.getUserId());
 		if (idViewModel == null) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
@@ -60,7 +56,8 @@ public class VenuesController {
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			Venue venue = venueService.findOne(id);
 			if (venue != null) {
-				return new ResponseEntity<VenueViewModel>(VenueViewModel.toVenueViewModel(venue, type), HttpStatus.OK);
+				return new ResponseEntity<VenueViewModel>(VenueViewModelFactory.toVenueViewModel(venue, type),
+						HttpStatus.OK);
 			} else {
 				return new ResponseEntity<VenueViewModel>(HttpStatus.NOT_FOUND);
 			}

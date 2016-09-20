@@ -2,7 +2,7 @@ package hr.tvz.serviceplanner.viewmodels.response;
 
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 
-public class EmployeeViewModelMedium extends EmployeeViewModel {
+public class EmployeeViewModelMedium implements EmployeeViewModel {
 
 	private Long id;
 	private String username;

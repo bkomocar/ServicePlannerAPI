@@ -1,14 +1,12 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import hr.tvz.serviceplanner.persistence.models.Purchase;
+import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
+import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
 
-public class PurchaseViewModelMedium {
+public class PurchaseViewModelMedium implements PurchaseViewModel {
 
 	private Long id;
 	private String currency;
@@ -16,7 +14,7 @@ public class PurchaseViewModelMedium {
 	private Date purchaseDate;
 	private Date paymentDate;
 	private ProductViewModel product;
-	private CustomerViewModelLarge customer;
+	private CustomerViewModel customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
 
@@ -25,7 +23,7 @@ public class PurchaseViewModelMedium {
 	}
 
 	public PurchaseViewModelMedium(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
-			Date paymentDate, ProductViewModel product, CustomerViewModelLarge customer, PriceViewModel price,
+			Date paymentDate, ProductViewModel product, CustomerViewModel customer, PriceViewModel price,
 			Long totalDurationInMinutes) {
 		super();
 		this.id = id;
@@ -37,24 +35,6 @@ public class PurchaseViewModelMedium {
 		this.customer = customer;
 		this.price = price;
 		this.totalDurationInMinutes = totalDurationInMinutes;
-	}
-
-	public static PurchaseViewModelMedium fromPurchase(Purchase purchase) {
-		if (purchase != null) {
-			return new PurchaseViewModelMedium(purchase.getId(), purchase.getCurrency(),
-					purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
-					ProductViewModel.toProductViewModel(purchase.getProduct(), ViewModelType.large),
-					CustomerViewModelLarge.fromCustomer(purchase.getCustomer()),
-					PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes());
-		}
-		return null;
-	}
-
-	public static List<PurchaseViewModelMedium> fromPurchase(List<Purchase> purchases) {
-		if (purchases != null) {
-			return purchases.stream().map(u -> PurchaseViewModelMedium.fromPurchase(u)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {
@@ -105,11 +85,11 @@ public class PurchaseViewModelMedium {
 		this.product = product;
 	}
 
-	public CustomerViewModelLarge getCustomer() {
+	public CustomerViewModel getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerViewModelLarge customer) {
+	public void setCustomer(CustomerViewModel customer) {
 		this.customer = customer;
 	}
 

@@ -13,6 +13,7 @@ import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EmployeeService;
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEmployeeViewModel;
@@ -28,7 +29,7 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 	public EmployeeViewModel getEmployee(Long id, ViewModelType type) {
 		Employee employee = dao.findOne(id);
 		if (employee != null) {
-			return EmployeeViewModel.toEmployeeViewModel(employee, type);
+			return EmployeeViewModelFactory.toEmployeeViewModel(employee, type);
 		}
 		return null;
 	}
@@ -59,7 +60,7 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 	public List<EmployeeViewModel> getEmployeesForVenue(Long venueId, ViewModelType type) {
 		SortedSet<Employee> employees = dao.getEmployeesForVenue(venueId);
 		if (employees != null) {
-			return EmployeeViewModel.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
+			return EmployeeViewModelFactory.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
 		}
 		return null;
 	}

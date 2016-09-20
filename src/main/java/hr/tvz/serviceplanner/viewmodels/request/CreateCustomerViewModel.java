@@ -1,28 +1,29 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
-import javax.validation.constraints.NotNull;
-
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import hr.tvz.serviceplanner.persistence.models.Customer;
 
 public class CreateCustomerViewModel {
 
-	@NotNull
-	@Length(max = 50)
+	@NotBlank(message = "First name field can not be empty")
+	@Length(max = 50, message = "First name can not be longer than {max} characters")
 	private String firstName;
 
-	@NotNull
-	@Length(max = 50)
+	@NotBlank(message = "Last name field can not be empty")
+	@Length(max = 50, message = "Last name can not be longer than {max} characters")
 	private String lastName;
 
-	@Length(max = 255)
+	@Email(message = "Email has to be a valid email adress.")
+	@Length(max = 255, message = "Email can not be longer than {max} characters")
 	private String email;
 
-	@Length(max = 20)
+	@Length(max = 20, message = "Phone can not be longer than {max} characters")
 	private String phone;
 
-	@Length(max = 500)
+	@Length(max = 500, message = "Comment can not be longer than {max} characters")
 	private String comment;
 
 	public CreateCustomerViewModel() {

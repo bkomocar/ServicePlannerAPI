@@ -9,6 +9,7 @@ import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
+import hr.tvz.serviceplanner.viewmodels.GroupViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
@@ -50,7 +51,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 	public GroupViewModel getGroup(Long id, ViewModelType type) {
 		Group group = dao.findOne(id);
 		if (group != null) {
-			return GroupViewModel.toGroupViewModel(group, type);
+			return GroupViewModelFactory.toGroupViewModel(group, type);
 		}
 		return null;
 	}

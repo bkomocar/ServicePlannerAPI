@@ -4,19 +4,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import hr.tvz.serviceplanner.persistence.models.Price;
 
 public class UpdatePriceViewModel {
 
-	@Length(max = 255)
+	@Length(min = 1, max = 255, message = "Name length should be between {min} and {max} characters")
 	private String name;
 	
-	@Length(max = 500)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 	
+	@Range(min = 0, message = "Duration in minutes can not be less than {min}")
 	private Long durationInMin;
 	
+	@Range(min = 1, message = "Items count can not be less than {min}")
 	private Long itemsCount;
 	
 	public UpdatePriceViewModel() {
@@ -33,12 +36,6 @@ public class UpdatePriceViewModel {
 
 	public static Price toPrice(UpdatePriceViewModel model) {
 		if (model != null) {
-			if(model.durationInMin != null && model.durationInMin < 0){
-				model.durationInMin = 0L;
-			} 
-			if(model.itemsCount != null && model.itemsCount < 1){
-				model.itemsCount = 1L;
-			}
 			return new Price(model.name, model.description, model.durationInMin, model.itemsCount);
 		}
 		return null;

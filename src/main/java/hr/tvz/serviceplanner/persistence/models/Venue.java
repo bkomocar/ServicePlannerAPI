@@ -33,11 +33,11 @@ public class Venue implements Serializable, Comparable<Venue> {
 	private Long id;
 
 	@NotNull
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "varchar(50)")
 	private String name;
 
 	@NotNull
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "varchar(100)")
 	private String owner;
 
 	@Column(columnDefinition = "varchar(500)")

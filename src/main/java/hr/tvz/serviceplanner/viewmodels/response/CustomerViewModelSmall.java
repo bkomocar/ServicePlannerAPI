@@ -1,12 +1,8 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
 
-public class CustomerViewModelSmall extends CustomerViewModel {
+public class CustomerViewModelSmall implements CustomerViewModel {
 
 	private Long id;
 	private String firstName;
@@ -21,20 +17,6 @@ public class CustomerViewModelSmall extends CustomerViewModel {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-	}
-
-	public static CustomerViewModelSmall fromCustomer(Customer customer) {
-		if (customer != null) {
-			return new CustomerViewModelSmall(customer.getId(), customer.getFirstName(), customer.getLastName());
-		}
-		return null;
-	}
-
-	public static List<CustomerViewModelSmall> fromCustomer(List<Customer> customers) {
-		if (customers != null) {
-			return customers.stream().map(u -> CustomerViewModelSmall.fromCustomer(u)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {

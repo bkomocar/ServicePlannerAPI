@@ -5,7 +5,7 @@ import java.util.List;
 
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 
-public class ProductViewModelExtended extends ProductViewModel {
+public class ProductViewModelExtended implements ProductViewModel {
 
 	private Long id;
 	private String name;

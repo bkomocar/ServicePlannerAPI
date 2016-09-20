@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 public class CreateByIdViewModel {
 
-	@NotNull
+	@NotNull(message = "Id is a required field")
 	Long id;
 
 	public CreateByIdViewModel() {

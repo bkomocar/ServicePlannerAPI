@@ -3,7 +3,7 @@ package hr.tvz.serviceplanner.viewmodels.response;
 import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 
-public class GroupViewModelLarge extends GroupViewModel {
+public class GroupViewModelLarge implements GroupViewModel {
 
 	private Long id;
 

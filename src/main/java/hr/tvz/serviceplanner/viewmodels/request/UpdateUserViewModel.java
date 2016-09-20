@@ -11,13 +11,14 @@ public class UpdateUserViewModel implements Serializable {
 
 	private static final long serialVersionUID = 14564546L;
 
-	@Length(min = 5, max = 20, message = "Name length should be between {min} and {max}")
+	@Length(min = 5, max = 20, message = "Name length should be between {min} and {max} characters")
 	private String name;
 
-	@Email(message = "The email has to be a valid email adress.")
+	@Email(message = "Email has to be a valid email adress.")
+	@Length(max = 255, message = "Email can not be longer than {max} characters")
 	private String email;
 
-	@Length(min = 5, max = 30, message = "Password length should be between {min} and {max}")
+	@Length(min = 5, max = 30, message = "Password length should be between {min} and {max} characters")
 	private String password;
 
 	public static User toUser(UpdateUserViewModel register) {

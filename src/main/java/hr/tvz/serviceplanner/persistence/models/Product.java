@@ -36,7 +36,7 @@ public class Product implements Serializable, Comparable<Product> {
 	private Integer maxCustomers;
 
 	@NotNull
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "varchar(50)")
 	private String name;
 
 	@NotNull

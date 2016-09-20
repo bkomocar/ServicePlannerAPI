@@ -9,29 +9,29 @@ import hr.tvz.serviceplanner.persistence.models.Employee;
 
 public class CreateEmployeeViewModel {
 
-	@NotNull
-	@Length(min = 4, max = 20)
+	@NotNull(message = "Username is a required field")
+	@Length(min = 4, max = 20, message = "Username length should be between {min} and {max} characters")
 	private String username;
 
-	@NotNull
-	@Length(max = 50)
+	@NotNull(message = "First Name is a required field")
+	@Length(max = 50, message = "First Name can not be longer than {max} characters")
 	private String firstName;
 
-	@NotNull
-	@Length(max = 50)
+	@NotNull(message = "Last Name is a required field")
+	@Length(max = 50, message = "Last Name can not be longer than {max} characters")
 	private String lastName;
 
-	@Length(max = 20)
+	@Length(max = 20, message = "Color can not be longer than {max} characters")
 	private String color;
 
-	@Length(max = 255)
-	@Email
+	@Email(message = "Email has to be a valid email adress.")
+	@Length(max = 255, message = "Email can not be longer than {max} characters")
 	private String email;
 
-	@Length(max = 20)
+	@Length(max = 20, message = "Phone can not be longer than {max} characters")
 	private String phone;
 
-	@Length(max = 500)
+	@Length(max = 500, message = "Comment can not be longer than {max} characters")
 	private String comment;
 
 	public CreateEmployeeViewModel() {

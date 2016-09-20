@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class CreateByNameViewModel {
 
-	@NotBlank
+	@NotBlank(message = "Name field can not be empty")
 	private String name;
 
 	public CreateByNameViewModel() {

@@ -6,7 +6,7 @@ import java.util.List;
 import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
 
-public class CategoryViewModelExtended extends CategoryViewModel {
+public class CategoryViewModelExtended implements CategoryViewModel {
 
 	private Long id;
 	private String name;

@@ -17,13 +17,13 @@ public class CreateEventViewModel {
 
 	private Long employeeId;
 
-	@NotNull
+	@NotNull(message = "Product id is a required field")
 	private Long productId;
 
-	@NotNull
+	@NotNull(message = "Start Time is a required field")
 	private Date startTime;
 
-	@NotNull
+	@NotNull(message = "End Time is a required field")
 	private Date endTime;
 
 	public List<Long> purchaseIds = new ArrayList<>();

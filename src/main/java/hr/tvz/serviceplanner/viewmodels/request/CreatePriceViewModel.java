@@ -6,27 +6,29 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import hr.tvz.serviceplanner.persistence.models.Cost;
 import hr.tvz.serviceplanner.persistence.models.Price;
 
 public class CreatePriceViewModel {
 
-	@NotNull
-	@Length(max = 255)
+	@NotBlank(message = "Name field can not be empty")
+	@Length(max = 255, message = "Name can not be longer than {max} characters")
 	private String name;
 
-	@Length(max = 500)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
+	@Range(min = 0, message = "Duration in minutes can not be less than {min}")
 	private Long durationInMin;
 
+	@Range(min = 1, message = "Items count can not be less than {min}")
 	private Long itemsCount;
-	
+
 	@NotEmpty
 	public List<CreateCostViewModel> costs = new ArrayList<>();
 
@@ -44,10 +46,10 @@ public class CreatePriceViewModel {
 
 	public static Price toPrice(CreatePriceViewModel model) {
 		if (model != null) {
-			if (model.durationInMin == null || model.durationInMin < 0) {
+			if (model.durationInMin == null) {
 				model.durationInMin = 0L;
 			}
-			if (model.itemsCount == null || model.itemsCount < 1) {
+			if (model.itemsCount == null) {
 				model.itemsCount = 1L;
 			}
 			SortedSet<Cost> costs = new TreeSet<>(CreateCostViewModel.toCost(model.costs));
@@ -102,7 +104,5 @@ public class CreatePriceViewModel {
 	public void setCosts(List<CreateCostViewModel> costs) {
 		this.costs = costs;
 	}
-	
-	
 
 }

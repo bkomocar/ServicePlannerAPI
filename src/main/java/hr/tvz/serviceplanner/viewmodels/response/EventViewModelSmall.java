@@ -1,15 +1,12 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 
-public class EventViewModelSmall {
+public class EventViewModelSmall implements EventViewModel {
 
 	private Long id;
 	private Date startTime;
@@ -25,22 +22,6 @@ public class EventViewModelSmall {
 		this.endTime = endTime;
 		this.product = product;
 		this.employee = employee;
-	}
-
-	public static EventViewModelSmall fromEvent(Event event) {
-		if (event != null) {
-			return new EventViewModelSmall(event.getId(), event.getStartTime(), event.getEndTime(),
-					ProductViewModel.toProductViewModel(event.getProduct(), ViewModelType.small),
-					EmployeeViewModel.toEmployeeViewModel(event.getEmployee(), ViewModelType.medium));
-		}
-		return null;
-	}
-
-	public static List<EventViewModelSmall> fromEvent(List<Event> prices) {
-		if (prices != null) {
-			return prices.stream().map(u -> EventViewModelSmall.fromEvent(u)).collect(Collectors.toList());
-		}
-		return null;
 	}
 
 	public Long getId() {

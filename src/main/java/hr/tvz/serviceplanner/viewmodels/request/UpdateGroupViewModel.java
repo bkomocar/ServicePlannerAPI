@@ -7,7 +7,7 @@ import hr.tvz.serviceplanner.persistence.models.Group;
 
 public class UpdateGroupViewModel {
 
-	@Length(min = 4, max = 255)
+	@Length(min = 4, max = 255, message = "Name length should be between {min} and {max} characters")
 	private String name;
 
 	private GroupType type;

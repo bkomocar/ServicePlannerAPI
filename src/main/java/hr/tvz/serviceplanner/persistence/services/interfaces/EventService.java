@@ -2,10 +2,10 @@ package hr.tvz.serviceplanner.persistence.services.interfaces;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Event;
+import hr.tvz.serviceplanner.viewmodels.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 public interface EventService extends Operations<Event> {
@@ -17,8 +17,8 @@ public interface EventService extends Operations<Event> {
 	public boolean deleteEvent(Long venueId, Long eventId);
 
 	public EventViewModel getEvent(Long eventId);
-	
+
 	public boolean removePurchase(Long eventId, Long purchaseId);
-	
+
 	public boolean addPurchase(Long eventId, CreateByIdViewModel model);
 }

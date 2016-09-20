@@ -6,6 +6,7 @@ import java.sql.Time;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -17,23 +18,23 @@ public class CreateVenueViewModel implements Serializable {
 
 	private static final long serialVersionUID = 545451L;
 
-	@NotNull
-	@Length(min = 5, max = 255)
+	@NotBlank(message = "Name field can not be empty")
+	@Length(max = 50, message = "Name can not be longer than {max} characters")
 	private String name;
 	
-	@NotNull
-	@Length(min = 5, max = 255)
+	@NotBlank(message = "Owner field can not be empty")
+	@Length(max = 100, message = "Owner can not be longer than {max} characters")
 	private String owner;
 	
-	@Length(max = 255)
+	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 	
-	@NotNull
+	@NotNull(message = "Open time is a required field")
 	@JsonFormat(pattern = "HH:mm")
 	@JsonDeserialize(using = SqlTimeDeserializer.class)
 	private Time openTime;
 	
-	@NotNull
+	@NotNull(message = "Close time is a required field")
 	@JsonFormat(pattern = "HH:mm")
 	@JsonDeserialize(using = SqlTimeDeserializer.class)
 	private Time closeTime;
