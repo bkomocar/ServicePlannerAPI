@@ -15,7 +15,7 @@ public class RegisterViewModel implements Serializable {
 
 	@NotNull(message = "The name can not be null")
     @Length(min = 5, max = 20, message = "Name length should be between {min} and {max}")
-	private String name;
+	private String username;
 	
 	@NotNull(message = "The email can not be null")
 	@Email(message = "The email has to be a valid email adress.")
@@ -27,17 +27,17 @@ public class RegisterViewModel implements Serializable {
 	
 	public static User toUser(RegisterViewModel register) {
 		if (register != null) {
-		return new User(register.email, register.name, register.password);
+		return new User(register.email, register.username, register.password);
 	} 
 		return null;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {

@@ -50,7 +50,7 @@ public class AuthenticationController {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		if (userDetailsService.isUserValid(model.getName())) {
+		if (userDetailsService.isUserValid(model.getUsername())) {
 			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		IdViewModel idViewModel = userDetailsService.saveUser(RegisterViewModel.toUser(model));
@@ -61,14 +61,18 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest, Device device)
+	public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest, Device device,
+			BindingResult bindingResult)
 			throws AuthenticationException {
+		if (bindingResult.hasErrors()) {
+			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 		Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		String token = this.tokenUtils.generateToken(userDetails, device);
-
+		
 		// Return the token
 		return ResponseEntity.ok(new AuthenticationResponse(token));
 	}
