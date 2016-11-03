@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.util.SortedSet;
+
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
@@ -59,7 +61,10 @@ public class PriceDaoImpl extends AbstractHibernateDao<Price> implements PriceDa
 		Price price = findOne(id);
 		Product product = price.getProduct();
 		if (product.getPrices() != null && product.getPrices().size() > 1){
-			deleteById(id);
+			//SortedSet<Price> prices = product.getPrices();
+			price.setProduct(null);
+			//prices.remove(price);
+			update(price);
 			return true;
 		}
 		return false;

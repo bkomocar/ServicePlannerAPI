@@ -7,6 +7,8 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +22,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SortNatural;
 
+import hr.tvz.serviceplanner.enums.VenueType;
+
+@DynamicInsert
 @Entity
 @Table(name = "venues")
 public class Venue implements Serializable, Comparable<Venue> {
@@ -47,7 +53,12 @@ public class Venue implements Serializable, Comparable<Venue> {
 	private Time openTime;
 
 	@Column
-	private Time closeTime;
+	private Time closeTime;	
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column
+	private VenueType type = VenueType.OTHER;
 	
 	@SortNatural
 	@Cascade(value = CascadeType.ALL)
@@ -87,6 +98,16 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.owner = owner;
 		this.openTime = openTime;
 		this.closeTime = closeTime;
+	}
+	
+	public Venue(String name, String description, String owner, Time openTime, Time closeTime, VenueType type) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.owner = owner;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
+		this.type = type;
 	}
 
 	public Venue(String name, String description, String owner) {
@@ -184,6 +205,14 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.groups = groups;
 	}
 	
+	public VenueType getType() {
+		return type;
+	}
+
+	public void setType(VenueType type) {
+		this.type = type;
+	}
+
 	@Override
 	public int compareTo(Venue o) {
 		Long id = o.getId();

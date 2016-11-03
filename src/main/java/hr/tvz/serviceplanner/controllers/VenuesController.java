@@ -1,4 +1,5 @@
-package hr.tvz.serviceplanner.controllers;
+
+ package hr.tvz.serviceplanner.controllers;
 
 import java.util.List;
 
@@ -26,6 +27,11 @@ import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.VenueViewModelLarge;
+import hr.tvz.serviceplanner.viewmodels.response.VenueViewModelSmall;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/venues")
@@ -40,6 +46,7 @@ public class VenuesController {
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
 
+	@ApiOperation(value = "create a new venue", response = IdViewModel.class, notes = "Creates a Venue based on the supplied informations")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<IdViewModel> createVenue(@Valid @RequestBody CreateVenueViewModel model) {
 		IdViewModel idViewModel = venueService.saveVenue(model, authenticationFacade.getUserId());
@@ -49,6 +56,9 @@ public class VenuesController {
 		return new ResponseEntity<IdViewModel>(idViewModel, HttpStatus.CREATED);
 	}
 
+	@ApiOperation(value = "get a venue by id", notes = "Returns a Venue based on the supplied id, and an optional type")
+	@ApiResponses(value = {@ApiResponse(code = 200, response = VenueViewModelLarge.class, message = "No type parameter provided"),
+	@ApiResponse(code = 200, response = VenueViewModelSmall.class, message = "Type parameter small")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<VenueViewModel> getVenue(@PathVariable("id") long id,
 			@RequestParam(name = "type", required = false) ViewModelType type) {
@@ -117,7 +127,7 @@ public class VenuesController {
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
 
-	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{venueId}/users/{userId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removeUser(@PathVariable("venueId") long venueId, @PathVariable("userId") long id) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, venueId)) {

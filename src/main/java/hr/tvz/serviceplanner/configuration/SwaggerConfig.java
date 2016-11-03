@@ -1,5 +1,8 @@
 package hr.tvz.serviceplanner.configuration;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

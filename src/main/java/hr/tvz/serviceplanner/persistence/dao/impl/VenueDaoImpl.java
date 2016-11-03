@@ -33,12 +33,24 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		TreeSet<User> users = new TreeSet<>();
 		users.add(u);
 		venue.setUsers(users);
-		Group courses = new Group("Courses", GroupType.SERVICE);
-		Group rents = new Group("Rents", GroupType.RENT);
-		TreeSet<Group> groups = new TreeSet<>();
-		groups.add(courses);
-		groups.add(rents);
-		venue.setGroups(groups);
+		
+		switch(venue.getType()){
+		case WINDSURF:
+			Group courses = new Group("Courses", GroupType.SERVICE);
+			Group rents = new Group("Rents", GroupType.RENT);
+			TreeSet<Group> windsurfGroups = new TreeSet<>();
+			windsurfGroups.add(courses);
+			windsurfGroups.add(rents);
+			venue.setGroups(windsurfGroups);
+			break;
+		default:
+			Group services = new Group("Services", GroupType.SERVICE);
+			Group products = new Group("Products", GroupType.SELL);
+			TreeSet<Group> groups = new TreeSet<>();
+			groups.add(services);
+			groups.add(products);
+			venue.setGroups(groups);
+		}
 		create(venue);
 		return venue;
 	}

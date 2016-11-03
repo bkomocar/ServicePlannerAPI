@@ -1,5 +1,6 @@
 package hr.tvz.serviceplanner.viewmodels.response;
 
+import hr.tvz.serviceplanner.enums.VenueType;
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
 
 public class VenueViewModelLarge implements VenueViewModel {
@@ -10,13 +11,14 @@ public class VenueViewModelLarge implements VenueViewModel {
 	private String owner;
 	private String openTime;
 	private String closeTime;
+	private VenueType type;
 
 	public VenueViewModelLarge() {
 		super();
 	}
 
 	public VenueViewModelLarge(Long id, String name, String description, String owner, String openTime,
-			String closeTime) {
+			String closeTime, VenueType type) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -24,6 +26,7 @@ public class VenueViewModelLarge implements VenueViewModel {
 		this.owner = owner;
 		this.openTime = openTime;
 		this.closeTime = closeTime;
+		this.type = type;
 	}
 
 	public Long getId() {
@@ -73,5 +76,15 @@ public class VenueViewModelLarge implements VenueViewModel {
 	public void setCloseTime(String closeTime) {
 		this.closeTime = closeTime;
 	}
+
+	public VenueType getType() {
+		return type;
+	}
+
+	public void setType(VenueType type) {
+		this.type = type;
+	}
+	
+	
 
 }

@@ -17,7 +17,9 @@ import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCustomerViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.CustomerViewModelLarge;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("venues/{venueId}/customers")
@@ -62,6 +64,7 @@ public class CustomersController {
 		}
 	}
 
+	@ApiOperation(value = "get a customer by id", response = CustomerViewModelLarge.class, notes = "Returns a customer based on the supplied id")
 	@RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
 	public ResponseEntity<CustomerViewModel> getCustomer(@PathVariable("venueId") long id,
 			@PathVariable("customerId") long customerId) {
