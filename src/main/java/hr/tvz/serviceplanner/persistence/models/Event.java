@@ -51,7 +51,7 @@ public class Event implements Serializable, Comparable<Event> {
 	private Date endTime;
 
 	@SortNatural
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "eventsPurchases", joinColumns = { @JoinColumn(name = "eventId") }, inverseJoinColumns = {
 			@JoinColumn(name = "purchaseId") })
 	private SortedSet<Purchase> purchases;

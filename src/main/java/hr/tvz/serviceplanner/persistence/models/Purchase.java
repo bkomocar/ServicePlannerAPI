@@ -51,12 +51,12 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 	@JoinColumn(name = "groupId", nullable = false)
 	private Group group;
 
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "productId", nullable = true)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "productId", nullable = false)
 	private Product product;
 
 	@ManyToOne(optional = true)
-	@JoinColumn(name = "customerId", nullable = true)
+	@JoinColumn(name = "customerId", nullable = false)
 	private Customer customer;
 
 	@NotNull
@@ -65,7 +65,7 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 	private Price price;
 
 	@SortNatural
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "eventsPurchases", joinColumns = { @JoinColumn(name = "purchaseId") }, inverseJoinColumns = {
 			@JoinColumn(name = "eventId") })
 	private SortedSet<Event> events;
