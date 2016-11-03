@@ -3,6 +3,7 @@ package hr.tvz.serviceplanner.persistence.models;
 import java.io.Serializable;
 import java.util.SortedSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,8 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SortNatural;
 
 @Entity
@@ -42,8 +41,7 @@ public class Category implements Serializable, Comparable<Category> {
 	private String color;
 
 	@SortNatural
-	@Cascade(value = CascadeType.REFRESH)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+	@OneToMany(cascade= CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "category")
 	private SortedSet<Product> products;
 
 	@ManyToOne
@@ -51,8 +49,7 @@ public class Category implements Serializable, Comparable<Category> {
 	private Group group;
 
 	@SortNatural
-	@Cascade(value = CascadeType.REFRESH)
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(cascade =CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "categoriesEmployees", joinColumns = { @JoinColumn(name = "categoryId") }, inverseJoinColumns = {
 			@JoinColumn(name = "employeeId") })
 	private SortedSet<Employee> employees;

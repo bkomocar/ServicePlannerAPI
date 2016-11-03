@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,8 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SortNatural;
 
 import hr.tvz.serviceplanner.enums.GroupType;
@@ -44,8 +43,7 @@ public class Group implements Serializable, Comparable<Group> {
 	private GroupType type;
 
 	@SortNatural
-	@Cascade(value = CascadeType.DELETE)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(cascade= CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Category> categories = new TreeSet<>();;
 
 	@ManyToOne
@@ -53,13 +51,11 @@ public class Group implements Serializable, Comparable<Group> {
 	private Venue venue;
 	
 	@SortNatural
-	@Cascade(value = CascadeType.REFRESH)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(cascade= CascadeType.REFRESH,fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Purchase> purchases = new TreeSet<>();
 
 	@SortNatural
-	@Cascade(value = CascadeType.REFRESH)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(cascade= CascadeType.REFRESH,fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Event> events = new TreeSet<>();
 
 	public Group() {

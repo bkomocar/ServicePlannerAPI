@@ -31,7 +31,7 @@ public class Event implements Serializable, Comparable<Event> {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "groupId", nullable = false)
+	@JoinColumn(name = "groupId", nullable = true)
 	private Group group;
 
 	@ManyToOne(optional = true)
