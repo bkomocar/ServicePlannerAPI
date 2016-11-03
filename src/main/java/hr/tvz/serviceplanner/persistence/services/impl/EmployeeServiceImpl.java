@@ -27,7 +27,7 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 
 	@Override
 	public EmployeeViewModel getEmployee(Long id, ViewModelType type) {
-		Employee employee = dao.findOne(id);
+		Employee employee = dao.getEmployee(id);
 		if (employee != null) {
 			return EmployeeViewModelFactory.toEmployeeViewModel(employee, type);
 		}
@@ -63,6 +63,11 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 			return EmployeeViewModelFactory.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean deleteEmployee(Long venueId, Long employeeId) {
+		return dao.deleteEmployee(venueId, employeeId);
 	}
 
 }

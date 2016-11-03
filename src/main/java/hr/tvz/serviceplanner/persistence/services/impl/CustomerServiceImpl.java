@@ -1,15 +1,21 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.CustomerDao;
 import hr.tvz.serviceplanner.persistence.models.Customer;
+import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CustomerService;
 import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.CustomerViewModelFactory;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCustomerViewModel;
@@ -55,6 +61,15 @@ public class CustomerServiceImpl extends AbstractService<Customer> implements Cu
 	@Override
 	protected Operations<Customer> getDao() {
 		return dao;
+	}
+
+	@Override
+	public List<CustomerViewModel> getCustomersForVenue(Long venueId, ViewModelType type) {
+		SortedSet<Customer> customers = dao.getCustomersForVenue(venueId);
+		if (customers != null) {
+			return CustomerViewModelFactory.toCustomerViewModel(new ArrayList<Customer>(customers), type);
+		}
+		return null;
 	}
 
 }

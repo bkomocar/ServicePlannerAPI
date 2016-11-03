@@ -104,7 +104,7 @@ public class EmployeesController {
 			@PathVariable("employeeId") long employeeId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			employeeService.deleteById(employeeId);
+			employeeService.deleteEmployee(id, employeeId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);

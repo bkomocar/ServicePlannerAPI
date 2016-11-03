@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SortNatural;
 
 @Entity
@@ -56,6 +57,10 @@ public class Employee implements Serializable, Comparable<Employee> {
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
+	
+	@Column
+	@ColumnDefault("0")
+	private boolean deleted;
 
 	@SortNatural
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -175,6 +180,14 @@ public class Employee implements Serializable, Comparable<Employee> {
 
 	public void setCategoriesEmployees(SortedSet<Category> categoriesEmployees) {
 		this.categoriesEmployees = categoriesEmployees;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

@@ -1,11 +1,16 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.EmployeeDao;
+import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
@@ -47,6 +52,15 @@ public class EmployeeDaoImpl extends AbstractHibernateDao<Employee> implements E
 		}
 		return false;
 	}
+	
+	@Override
+	public Employee getEmployee(Long employeeId) {
+		Employee e = findOne(employeeId);
+		if(e!=null && e.isDeleted()!=true){
+			return e;
+		}
+		return null;
+	}
 
 	@Override
 	public Long createEmployee(Long id, Employee employee) {
@@ -60,8 +74,29 @@ public class EmployeeDaoImpl extends AbstractHibernateDao<Employee> implements E
 	}
 
 	@Override
+	public boolean deleteEmployee(Long venueId, Long employeeId) {
+		Employee employee = findOne(employeeId);
+		if (employee.getVenue().getId() == venueId) {
+			employee.setDeleted(true);
+			update(employee);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public SortedSet<Employee> getEmployeesForVenue(Long venueId) {
 		Venue venue = getCurrentSession().get(Venue.class, venueId);
-		return venue.getEmployees();
+		if (venue != null) {
+			Criteria crit = getCurrentSession().createCriteria(Employee.class);
+			crit.add(Restrictions.eq("deleted", false));
+			crit.add(Restrictions.eq("venue", venue));
+			List<Employee> results = crit.list();
+			if (results != null && !results.isEmpty()) {
+				SortedSet<Employee> list = new TreeSet<Employee>(results);
+				return list;
+			}
+		}
+		return null;
 	}
 }

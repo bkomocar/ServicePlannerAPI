@@ -39,7 +39,7 @@ public class UserDaoImpl extends AbstractHibernateDao<User> implements UserDao {
 				Criteria crit = getCurrentSession().createCriteria(User.class);
 				crit.add(Restrictions.eq("name", user.getName()));
 				List<?> results = crit.list();
-				if (results != null && !results.isEmpty()) {
+				if (results == null || results.isEmpty()) {
 					originalUser.setName(user.getName());
 				}
 			}

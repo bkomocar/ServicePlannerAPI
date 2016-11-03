@@ -1,10 +1,18 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.CustomerDao;
 import hr.tvz.serviceplanner.persistence.models.Customer;
+import hr.tvz.serviceplanner.persistence.models.Employee;
+import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
 @Repository
@@ -55,7 +63,8 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
 	public boolean deleteCustomer(Long venueId, Long customerId) {
 		Customer customer = findOne(customerId);
 		if (customer.getVenue().getId() == venueId) {
-			deleteById(customerId);
+			customer.setDeleted(true);
+			update(customer);
 			return true;
 		}
 		return false;
@@ -63,7 +72,27 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
 
 	@Override
 	public Customer getCustomer(Long customerId) {
-		return findOne(customerId);
+		Customer c = findOne(customerId);
+		if(c!=null && c.isDeleted()!=true){
+			return c;
+		}
+		return null;
+	}
+
+	@Override
+	public SortedSet<Customer> getCustomersForVenue(Long venueId) {
+		Venue venue = getCurrentSession().get(Venue.class, venueId);
+		if (venue != null) {
+			Criteria crit = getCurrentSession().createCriteria(Customer.class);
+			crit.add(Restrictions.eq("deleted", false));
+			crit.add(Restrictions.eq("venue", venue));
+			List<Customer> results = crit.list();
+			if (results != null && !results.isEmpty()) {
+				SortedSet<Customer> list = new TreeSet<Customer>(results);
+				return list;
+			}
+		}
+		return null;
 	}
 
 }

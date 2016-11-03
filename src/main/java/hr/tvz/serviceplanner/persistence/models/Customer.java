@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SortNatural;
 
 @Entity
@@ -26,6 +27,10 @@ public class Customer implements Serializable, Comparable<Customer> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column
+	@ColumnDefault("0")
+	private boolean deleted;
 
 	@NotNull
 	@Column(columnDefinition = "varchar(50)")
@@ -136,6 +141,22 @@ public class Customer implements Serializable, Comparable<Customer> {
 
 	public void setVenue(Venue venue) {
 		this.venue = venue;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public SortedSet<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(SortedSet<Purchase> purchases) {
+		this.purchases = purchases;
 	}
 
 	@Override

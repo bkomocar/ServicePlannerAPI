@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.tvz.serviceplanner.persistence.services.interfaces.CustomerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.CustomerViewModel;
+import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateCustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateCustomerViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.CustomerViewModelLarge;
@@ -32,7 +37,7 @@ public class CustomersController {
 
 	@Autowired
 	private CustomerService customerService;
-
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<IdViewModel> createCustomer(@PathVariable("venueId") long id,
 			@Valid @RequestBody CreateCustomerViewModel model) {
@@ -78,6 +83,22 @@ public class CustomersController {
 			}
 		} else {
 			return new ResponseEntity<CustomerViewModel>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CustomerViewModel>> getCustomers(@PathVariable("venueId") long id,
+			@RequestParam(name = "type", required = false) ViewModelType type) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<CustomerViewModel> models = customerService.getCustomersForVenue(id, type);
+			if (models != null) {
+				return new ResponseEntity<List<CustomerViewModel>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<CustomerViewModel>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<CustomerViewModel>>(HttpStatus.FORBIDDEN);
 		}
 	}
 

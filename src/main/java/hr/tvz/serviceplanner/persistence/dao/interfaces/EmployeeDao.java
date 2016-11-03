@@ -12,4 +12,8 @@ public interface EmployeeDao extends Operations<Employee> {
 	public Long createEmployee(Long id, Employee employee);
 
 	public SortedSet<Employee> getEmployeesForVenue(Long venueId);
+	
+	public boolean deleteEmployee(Long venueId, Long employeeId);
+	
+	public Employee getEmployee(Long employeeId);
 }

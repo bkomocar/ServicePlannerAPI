@@ -19,4 +19,7 @@ public interface EmployeeService extends Operations<Employee> {
 	public boolean updateEmployee(Long id, UpdateEmployeeViewModel model);
 
 	public List<EmployeeViewModel> getEmployeesForVenue(Long venueId, ViewModelType type);
+	
+	public boolean deleteEmployee(Long venueId, Long employeeId);
+	
 }
