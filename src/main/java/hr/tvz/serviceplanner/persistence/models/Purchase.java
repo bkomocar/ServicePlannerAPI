@@ -47,14 +47,14 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 	private Date paymentDate;	
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "groupId", nullable = false)
+	@JoinColumn(name = "groupId", nullable = true)
 	private Group group;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "productId", nullable = false)
+	@JoinColumn(name = "productId", nullable = true)
 	private Product product;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "customerId", nullable = true)
 	private Customer customer;
 
@@ -251,9 +251,10 @@ public class Purchase implements Serializable, Comparable<Purchase> {
 	@Override
 	public int compareTo(Purchase o) {
 		Long id = o.getId();
-		if (id == this.id)
+
+		if (id.equals(this.id))
 			return 0;
-		else if (id > this.id)
+		else if (id.longValue() > this.id.longValue())
 			return 1;
 		else
 			return -1;

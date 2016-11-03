@@ -49,6 +49,10 @@ public class Event implements Serializable, Comparable<Event> {
 	@NotNull
 	@Column(columnDefinition = "DATETIME")
 	private Date endTime;
+	
+	@ManyToOne
+	@JoinColumn(name = "venueId", nullable = false)
+	private Venue venue;
 
 	@SortNatural
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -164,12 +168,21 @@ public class Event implements Serializable, Comparable<Event> {
 		this.endTime = endTime;
 	}
 
+	public Venue getVenue() {
+		return venue;
+	}
+
+	public void setVenue(Venue venue) {
+		this.venue = venue;
+	}
+
 	@Override
 	public int compareTo(Event o) {
 		Long id = o.getId();
-		if (id == this.id)
+
+		if (id.equals(this.id))
 			return 0;
-		else if (id > this.id)
+		else if (id.longValue() > this.id.longValue())
 			return 1;
 		else
 			return -1;

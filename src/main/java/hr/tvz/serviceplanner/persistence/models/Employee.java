@@ -193,9 +193,10 @@ public class Employee implements Serializable, Comparable<Employee> {
 	@Override
 	public int compareTo(Employee o) {
 		Long id = o.getId();
-		if (id == this.id)
+
+		if (id.equals(this.id))
 			return 0;
-		else if (id > this.id)
+		else if (id.longValue() > this.id.longValue())
 			return 1;
 		else
 			return -1;

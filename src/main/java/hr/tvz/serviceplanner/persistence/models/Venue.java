@@ -97,6 +97,11 @@ public class Venue implements Serializable, Comparable<Venue> {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
 	private SortedSet<Product> products = new TreeSet<>();
 	
+	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
+	private SortedSet<Event> events = new TreeSet<>();
+	
 	public Venue() {
 		super();
 	}
@@ -252,13 +257,21 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.purchases = purchases;
 	}
 
+	public SortedSet<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(SortedSet<Event> events) {
+		this.events = events;
+	}
+
 	@Override
 	public int compareTo(Venue o) {
 		Long id = o.getId();
 
-		if (id == this.id)
+		if (id.equals(this.id))
 			return 0;
-		else if (id > this.id)
+		else if (id.longValue() > this.id.longValue())
 			return 1;
 		else
 			return -1;

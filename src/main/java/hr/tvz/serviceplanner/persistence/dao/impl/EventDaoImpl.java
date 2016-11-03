@@ -52,6 +52,7 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 							return null;
 						}
 					}
+					event.setVenue(venue);
 					event.setGroup(group);
 					create(event);
 					return event.getId();
