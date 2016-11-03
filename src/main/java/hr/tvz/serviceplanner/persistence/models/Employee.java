@@ -77,6 +77,24 @@ public class Employee implements Serializable, Comparable<Employee> {
 		this.id = id;
 	}
 
+	
+	
+	public Employee(Long id, String username, String firstName, String lastName, String color, String email,
+			String phone, String comment, Venue venue, boolean deleted, SortedSet<Category> categoriesEmployees) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.color = color;
+		this.email = email;
+		this.phone = phone;
+		this.comment = comment;
+		this.venue = venue;
+		this.deleted = deleted;
+		this.categoriesEmployees = categoriesEmployees;
+	}
+
 	public Employee(String username, String firstName, String lastName, String color, String email, String phone,
 			String comment) {
 		super();

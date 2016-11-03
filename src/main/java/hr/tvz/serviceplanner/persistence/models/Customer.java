@@ -65,6 +65,21 @@ public class Customer implements Serializable, Comparable<Customer> {
 		super();
 		this.id = id;
 	}
+	
+
+	public Customer(Long id, boolean deleted, String firstName, String lastName, String email, String phone,
+			String comment, Venue venue, SortedSet<Purchase> purchases) {
+		super();
+		this.id = id;
+		this.deleted = deleted;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.comment = comment;
+		this.venue = venue;
+		this.purchases = purchases;
+	}
 
 	public Customer(Long id, String firstName, String lastName, String email, String phone, String comment,
 			Venue venue) {
