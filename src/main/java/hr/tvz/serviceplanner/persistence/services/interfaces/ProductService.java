@@ -15,4 +15,6 @@ public interface ProductService extends Operations<Product> {
 	public IdViewModel createProduct(Long id, CreateProductViewModel model);
 
 	public boolean updateProduct(Long id, UpdateProductViewModel model);
+	
+	public boolean deleteProduct(Long productId);
 }

@@ -44,6 +44,10 @@ public class Price implements Serializable, Comparable<Price> {
 	@ColumnDefault("1")
 	private Long itemsCount;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "venueId", nullable = false)
+	private Venue venue;
+	
 	@SortNatural
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "price")
 	private SortedSet<Cost> costs;
@@ -153,6 +157,14 @@ public class Price implements Serializable, Comparable<Price> {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public Venue getVenue() {
+		return venue;
+	}
+
+	public void setVenue(Venue venue) {
+		this.venue = venue;
 	}
 
 	@Override

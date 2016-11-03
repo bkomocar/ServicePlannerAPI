@@ -8,8 +8,10 @@ import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.ProductDao;
 import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.models.Cost;
+import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
+import hr.tvz.serviceplanner.persistence.models.Venue;
 
 @Repository
 public class ProductDaoImpl extends AbstractHibernateDao<Product> implements ProductDao {
@@ -47,6 +49,9 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 		
 		if (category != null) {
 			SortedSet<Price> prices = product.getPrices();
+			Group group = category.getGroup();
+			Venue venue = group.getVenue();
+			product.setVenue(venue);
 			product.setCategory(category);
 			create(product);
 			for (Price price : prices) {
@@ -60,5 +65,16 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 			return product.getId();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean deleteProduct(Long productId) {
+		Product product = findOne(productId);
+		if (product!= null){
+			product.setCategory(null);
+			update(product);
+			return true;
+		}
+		return false;
 	}
 }

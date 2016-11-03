@@ -12,6 +12,7 @@ import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
+import hr.tvz.serviceplanner.persistence.models.Venue;
 
 public class CreatePurchaseViewModel {
 
@@ -54,8 +55,8 @@ public class CreatePurchaseViewModel {
 
 	public static Purchase toPurchase(CreatePurchaseViewModel model) {
 		if (model != null) {
-			Purchase purchase = new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate,
-					model.paymentDate, new Product(model.productId), new Price(model.priceId));
+			Purchase purchase = new Purchase(model.currency, model.valueInSmallestCurrency,null, model.purchaseDate,
+					model.paymentDate,  new Product(model.productId), new Price(model.priceId));
 
 			if (model.customerId != null) {
 				purchase.setCustomer(new Customer(model.customerId));

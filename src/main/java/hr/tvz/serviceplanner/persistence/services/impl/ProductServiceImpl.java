@@ -52,4 +52,9 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
 		return dao;
 	}
 
+	@Override
+	public boolean deleteProduct(Long productId) {
+		return dao.deleteProduct(productId);
+	}
+
 }

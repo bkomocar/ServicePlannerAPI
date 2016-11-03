@@ -42,7 +42,7 @@ public class Category implements Serializable, Comparable<Category> {
 	private String color;
 
 	@SortNatural
-	@Cascade(value = CascadeType.DELETE)
+	@Cascade(value = CascadeType.REFRESH)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
 	private SortedSet<Product> products;
 
@@ -51,7 +51,7 @@ public class Category implements Serializable, Comparable<Category> {
 	private Group group;
 
 	@SortNatural
-	@Cascade(value = CascadeType.ALL)
+	@Cascade(value = CascadeType.REFRESH)
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "categoriesEmployees", joinColumns = { @JoinColumn(name = "categoryId") }, inverseJoinColumns = {
 			@JoinColumn(name = "employeeId") })

@@ -50,12 +50,25 @@ public class Product implements Serializable, Comparable<Product> {
 	private SortedSet<Price> prices;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "categoryId", nullable = false)
+	@JoinColumn(name = "categoryId", nullable = true)
 	private Category category;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "venueId", nullable = false)
+	private Venue venue;
 	
 	@SortNatural
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
 	private SortedSet<Purchase> purchases;
+	
+
+	public Venue getVenue() {
+		return venue;
+	}
+
+	public void setVenue(Venue venue) {
+		this.venue = venue;
+	}
 
 	public Product() {
 		super();

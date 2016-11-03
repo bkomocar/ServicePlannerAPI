@@ -41,7 +41,7 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 					} else if (group.getType() == GroupType.SERVICE) {
 						return null;
 					}
-
+					purchase.setVenue(venue);
 					purchase.setProduct(product);
 					purchase.setPrice(price);
 					purchase.setGroup(group);

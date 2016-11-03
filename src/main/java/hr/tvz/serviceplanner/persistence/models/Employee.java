@@ -58,7 +58,7 @@ public class Employee implements Serializable, Comparable<Employee> {
 	private Venue venue;
 
 	@SortNatural
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "categoriesEmployees", joinColumns = { @JoinColumn(name = "employeeId") }, inverseJoinColumns = {
 			@JoinColumn(name = "categoryId") })
 	private SortedSet<Category> categoriesEmployees;

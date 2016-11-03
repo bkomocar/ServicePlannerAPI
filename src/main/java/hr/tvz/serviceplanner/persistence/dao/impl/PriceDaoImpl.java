@@ -9,6 +9,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.PriceDao;
 import hr.tvz.serviceplanner.persistence.models.Cost;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
+import hr.tvz.serviceplanner.persistence.models.Venue;
 
 @Repository
 public class PriceDaoImpl extends AbstractHibernateDao<Price> implements PriceDao {
@@ -23,6 +24,8 @@ public class PriceDaoImpl extends AbstractHibernateDao<Price> implements PriceDa
 		Product product = getCurrentSession().get(Product.class, id);
 
 		if (product != null) {
+			Venue venue = product.getVenue();
+			price.setVenue(venue);
 			price.setProduct(product);
 			create(price);
 			for (Cost cost : price.getCosts()) {

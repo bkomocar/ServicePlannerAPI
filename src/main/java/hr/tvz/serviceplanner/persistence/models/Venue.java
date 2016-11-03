@@ -61,7 +61,7 @@ public class Venue implements Serializable, Comparable<Venue> {
 	private VenueType type = VenueType.OTHER;
 	
 	@SortNatural
-	@Cascade(value = CascadeType.ALL)
+	@Cascade(value = CascadeType.REFRESH)
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "usersVenues", joinColumns = { @JoinColumn(name = "venueId") }, inverseJoinColumns = {
 			@JoinColumn(name = "userId") })
@@ -82,6 +82,21 @@ public class Venue implements Serializable, Comparable<Venue> {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
 	private SortedSet<Group> groups = new TreeSet<>();
 
+	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
+	private SortedSet<Purchase> purchases = new TreeSet<>();
+	
+	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
+	private SortedSet<Price> prices = new TreeSet<>();
+	
+	@SortNatural
+	@Cascade(value = CascadeType.DELETE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
+	private SortedSet<Product> products = new TreeSet<>();
+	
 	public Venue() {
 		super();
 	}
@@ -211,6 +226,30 @@ public class Venue implements Serializable, Comparable<Venue> {
 
 	public void setType(VenueType type) {
 		this.type = type;
+	}
+
+	public SortedSet<Price> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(SortedSet<Price> prices) {
+		this.prices = prices;
+	}
+
+	public SortedSet<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(SortedSet<Product> products) {
+		this.products = products;
+	}
+
+	public SortedSet<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(SortedSet<Purchase> purchases) {
+		this.purchases = purchases;
 	}
 
 	@Override

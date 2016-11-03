@@ -27,7 +27,7 @@ public class UpdatePurchaseViewModel {
 	private Long customerId;
 
 	private Long priceId;
-
+	
 	public UpdatePurchaseViewModel() {
 		super();
 	}
@@ -46,7 +46,7 @@ public class UpdatePurchaseViewModel {
 
 	public static Purchase toPurchase(UpdatePurchaseViewModel model) {
 		if (model != null) {
-			return new Purchase(model.currency, model.valueInSmallestCurrency, model.purchaseDate, model.paymentDate,
+			return new Purchase(model.currency, model.valueInSmallestCurrency, null, model.purchaseDate, model.paymentDate,
 					new Product(model.productId), new Customer(model.customerId), new Price(model.priceId));
 		}
 		return null;
