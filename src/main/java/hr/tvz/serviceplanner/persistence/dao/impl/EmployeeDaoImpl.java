@@ -56,7 +56,7 @@ public class EmployeeDaoImpl extends AbstractHibernateDao<Employee> implements E
 	@Override
 	public Employee getEmployee(Long employeeId) {
 		Employee e = findOne(employeeId);
-		if(e!=null && e.isDeleted()!=true){
+		if(e!=null && !e.isDeleted()){
 			return e;
 		}
 		return null;
@@ -92,7 +92,7 @@ public class EmployeeDaoImpl extends AbstractHibernateDao<Employee> implements E
 			crit.add(Restrictions.eq("deleted", false));
 			crit.add(Restrictions.eq("venue", venue));
 			List<Employee> results = crit.list();
-			if (results != null && !results.isEmpty()) {
+			if (results != null) {
 				SortedSet<Employee> list = new TreeSet<Employee>(results);
 				return list;
 			}

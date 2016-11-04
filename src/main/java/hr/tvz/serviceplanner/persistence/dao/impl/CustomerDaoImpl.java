@@ -73,7 +73,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
 	@Override
 	public Customer getCustomer(Long customerId) {
 		Customer c = findOne(customerId);
-		if(c!=null && c.isDeleted()!=true){
+		if(c!=null && !c.isDeleted()){
 			return c;
 		}
 		return null;
@@ -87,7 +87,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
 			crit.add(Restrictions.eq("deleted", false));
 			crit.add(Restrictions.eq("venue", venue));
 			List<Customer> results = crit.list();
-			if (results != null && !results.isEmpty()) {
+			if (results != null) {
 				SortedSet<Customer> list = new TreeSet<Customer>(results);
 				return list;
 			}
