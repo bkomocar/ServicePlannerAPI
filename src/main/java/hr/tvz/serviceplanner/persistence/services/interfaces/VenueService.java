@@ -14,6 +14,8 @@ import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 public interface VenueService extends Operations<Venue> {
 
+	public VenueViewModel getVenue(Long venueId, ViewModelType type);
+	
 	public IdViewModel saveVenue(CreateVenueViewModel model, Long userId);
 
 	public boolean addUser(Long venueId, CreateByNameViewModel model);

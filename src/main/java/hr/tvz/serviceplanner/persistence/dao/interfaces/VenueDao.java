@@ -8,6 +8,8 @@ import hr.tvz.serviceplanner.persistence.models.Venue;
 
 public interface VenueDao extends Operations<Venue> {
 
+	public Venue getVenue(Long venueId);
+	
 	public Venue saveVenue(Venue venue, Long userId);
 
 	public boolean addUser(Long venueId, String userName);

@@ -33,8 +33,8 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		TreeSet<User> users = new TreeSet<>();
 		users.add(u);
 		venue.setUsers(users);
-		
-		switch(venue.getType()){
+
+		switch (venue.getType()) {
 		case WINDSURF:
 			Group courses = new Group("Courses", GroupType.SERVICE);
 			Group rents = new Group("Rents", GroupType.RENT);
@@ -135,6 +135,12 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Venue getVenue(Long venueId) {
+		Venue venue = findOne(venueId);
+		return venue;
 	}
 
 }

@@ -1,9 +1,12 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.util.SortedSet;
+
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.GroupDao;
+import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
@@ -40,6 +43,15 @@ public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDa
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public SortedSet<Category> getCategoriesForGroup(Long venueId, Long groupId) {
+		Group group = findOne(groupId);
+		if (group.getVenue().getId().equals(venueId)) {
+			return group.getCategories();
+		}
+		return null;
 	}
 
 }

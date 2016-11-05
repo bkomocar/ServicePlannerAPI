@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
+import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
@@ -78,6 +81,22 @@ public class GroupsController {
 			}
 		} else {
 			return new ResponseEntity<GroupViewModel>(HttpStatus.FORBIDDEN);
+		}
+	}
+
+	@RequestMapping(value = "/{groupId}/categories", method = RequestMethod.GET)
+	public ResponseEntity<List<CategoryViewModel>> getCategoriesForGroup(@PathVariable("venueId") long id,
+			@PathVariable("groupId") long groupId, @RequestParam(name = "type", required = false) ViewModelType type) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<CategoryViewModel> models = groupService.getCategoriesForGroup(id, groupId, type);
+			if (models != null) {
+				return new ResponseEntity<List<CategoryViewModel>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<CategoryViewModel>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<CategoryViewModel>>(HttpStatus.FORBIDDEN);
 		}
 	}
 

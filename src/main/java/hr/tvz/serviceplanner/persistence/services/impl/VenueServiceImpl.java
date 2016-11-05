@@ -85,4 +85,13 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 		return null;
 	}
 
+	@Override
+	public VenueViewModel getVenue(Long venueId, ViewModelType type) {
+		Venue venue = dao.getVenue(venueId);
+		if (venue != null) {
+			return VenueViewModelFactory.toVenueViewModel(venue, type);
+		}
+		return null;
+	}
+
 }

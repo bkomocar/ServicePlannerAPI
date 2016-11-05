@@ -1,5 +1,5 @@
 
- package hr.tvz.serviceplanner.controllers;
+package hr.tvz.serviceplanner.controllers;
 
 import java.util.List;
 
@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.VenueViewModelFactory;
 import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
@@ -57,17 +55,17 @@ public class VenuesController {
 	}
 
 	@ApiOperation(value = "get a venue by id", notes = "Returns a Venue based on the supplied id, and an optional type")
-	@ApiResponses(value = {@ApiResponse(code = 200, response = VenueViewModelLarge.class, message = "No type parameter provided"),
-	@ApiResponse(code = 200, response = VenueViewModelSmall.class, message = "Type parameter small")})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, response = VenueViewModelLarge.class, message = "No type parameter provided"),
+			@ApiResponse(code = 200, response = VenueViewModelSmall.class, message = "Type parameter small") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<VenueViewModel> getVenue(@PathVariable("id") long id,
 			@RequestParam(name = "type", required = false) ViewModelType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			Venue venue = venueService.findOne(id);
-			if (venue != null) {
-				return new ResponseEntity<VenueViewModel>(VenueViewModelFactory.toVenueViewModel(venue, type),
-						HttpStatus.OK);
+			VenueViewModel model = venueService.getVenue(id, type);
+			if (model != null) {
+				return new ResponseEntity<VenueViewModel>(model, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<VenueViewModel>(HttpStatus.NOT_FOUND);
 			}
