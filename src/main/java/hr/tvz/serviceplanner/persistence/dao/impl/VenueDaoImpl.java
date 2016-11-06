@@ -13,6 +13,7 @@ import com.google.common.base.Preconditions;
 import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
+import hr.tvz.serviceplanner.persistence.models.Cost;
 import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.models.Venue;
@@ -46,12 +47,19 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 		default:
 			Group services = new Group("Services", GroupType.SERVICE);
 			Group products = new Group("Products", GroupType.SELL);
+			services.setVenue(venue);
+			products.setVenue(venue);
 			TreeSet<Group> groups = new TreeSet<>();
-			groups.add(services);
-			groups.add(products);
 			venue.setGroups(groups);
 		}
 		create(venue);
+		
+		for (Group group : venue.getGroups()) {
+			group.setVenue(venue);
+			getCurrentSession().saveOrUpdate(group);
+		}
+		/*Venue xVenue = findOne(venue.getId());
+		SortedSet<Group> groups = xVenue.getGroups();*/
 		return venue;
 	}
 

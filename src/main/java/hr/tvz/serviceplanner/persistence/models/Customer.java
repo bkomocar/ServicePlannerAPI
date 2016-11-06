@@ -176,13 +176,15 @@ public class Customer implements Serializable, Comparable<Customer> {
 
 	@Override
 	public int compareTo(Customer o) {
-		Long id = o.getId();
-
-		if (id.equals(this.id))
-			return 0;
-		else if (id.longValue() > this.id.longValue())
-			return 1;
-		else
-			return -1;
+		if (this.id != null && o.getId() != null) {
+			Long id = o.getId();
+			if (id.equals(this.id))
+				return 0;
+			else if (id.longValue() > this.id.longValue())
+				return 1;
+			else
+				return -1;
+		}
+		return -1;
 	}
 }

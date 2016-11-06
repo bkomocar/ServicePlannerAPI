@@ -46,12 +46,12 @@ public class VenuesController {
 
 	@ApiOperation(value = "create a new venue", response = IdViewModel.class, notes = "Creates a Venue based on the supplied informations")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createVenue(@Valid @RequestBody CreateVenueViewModel model) {
-		IdViewModel idViewModel = venueService.saveVenue(model, authenticationFacade.getUserId());
-		if (idViewModel == null) {
-			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<VenueViewModel> createVenue(@Valid @RequestBody CreateVenueViewModel createModel) {
+		VenueViewModel model = venueService.saveVenue(createModel, authenticationFacade.getUserId());
+		if (model == null) {
+			return new ResponseEntity<VenueViewModel>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<IdViewModel>(idViewModel, HttpStatus.CREATED);
+		return new ResponseEntity<VenueViewModel>(model, HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "get a venue by id", notes = "Returns a Venue based on the supplied id, and an optional type")

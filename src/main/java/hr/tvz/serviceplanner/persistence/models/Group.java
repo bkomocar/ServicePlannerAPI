@@ -43,19 +43,19 @@ public class Group implements Serializable, Comparable<Group> {
 	private GroupType type;
 
 	@SortNatural
-	@OneToMany(cascade= CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Category> categories = new TreeSet<>();;
 
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
-	
+
 	@SortNatural
-	@OneToMany(cascade= CascadeType.REFRESH,fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Purchase> purchases = new TreeSet<>();
 
 	@SortNatural
-	@OneToMany(cascade= CascadeType.REFRESH,fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "group")
 	private SortedSet<Event> events = new TreeSet<>();
 
 	public Group() {
@@ -67,7 +67,7 @@ public class Group implements Serializable, Comparable<Group> {
 		this.name = name;
 		this.type = type;
 	}
-	
+
 	public Group(Long id, String name, GroupType type, SortedSet<Category> categories, Venue venue) {
 		super();
 		this.id = id;
@@ -123,14 +123,16 @@ public class Group implements Serializable, Comparable<Group> {
 
 	@Override
 	public int compareTo(Group o) {
-		Long id = o.getId();
-
-		if (id.equals(this.id))
-			return 0;
-		else if (id.longValue() > this.id.longValue())
-			return 1;
-		else
-			return -1;
+		if (this.id != null && o.getId() != null) {
+			Long id = o.getId();
+			if (id.equals(this.id))
+				return 0;
+			else if (id.longValue() > this.id.longValue())
+				return 1;
+			else
+				return -1;
+		}
+		return -1;
 	}
 
 }

@@ -21,7 +21,6 @@ import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
 public class VenueServiceImpl extends AbstractService<Venue> implements VenueService {
@@ -35,10 +34,10 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public IdViewModel saveVenue(CreateVenueViewModel model, Long userId) {
+	public VenueViewModel saveVenue(CreateVenueViewModel model, Long userId) {
 		Venue daoVenue = this.dao.saveVenue(CreateVenueViewModel.toVenue(model), userId);
 		if (daoVenue != null) {
-			return new IdViewModel(daoVenue.getId());
+			return VenueViewModelFactory.toVenueViewModel(daoVenue, ViewModelType.extended);
 		}
 		return null;
 	}

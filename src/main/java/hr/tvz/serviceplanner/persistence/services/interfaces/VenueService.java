@@ -10,13 +10,12 @@ import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 public interface VenueService extends Operations<Venue> {
 
 	public VenueViewModel getVenue(Long venueId, ViewModelType type);
-	
-	public IdViewModel saveVenue(CreateVenueViewModel model, Long userId);
+
+	public VenueViewModel saveVenue(CreateVenueViewModel model, Long userId);
 
 	public boolean addUser(Long venueId, CreateByNameViewModel model);
 
