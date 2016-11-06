@@ -1,8 +1,14 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
 
 public class UpdateProductViewModel {
@@ -19,12 +25,15 @@ public class UpdateProductViewModel {
 	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
+	public List<CreatePriceViewModel> prices = new ArrayList<>();
+	
 	public UpdateProductViewModel() {
 		super();
 	}
 
-	public UpdateProductViewModel(Integer maxCustomers, String name, String shortName, String description) {
+	public UpdateProductViewModel(Integer maxCustomers, String name, String shortName, String description, List<CreatePriceViewModel> prices) {
 		super();
+		this.prices = prices;
 		this.name = name;
 		this.maxCustomers = maxCustomers;
 		this.shortName = shortName;
@@ -33,9 +42,21 @@ public class UpdateProductViewModel {
 
 	public static Product toProduct(UpdateProductViewModel model) {
 		if (model != null) {
-			return new Product(model.maxCustomers, model.name, model.shortName, model.description);
+			
+			SortedSet<Price> prices = new TreeSet<>(CreatePriceViewModel.toPrice(model.prices));
+			return new Product(model.maxCustomers, model.name, model.shortName, model.description, prices);
 		}
 		return null;
+	}
+
+	
+	
+	public List<CreatePriceViewModel> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(List<CreatePriceViewModel> prices) {
+		this.prices = prices;
 	}
 
 	public Integer getMaxCustomers() {

@@ -14,8 +14,9 @@ public class CategoryViewModelFactory {
 	public static CategoryViewModel toCategoryViewModel(Category category, ViewModelType type) {
 		if (category != null) {
 			if (type == null || type == ViewModelType.large || type == ViewModelType.medium) {
+				List<Product> products = new ArrayList<>(category.getProducts());
 				return new CategoryViewModelLarge(category.getId(), category.getName(), category.getDescription(),
-						category.getColor());
+						category.getColor(), ProductViewModelFactory.toProductViewModel(products, ViewModelType.large));
 			} else if (type == ViewModelType.extended) {
 				List<Product> products = new ArrayList<>(category.getProducts());
 				return new CategoryViewModelExtended(category.getId(), category.getName(),

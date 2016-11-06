@@ -37,6 +37,18 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 			if (product.getShortName() != null) {
 				originalProduct.setShortName(product.getShortName());
 			}
+			SortedSet<Price> prices = product.getPrices();
+			if (prices != null && !prices.isEmpty()) {
+				for (Price price : prices) {
+					price.setProduct(originalProduct);
+					getCurrentSession().saveOrUpdate(price);
+					for (Cost cost : price.getCosts()) {
+						cost.setPrice(price);
+						getCurrentSession().saveOrUpdate(cost);
+					}
+				} 
+				originalProduct.setPrices(prices);
+			}
 			update(originalProduct);
 			return true;
 		}
@@ -46,9 +58,9 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 	@Override
 	public Long createProduct(Long id, Product product) {
 		Category category = getCurrentSession().get(Category.class, id);
-		
-		if (category != null) {
-			SortedSet<Price> prices = product.getPrices();
+		SortedSet<Price> prices = product.getPrices();
+		if (category != null && prices != null && !prices.isEmpty()) {
+			
 			Group group = category.getGroup();
 			Venue venue = group.getVenue();
 			product.setVenue(venue);
