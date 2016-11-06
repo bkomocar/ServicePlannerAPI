@@ -58,8 +58,6 @@ public class VenueDaoImpl extends AbstractHibernateDao<Venue> implements VenueDa
 			group.setVenue(venue);
 			getCurrentSession().saveOrUpdate(group);
 		}
-		/*Venue xVenue = findOne(venue.getId());
-		SortedSet<Group> groups = xVenue.getGroups();*/
 		return venue;
 	}
 

@@ -9,18 +9,20 @@ public class ProductViewModelSmall implements ProductViewModel{
 	private String name;
 	private String shortName;
 	private String description;
-
+	private Long categoryId;
+	
 	public ProductViewModelSmall() {
 		super();
 	}
 
-	public ProductViewModelSmall(Long id, Integer maxCustomers, String name, String shortName, String description) {
+	public ProductViewModelSmall(Long id, Integer maxCustomers, String name, String shortName, String description, Long categoryId) {
 		super();
 		this.id = id;
 		this.maxCustomers = maxCustomers;
 		this.name = name;
 		this.shortName = shortName;
 		this.description = description;
+		this.categoryId = categoryId;
 	}
 
 
@@ -63,5 +65,11 @@ public class ProductViewModelSmall implements ProductViewModel{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
 
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
 }

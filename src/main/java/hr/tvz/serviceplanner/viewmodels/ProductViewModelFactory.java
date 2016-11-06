@@ -14,18 +14,18 @@ import hr.tvz.serviceplanner.viewmodels.response.ProductViewModelSmall;
 public class ProductViewModelFactory {
 
 	public static ProductViewModel toProductViewModel(Product product, ViewModelType type) {
-		if (product != null) {
+		if (product != null && product.getCategory() != null) {
 			if (type == null || type == ViewModelType.large || type == ViewModelType.medium) {
 				List<Price> prices = new ArrayList<>(product.getPrices());
 				return new ProductViewModelLarge(product.getId(), product.getMaxCustomers(), product.getName(),
-						product.getShortName(), product.getDescription(), PriceViewModel.fromPrice(prices));
+						product.getShortName(), product.getDescription(), PriceViewModel.fromPrice(prices), product.getCategory().getId());
 			} else if (type == ViewModelType.extended) {
 				List<Price> prices = new ArrayList<>(product.getPrices());
 				return new ProductViewModelExtended(product.getId(), product.getName(),
-						PriceViewModel.fromPrice(prices));
+						PriceViewModel.fromPrice(prices), product.getCategory().getId());
 			} else {
 				return new ProductViewModelSmall(product.getId(), product.getMaxCustomers(), product.getName(),
-						product.getShortName(), product.getDescription());
+						product.getShortName(), product.getDescription(), product.getCategory().getId());
 			}
 		}
 		return null;

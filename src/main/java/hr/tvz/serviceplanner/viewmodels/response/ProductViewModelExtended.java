@@ -10,16 +10,17 @@ public class ProductViewModelExtended implements ProductViewModel {
 	private Long id;
 	private String name;
 	private List<PriceViewModel> prices = new ArrayList<>();
-
+	private Long categoryId;
 	public ProductViewModelExtended() {
 		super();
 	}
 
-	public ProductViewModelExtended(Long id, String name, List<PriceViewModel> prices) {
+	public ProductViewModelExtended(Long id, String name, List<PriceViewModel> prices, Long categoryId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.prices = prices;
+		this.categoryId = categoryId;
 	}
 
 	public Long getId() {
@@ -44,6 +45,13 @@ public class ProductViewModelExtended implements ProductViewModel {
 
 	public void setPrices(List<PriceViewModel> prices) {
 		this.prices = prices;
+	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

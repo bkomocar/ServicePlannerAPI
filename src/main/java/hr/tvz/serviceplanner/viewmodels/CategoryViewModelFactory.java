@@ -19,7 +19,7 @@ public class CategoryViewModelFactory {
 			} else if (type == ViewModelType.extended) {
 				List<Product> products = new ArrayList<>(category.getProducts());
 				return new CategoryViewModelExtended(category.getId(), category.getName(),
-						ProductViewModelFactory.toProductViewModel(products, ViewModelType.extended));
+						ProductViewModelFactory.toProductViewModel(products, ViewModelType.large));
 			} else {
 				return new CategoryViewModelSmall(category.getId(), category.getName());
 			}

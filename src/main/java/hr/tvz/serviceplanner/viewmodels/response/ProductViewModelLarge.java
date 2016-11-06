@@ -13,19 +13,21 @@ public class ProductViewModelLarge implements ProductViewModel {
 	private String shortName;
 	private String description;
 	private List<PriceViewModel> prices = new ArrayList<>();
-
+	private Long categoryId;
+	
 	public ProductViewModelLarge() {
 		super();
 	}
 
 	public ProductViewModelLarge(Long id, Integer maxCustomers, String name, String shortName, String description,
-			List<PriceViewModel> prices) {
+			List<PriceViewModel> prices, Long categoryId) {
 		super();
 		this.id = id;
 		this.maxCustomers = maxCustomers;
 		this.name = name;
 		this.shortName = shortName;
 		this.description = description;
+		this.categoryId = categoryId;
 		this.prices = prices;
 	}
 
@@ -75,6 +77,14 @@ public class ProductViewModelLarge implements ProductViewModel {
 
 	public void setPrices(List<PriceViewModel> prices) {
 		this.prices = prices;
+	}
+	
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

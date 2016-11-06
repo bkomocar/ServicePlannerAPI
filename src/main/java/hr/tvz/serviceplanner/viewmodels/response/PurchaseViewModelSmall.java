@@ -11,6 +11,7 @@ public class PurchaseViewModelSmall implements PurchaseViewModel {
 	private CustomerViewModel customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
+	
 
 	public PurchaseViewModelSmall() {
 		super();
@@ -65,5 +66,8 @@ public class PurchaseViewModelSmall implements PurchaseViewModel {
 	public void setPrice(PriceViewModel price) {
 		this.price = price;
 	}
+
+	
+	
 
 }
