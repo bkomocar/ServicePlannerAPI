@@ -24,7 +24,14 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 	@Override
 	public boolean updateProduct(Long id, Product product) {
 		Product originalProduct = findOne(id);
+		
 		if (originalProduct != null) {
+			
+			Category category = originalProduct.getCategory();
+			Group group = category.getGroup();
+			Venue venue = group.getVenue();
+			
+			
 			if (product.getName() != null) {
 				originalProduct.setName(product.getName());
 			}
@@ -40,6 +47,16 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 			SortedSet<Price> prices = product.getPrices();
 			if (prices != null && !prices.isEmpty()) {
 				for (Price price : prices) {
+					price.setVenue(venue);
+					price.setProduct(originalProduct);
+					for (Cost cost : price.getCosts()) {
+						cost.setPrice(price);
+					}
+				} 
+				originalProduct.setPrices(prices);
+			}
+			/*if (prices != null && !prices.isEmpty()) {
+				for (Price price : prices) {
 					price.setProduct(originalProduct);
 					getCurrentSession().saveOrUpdate(price);
 					for (Cost cost : price.getCosts()) {
@@ -48,7 +65,7 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 					}
 				} 
 				originalProduct.setPrices(prices);
-			}
+			}*/
 			update(originalProduct);
 			return true;
 		}
@@ -65,15 +82,24 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 			Venue venue = group.getVenue();
 			product.setVenue(venue);
 			product.setCategory(category);
-			create(product);
+			
 			for (Price price : prices) {
+				price.setProduct(product);
+				price.setVenue(venue);
+				for (Cost cost : price.getCosts()) {
+					cost.setPrice(price);
+				}
+			}
+			create(product);
+			
+			/*for (Price price : prices) {
 				price.setProduct(product);
 				getCurrentSession().saveOrUpdate(price);
 				for (Cost cost : price.getCosts()) {
 					cost.setPrice(price);
 					getCurrentSession().saveOrUpdate(cost);
 				}
-			} 				
+			} 	*/			
 			return product.getId();
 		}
 		return null;

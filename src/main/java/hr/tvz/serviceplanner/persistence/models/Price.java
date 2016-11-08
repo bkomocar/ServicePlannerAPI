@@ -3,7 +3,6 @@ package hr.tvz.serviceplanner.persistence.models;
 import java.io.Serializable;
 import java.util.SortedSet;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SortNatural;
 
@@ -29,7 +30,6 @@ public class Price implements Serializable, Comparable<Price> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull
 	@Column(columnDefinition = "varchar(255)")
 	private String name;
 
@@ -48,8 +48,9 @@ public class Price implements Serializable, Comparable<Price> {
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
 	
+	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.DELETE_ORPHAN})
 	@SortNatural
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "price")
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "price")
 	private SortedSet<Cost> costs;
 
 	@ManyToOne(fetch = FetchType.LAZY)

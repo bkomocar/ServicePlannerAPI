@@ -16,7 +16,6 @@ import hr.tvz.serviceplanner.persistence.models.Price;
 
 public class CreatePriceViewModel {
 
-	@NotBlank(message = "Name field can not be empty")
 	@Length(max = 255, message = "Name can not be longer than {max} characters")
 	private String name;
 
