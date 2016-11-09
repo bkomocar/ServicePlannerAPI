@@ -26,11 +26,11 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 	@Override
 	public boolean updateProduct(Long id, Product product) {
 		Product originalProduct = findOne(id);
-		
+
 		if (originalProduct != null) {
-			
-			Venue venue = originalProduct.getVenue();			
-			
+
+			Venue venue = originalProduct.getVenue();
+
 			if (product.getName() != null) {
 				originalProduct.setName(product.getName());
 			}
@@ -44,32 +44,32 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 				originalProduct.setShortName(product.getShortName());
 			}
 			SortedSet<Price> prices = product.getPrices();
-			
+
 			if (prices != null && !prices.isEmpty()) {
 				ArrayList<Price> originalPriceList = new ArrayList<Price>(originalProduct.getPrices());
 				ArrayList<Price> priceList = new ArrayList<Price>(prices);
 				for (Price price : priceList) {
-					
-					if(price.getId() == null) {
+
+					if (price.getId() == null) {
 						price.setVenue(venue);
 						price.setProduct(originalProduct);
 						getCurrentSession().saveOrUpdate(price);
 						ArrayList<Cost> costList = new ArrayList<Cost>(price.getCosts());
 						for (Cost cost : costList) {
 							cost.setPrice(price);
-							if(cost.getId() == null) {
+							if (cost.getId() == null) {
 								getCurrentSession().saveOrUpdate(cost);
 							}
 						}
 						originalProduct.getPrices().add(price);
-					} else if(originalProduct.getPrices().contains(price)) {
+					} else if (originalProduct.getPrices().contains(price)) {
 						updatePrice(price.getId(), price);
 					}
-					
-				} 
-				
-				for(Price price: originalPriceList) {
-					if(!prices.contains(price)) {
+
+				}
+
+				for (Price price : originalPriceList) {
+					if (!prices.contains(price)) {
 						price.setProduct(null);
 						getCurrentSession().saveOrUpdate(price);
 						originalProduct.getPrices().remove(price);
@@ -79,17 +79,14 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 					}
 				}
 			}
-			/*if (prices != null && !prices.isEmpty()) {
-				for (Price price : prices) {
-					price.setProduct(originalProduct);
-					getCurrentSession().saveOrUpdate(price);
-					for (Cost cost : price.getCosts()) {
-						cost.setPrice(price);
-						getCurrentSession().saveOrUpdate(cost);
-					}
-				} 
-				originalProduct.setPrices(prices);
-			}*/
+			/*
+			 * if (prices != null && !prices.isEmpty()) { for (Price price :
+			 * prices) { price.setProduct(originalProduct);
+			 * getCurrentSession().saveOrUpdate(price); for (Cost cost :
+			 * price.getCosts()) { cost.setPrice(price);
+			 * getCurrentSession().saveOrUpdate(cost); } }
+			 * originalProduct.setPrices(prices); }
+			 */
 			update(originalProduct);
 			return true;
 		}
@@ -112,16 +109,28 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 				originalPrice.setItemsCount(price.getItemsCount());
 			}
 		}
+		ArrayList<Cost> originalCostList = new ArrayList<Cost>(originalPrice.getCosts());
+
 		ArrayList<Cost> costList = new ArrayList<Cost>(price.getCosts());
 		for (Cost cost : costList) {
 			if (cost.getId() == null) {
-				cost.setPrice(price);
 				getCurrentSession().saveOrUpdate(cost);
-			} else {
+				originalPrice.getCosts().add(cost);
+			} else if (originalPrice.getCosts().contains(cost)) {
 				updateCost(cost.getId(), cost);
 			}
 		}
-		getCurrentSession().merge(price);
+
+		for (Cost cost : originalCostList) {
+			if (!originalPrice.getCosts().contains(cost)) {
+				cost.setPrice(null);
+				getCurrentSession().saveOrUpdate(cost);
+				originalPrice.getCosts().remove(cost);
+			} else {
+				cost.setPrice(originalPrice);
+			}
+		}
+		getCurrentSession().merge(originalPrice);
 	}
 
 	void updateCost(long id, Cost cost) {
@@ -134,7 +143,7 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 				originalCost.setValueInSmallestCurrency(cost.getValueInSmallestCurrency());
 			}
 		}
-		getCurrentSession().merge(cost);
+		getCurrentSession().merge(originalCost);
 	}
 
 	@Override
