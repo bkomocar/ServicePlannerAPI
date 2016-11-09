@@ -1,14 +1,23 @@
 package hr.tvz.serviceplanner.viewmodels.request;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import hr.tvz.serviceplanner.persistence.models.Cost;
 import hr.tvz.serviceplanner.persistence.models.Price;
 
 public class UpdatePriceViewModel {
+
+	Long id;
 
 	@Length(min = 1, max = 255, message = "Name length should be between {min} and {max} characters")
 	private String name;
@@ -22,21 +31,26 @@ public class UpdatePriceViewModel {
 	@Range(min = 1, message = "Items count can not be less than {min}")
 	private Long itemsCount;
 	
+	public List<UpdateCostViewModel> costs = new ArrayList<>();
+	
 	public UpdatePriceViewModel() {
 		super();
 	}
 
-	public UpdatePriceViewModel(String name, String description, Long durationInMin, Long itemsCount) {
+	public UpdatePriceViewModel(Long id, String name, String description, Long durationInMin, Long itemsCount, ArrayList<UpdateCostViewModel> costs) {
 		super();
 		this.name = name;
+		this.id = id;
 		this.description = description;
 		this.durationInMin = durationInMin;
 		this.itemsCount = itemsCount;
+		this.costs = costs;
 	}
 
 	public static Price toPrice(UpdatePriceViewModel model) {
 		if (model != null) {
-			return new Price(model.name, model.description, model.durationInMin, model.itemsCount);
+			SortedSet<Cost> costs = new TreeSet<>(UpdateCostViewModel.toCost(model.costs));
+			return new Price(model.id, model.name, model.description, model.durationInMin, model.itemsCount, costs);
 		}
 		return null;
 	}
@@ -80,4 +94,11 @@ public class UpdatePriceViewModel {
 		this.itemsCount = itemsCount;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

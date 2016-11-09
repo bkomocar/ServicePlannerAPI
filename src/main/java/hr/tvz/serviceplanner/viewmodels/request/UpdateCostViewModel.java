@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Range;
 import hr.tvz.serviceplanner.persistence.models.Cost;
 
 public class UpdateCostViewModel {
+	
+	Long id;
 
 	@Length(min = 1, max = 5, message = "Currency length should be between {min} and {max} characters")
 	private String currency;
@@ -16,8 +18,9 @@ public class UpdateCostViewModel {
 	@Range(min = 0, message = "Value in smallest currency is a required field")
 	private Long valueInSmallestCurrency;
 
-	public UpdateCostViewModel(String currency, Long valueInSmallestCurrency) {
+	public UpdateCostViewModel(Long id, String currency, Long valueInSmallestCurrency) {
 		super();
+		this.id = id;
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 	}
@@ -27,7 +30,7 @@ public class UpdateCostViewModel {
 			if (model.valueInSmallestCurrency != null && model.valueInSmallestCurrency < 0) {
 				model.valueInSmallestCurrency = 0L;
 			}
-			return new Cost(model.currency, model.valueInSmallestCurrency);
+			return new Cost(model.id, model.currency, model.valueInSmallestCurrency);
 		}
 		return null;
 	}
@@ -57,6 +60,14 @@ public class UpdateCostViewModel {
 
 	public void setValueInSmallestCurrency(Long valueInSmallestCurrency) {
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

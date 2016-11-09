@@ -12,6 +12,7 @@ import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.models.Venue;
+import scala.remote;
 
 @Repository
 public class ProductDaoImpl extends AbstractHibernateDao<Product> implements ProductDao {
@@ -27,10 +28,7 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 		
 		if (originalProduct != null) {
 			
-			Category category = originalProduct.getCategory();
-			Group group = category.getGroup();
-			Venue venue = group.getVenue();
-			
+			Venue venue = originalProduct.getVenue();			
 			
 			if (product.getName() != null) {
 				originalProduct.setName(product.getName());
@@ -49,11 +47,18 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 				for (Price price : prices) {
 					price.setVenue(venue);
 					price.setProduct(originalProduct);
+					if(price.getId() == null) {
+						getCurrentSession().saveOrUpdate(price);
+					}
 					for (Cost cost : price.getCosts()) {
 						cost.setPrice(price);
+						if(cost.getId() == null) {
+							getCurrentSession().saveOrUpdate(cost);
+						}
 					}
 				} 
-				originalProduct.setPrices(prices);
+				originalProduct.getPrices().clear();
+				originalProduct.getPrices().addAll(prices);
 			}
 			/*if (prices != null && !prices.isEmpty()) {
 				for (Price price : prices) {

@@ -48,7 +48,7 @@ public class Price implements Serializable, Comparable<Price> {
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
 	
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.DELETE_ORPHAN})
+	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE})
 	@SortNatural
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "price")
 	private SortedSet<Cost> costs;
@@ -72,6 +72,16 @@ public class Price implements Serializable, Comparable<Price> {
 		this.description = description;
 		this.durationInMin = durationInMin;
 		this.itemsCount = itemsCount;
+	}
+
+	public Price(Long id, String name, String description, Long durationInMin, Long itemsCount, SortedSet<Cost> costs) {
+		super();
+		this.name = name;
+		this.id =id;
+		this.description = description;
+		this.durationInMin = durationInMin;
+		this.itemsCount = itemsCount;
+		this.costs = costs;
 	}
 
 	public Price(String name, String description, Long durationInMin, Long itemsCount, Product product) {

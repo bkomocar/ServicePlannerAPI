@@ -35,12 +35,13 @@ public class CreatePriceViewModel {
 		super();
 	}
 
-	public CreatePriceViewModel(String name, String description, Long durationInMin, Long itemsCount) {
+	public CreatePriceViewModel(String name, String description, Long durationInMin, Long itemsCount, ArrayList<CreateCostViewModel> costs) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.durationInMin = durationInMin;
 		this.itemsCount = itemsCount;
+		this.costs = costs;
 	}
 
 	public static Price toPrice(CreatePriceViewModel model) {

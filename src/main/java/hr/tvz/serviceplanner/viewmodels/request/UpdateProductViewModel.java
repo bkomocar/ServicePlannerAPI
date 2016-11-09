@@ -25,13 +25,13 @@ public class UpdateProductViewModel {
 	@Length(max = 500, message = "Description can not be longer than {max} characters")
 	private String description;
 
-	public List<CreatePriceViewModel> prices = new ArrayList<>();
+	public List<UpdatePriceViewModel> prices = new ArrayList<>();
 	
 	public UpdateProductViewModel() {
 		super();
 	}
 
-	public UpdateProductViewModel(Integer maxCustomers, String name, String shortName, String description, List<CreatePriceViewModel> prices) {
+	public UpdateProductViewModel(Integer maxCustomers, String name, String shortName, String description, List<UpdatePriceViewModel> prices) {
 		super();
 		this.prices = prices;
 		this.name = name;
@@ -43,7 +43,7 @@ public class UpdateProductViewModel {
 	public static Product toProduct(UpdateProductViewModel model) {
 		if (model != null) {
 			
-			SortedSet<Price> prices = new TreeSet<>(CreatePriceViewModel.toPrice(model.prices));
+			SortedSet<Price> prices = new TreeSet<>(UpdatePriceViewModel.toPrice(model.prices));
 			return new Product(model.maxCustomers, model.name, model.shortName, model.description, prices);
 		}
 		return null;
@@ -51,11 +51,11 @@ public class UpdateProductViewModel {
 
 	
 	
-	public List<CreatePriceViewModel> getPrices() {
+	public List<UpdatePriceViewModel> getPrices() {
 		return prices;
 	}
 
-	public void setPrices(List<CreatePriceViewModel> prices) {
+	public void setPrices(List<UpdatePriceViewModel> prices) {
 		this.prices = prices;
 	}
 

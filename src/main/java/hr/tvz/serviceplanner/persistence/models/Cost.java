@@ -33,7 +33,7 @@ public class Cost implements Serializable, Comparable<Cost> {
 	private Long valueInSmallestCurrency;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "priceId", nullable = false)
+	@JoinColumn(name = "priceId")
 	private Price price;
 
 	public Cost() {
