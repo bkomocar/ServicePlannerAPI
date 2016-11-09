@@ -1,5 +1,6 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.util.ArrayList;
 import java.util.SortedSet;
 
 import org.springframework.stereotype.Repository;
@@ -43,22 +44,40 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 				originalProduct.setShortName(product.getShortName());
 			}
 			SortedSet<Price> prices = product.getPrices();
+			
 			if (prices != null && !prices.isEmpty()) {
-				for (Price price : prices) {
-					price.setVenue(venue);
-					price.setProduct(originalProduct);
+				ArrayList<Price> originalPriceList = new ArrayList<Price>(originalProduct.getPrices());
+				ArrayList<Price> priceList = new ArrayList<Price>(prices);
+				for (Price price : priceList) {
+					
 					if(price.getId() == null) {
+						price.setVenue(venue);
+						price.setProduct(originalProduct);
 						getCurrentSession().saveOrUpdate(price);
-					}
-					for (Cost cost : price.getCosts()) {
-						cost.setPrice(price);
-						if(cost.getId() == null) {
-							getCurrentSession().saveOrUpdate(cost);
+						ArrayList<Cost> costList = new ArrayList<Cost>(price.getCosts());
+						for (Cost cost : costList) {
+							cost.setPrice(price);
+							if(cost.getId() == null) {
+								getCurrentSession().saveOrUpdate(cost);
+							}
 						}
+						originalProduct.getPrices().add(price);
+					} else if(originalProduct.getPrices().contains(price)) {
+						updatePrice(price.getId(), price);
 					}
+					
 				} 
-				originalProduct.getPrices().clear();
-				originalProduct.getPrices().addAll(prices);
+				
+				for(Price price: originalPriceList) {
+					if(!prices.contains(price)) {
+						price.setProduct(null);
+						getCurrentSession().saveOrUpdate(price);
+						originalProduct.getPrices().remove(price);
+					} else {
+						price.setVenue(venue);
+						price.setProduct(originalProduct);
+					}
+				}
 			}
 			/*if (prices != null && !prices.isEmpty()) {
 				for (Price price : prices) {
@@ -77,17 +96,58 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 		return false;
 	}
 
+	void updatePrice(long priceId, Price price) {
+		Price originalPrice = getCurrentSession().get(Price.class, priceId);
+		if (originalPrice != null) {
+			if (price.getName() != null) {
+				originalPrice.setName(price.getName());
+			}
+			if (price.getDescription() != null) {
+				originalPrice.setDescription(price.getDescription());
+			}
+			if (price.getDurationInMin() != null) {
+				originalPrice.setDurationInMin(price.getDurationInMin());
+			}
+			if (price.getItemsCount() != null) {
+				originalPrice.setItemsCount(price.getItemsCount());
+			}
+		}
+		ArrayList<Cost> costList = new ArrayList<Cost>(price.getCosts());
+		for (Cost cost : costList) {
+			if (cost.getId() == null) {
+				cost.setPrice(price);
+				getCurrentSession().saveOrUpdate(cost);
+			} else {
+				updateCost(cost.getId(), cost);
+			}
+		}
+		getCurrentSession().merge(price);
+	}
+
+	void updateCost(long id, Cost cost) {
+		Cost originalCost = getCurrentSession().get(Cost.class, id);
+		if (originalCost != null) {
+			if (cost.getCurrency() != null) {
+				originalCost.setCurrency(cost.getCurrency());
+			}
+			if (cost.getValueInSmallestCurrency() != null) {
+				originalCost.setValueInSmallestCurrency(cost.getValueInSmallestCurrency());
+			}
+		}
+		getCurrentSession().merge(cost);
+	}
+
 	@Override
 	public Long createProduct(Long id, Product product) {
 		Category category = getCurrentSession().get(Category.class, id);
 		SortedSet<Price> prices = product.getPrices();
 		if (category != null && prices != null && !prices.isEmpty()) {
-			
+
 			Group group = category.getGroup();
 			Venue venue = group.getVenue();
 			product.setVenue(venue);
 			product.setCategory(category);
-			
+
 			for (Price price : prices) {
 				price.setProduct(product);
 				price.setVenue(venue);
@@ -96,15 +156,13 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 				}
 			}
 			create(product);
-			
-			/*for (Price price : prices) {
-				price.setProduct(product);
-				getCurrentSession().saveOrUpdate(price);
-				for (Cost cost : price.getCosts()) {
-					cost.setPrice(price);
-					getCurrentSession().saveOrUpdate(cost);
-				}
-			} 	*/			
+
+			/*
+			 * for (Price price : prices) { price.setProduct(product);
+			 * getCurrentSession().saveOrUpdate(price); for (Cost cost :
+			 * price.getCosts()) { cost.setPrice(price);
+			 * getCurrentSession().saveOrUpdate(cost); } }
+			 */
 			return product.getId();
 		}
 		return null;
@@ -113,7 +171,7 @@ public class ProductDaoImpl extends AbstractHibernateDao<Product> implements Pro
 	@Override
 	public boolean deleteProduct(Long productId) {
 		Product product = findOne(productId);
-		if (product!= null){
+		if (product != null) {
 			product.setCategory(null);
 			update(product);
 			return true;
