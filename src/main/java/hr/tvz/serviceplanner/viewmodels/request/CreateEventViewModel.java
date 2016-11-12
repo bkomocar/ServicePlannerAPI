@@ -15,57 +15,52 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 
 public class CreateEventViewModel {
 
-	private Long employeeId;
-
-	@NotNull(message = "Product id is a required field")
-	private Long productId;
-
+	@NotNull(message = "Employee is a required field")
+	Employee employee;
+	@NotNull(message = "Product is a required field")
+	Product product;
 	@NotNull(message = "Start Time is a required field")
 	private Date startTime;
-
 	@NotNull(message = "End Time is a required field")
 	private Date endTime;
-
-	public List<Long> purchaseIds = new ArrayList<>();
+	public List<Purchase> purchases = new ArrayList<>();
 
 	public CreateEventViewModel() {
 		super();
 	}
 
-	public CreateEventViewModel(Long employeeId, Long productId, Date startTime, Date endTime, List<Long> purchaseIds) {
+	public CreateEventViewModel(Employee employee, Product product, Date startTime, Date endTime,
+			List<Purchase> purchases) {
 		super();
-		this.employeeId = employeeId;
-		this.productId = productId;
+		this.employee = employee;
+		this.product = product;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.purchaseIds = purchaseIds;
+		this.purchases = purchases;
 	}
 
 	public static Event toEvent(CreateEventViewModel model) {
 		if (model != null) {
-
-			SortedSet<Purchase> purchases = new TreeSet<>();
-			for (Long id : model.purchaseIds) {
-				purchases.add(new Purchase(id));
-			}
-
-			Event event = new Event(new Product(model.productId), model.startTime, model.endTime, purchases);
-
-			if (model.employeeId != null) {
-				event.setEmployee(new Employee(model.employeeId));
-			}
-
-			return event;
+			SortedSet<Purchase> purchaseSet = new TreeSet<>(model.purchases);
+			return new Event(model.product, model.employee, model.startTime, model.endTime, purchaseSet);
 		}
 		return null;
 	}
 
-	public Long getEmployeeId() {
-		return employeeId;
+	public Employee getEmployee() {
+		return employee;
 	}
 
-	public void setEmployeeId(Long employeeId) {
-		this.employeeId = employeeId;
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public Date getStartTime() {
@@ -84,12 +79,12 @@ public class CreateEventViewModel {
 		this.endTime = endTime;
 	}
 
-	public Long getProductId() {
-		return productId;
+	public List<Purchase> getPurchases() {
+		return purchases;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
 	}
 
 }

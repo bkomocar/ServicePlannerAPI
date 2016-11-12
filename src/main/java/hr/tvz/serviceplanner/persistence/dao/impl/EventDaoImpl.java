@@ -25,18 +25,7 @@ public class EventDaoImpl extends AbstractHibernateDao<Event> implements EventDa
 	@Override
 	public Long createEvent(Long venueId, Event event) {
 		Product product = getCurrentSession().get(Product.class, event.getProduct().getId());
-
 		Venue venue = getCurrentSession().get(Venue.class, venueId);
-
-		if (event.getPurchases() != null && !event.getPurchases().isEmpty()) {
-			SortedSet<Purchase> purchases = new TreeSet<>();
-			for (Purchase purchase : event.getPurchases()) {
-				if (purchase.getId() != null) {
-					purchases.add(getCurrentSession().get(Purchase.class, purchase.getId()));
-				}
-			}
-			event.setPurchases(purchases);
-		}
 
 		if (product != null && product.getCategory() != null && product.getCategory().getGroup() != null
 				&& product.getCategory().getGroup().getId() != null) {

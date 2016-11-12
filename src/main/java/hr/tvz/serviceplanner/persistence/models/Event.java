@@ -49,7 +49,7 @@ public class Event implements Serializable, Comparable<Event> {
 	@NotNull
 	@Column(columnDefinition = "DATETIME")
 	private Date endTime;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
@@ -71,7 +71,7 @@ public class Event implements Serializable, Comparable<Event> {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-	
+
 	public Event(Product product, Date startTime, Date endTime, SortedSet<Purchase> purchases) {
 		super();
 		this.product = product;
@@ -88,7 +88,18 @@ public class Event implements Serializable, Comparable<Event> {
 		this.endTime = endTime;
 		this.purchases = purchases;
 	}
-	
+
+	public Event(Long id, Product product, Employee employee, Date startTime, Date endTime,
+			SortedSet<Purchase> purchases) {
+		super();
+		this.id = id;
+		this.product = product;
+		this.employee = employee;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.purchases = purchases;
+	}
+
 	public Event(Employee employee, Date startTime, Date endTime) {
 		super();
 		this.employee = employee;

@@ -112,7 +112,7 @@ public class GroupsController {
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
 	
-	/*date in dd-MM-YYYY*/
+	/*date in yyyy-MM-dd*/
 	@RequestMapping(value = "/{groupId}/events", method = RequestMethod.GET)
 	public ResponseEntity<List<TimespanEventViewModel>> getTimeEventsForGroupByDate(@PathVariable("venueId") long id,
 			@PathVariable("groupId") long groupId, @RequestParam(name = "date", required = true) String date) {
