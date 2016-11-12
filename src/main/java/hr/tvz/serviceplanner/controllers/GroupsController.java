@@ -1,5 +1,6 @@
 package hr.tvz.serviceplanner.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.TimespanEventViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}/groups")
@@ -108,5 +110,22 @@ public class GroupsController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+	}
+	
+	/*date in dd-MM-YYYY*/
+	@RequestMapping(value = "/{groupId}/events", method = RequestMethod.GET)
+	public ResponseEntity<List<TimespanEventViewModel>> getTimeEventsForGroupByDate(@PathVariable("venueId") long id,
+			@PathVariable("groupId") long groupId, @RequestParam(name = "date", required = true) String date) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<TimespanEventViewModel> models = groupService.getTimeEventsForGroupByDate(id, groupId, date);
+			if (models != null) {
+				return new ResponseEntity<List<TimespanEventViewModel>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<TimespanEventViewModel>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<TimespanEventViewModel>>(HttpStatus.FORBIDDEN);
+		}
 	}
 }

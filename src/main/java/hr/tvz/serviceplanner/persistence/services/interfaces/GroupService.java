@@ -1,5 +1,6 @@
 package hr.tvz.serviceplanner.persistence.services.interfaces;
 
+import java.util.Date;
 import java.util.List;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
@@ -10,6 +11,7 @@ import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
+import hr.tvz.serviceplanner.viewmodels.response.TimespanEventViewModel;
 
 public interface GroupService extends Operations<Group> {
 
@@ -21,4 +23,5 @@ public interface GroupService extends Operations<Group> {
 
 	public boolean updateGroup(Long id, UpdateGroupViewModel model);
 
+	public List<TimespanEventViewModel> getTimeEventsForGroupByDate(long id, long groupId, String date);
 }
