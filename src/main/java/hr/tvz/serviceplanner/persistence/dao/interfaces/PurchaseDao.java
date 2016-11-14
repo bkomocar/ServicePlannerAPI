@@ -16,5 +16,5 @@ public interface PurchaseDao extends Operations<Purchase> {
 
 	public Purchase getPurchase(Long purchaseId);
 	
-	public List<Purchase> getPurchases(Long venueId, String date);
+	public List<Purchase> getPurchases(Long venueId, Long groupId, String date);
 }

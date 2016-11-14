@@ -82,12 +82,15 @@ public class PurchasesController {
 			return new ResponseEntity<PurchaseViewModel>(HttpStatus.FORBIDDEN);
 		}
 	}
-	/*date in yyyy-MM-dd*/
+
+	/* date in yyyy-MM-dd */
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<PurchaseViewModel>> getPurchases(@PathVariable("venueId") long id, @RequestParam(name = "date", required = false) String date) {
+	public ResponseEntity<List<PurchaseViewModel>> getPurchases(@PathVariable("venueId") long id,
+			@RequestParam(name = "groupId", required = false) Long groupId,
+			@RequestParam(name = "date", required = false) String date) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			List<PurchaseViewModel> models = purchaseService.getPurchases(id, date);
+			List<PurchaseViewModel> models = purchaseService.getPurchases(id, groupId, date);
 			if (models != null) {
 				return new ResponseEntity<List<PurchaseViewModel>>(models, HttpStatus.OK);
 			} else {
@@ -97,7 +100,7 @@ public class PurchasesController {
 			return new ResponseEntity<List<PurchaseViewModel>>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
+
 	@RequestMapping(value = "/{purchaseId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deletePurchase(@PathVariable("venueId") long id,
 			@PathVariable("purchaseId") long purchaseId) {

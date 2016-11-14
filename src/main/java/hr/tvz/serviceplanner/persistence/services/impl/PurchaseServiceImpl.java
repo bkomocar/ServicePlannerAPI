@@ -60,8 +60,8 @@ public class PurchaseServiceImpl extends AbstractService<Purchase> implements Pu
 	}
 
 	@Override
-	public List<PurchaseViewModel> getPurchases(Long venueId, String date) {
-		List<Purchase> purchases = dao.getPurchases(venueId, date);
+	public List<PurchaseViewModel> getPurchases(Long venueId, Long groupId, String date) {
+		List<Purchase> purchases = dao.getPurchases(venueId, groupId, date);
 		if(purchases != null){
 			return PurchaseViewModelFactory.toPurchaseViewModel(purchases, ViewModelType.large);
 		}
