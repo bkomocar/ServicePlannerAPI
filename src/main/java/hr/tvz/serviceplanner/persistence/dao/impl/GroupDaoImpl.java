@@ -68,7 +68,7 @@ public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDa
 	}
 
 	@Override
-	public VenueEvents getTimeEventsForGroupByDate(long id, long groupId, String date) {
+	public VenueEvents getTimeEventsForServiceGroupByDate(long id, long groupId, String date) {
 		Group group = findOne(groupId);
 		Venue venue = group.getVenue();
 		if (venue.getId().equals(id)) {
@@ -92,6 +92,7 @@ public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDa
 				Date toDate = df.parse(date + " 23:59:59");
 				Criteria criteria = getCurrentSession().createCriteria(Event.class);
 				criteria.add(Restrictions.between("startTime", fromDate, toDate));
+				criteria.add(Restrictions.eq("venue", venue));
 				criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 				//criteria.setProjection(Projections.distinct(Projections.property("id")));
 				//criteria.setResultTransformer(Transformers.aliasToBean(Event.class));

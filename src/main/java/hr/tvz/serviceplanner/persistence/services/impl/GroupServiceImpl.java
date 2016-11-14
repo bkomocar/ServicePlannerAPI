@@ -82,7 +82,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 
 	@Override
 	public List<TimespanEventViewModel> getTimeEventsForGroupByDate(long id, long groupId, String date) {
-		VenueEvents events = dao.getTimeEventsForGroupByDate(id, groupId, date);
+		VenueEvents events = dao.getTimeEventsForServiceGroupByDate(id, groupId, date);
 		SimpleDateFormat sdf = new SimpleDateFormat("HH");
 		SimpleDateFormat hourMinsFormat = new SimpleDateFormat("HH:mm");
 		int openTimeHours = Integer.parseInt(sdf.format(events.getOpenTime()));

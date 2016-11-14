@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.persistence.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,15 @@ public class PurchaseServiceImpl extends AbstractService<Purchase> implements Pu
 		Purchase purchase = dao.getPurchase(purchaseId);
 		if (purchase != null) {
 			return PurchaseViewModelFactory.toPurchaseViewModel(purchase, ViewModelType.large);
+		}
+		return null;
+	}
+
+	@Override
+	public List<PurchaseViewModel> getPurchases(Long venueId, String date) {
+		List<Purchase> purchases = dao.getPurchases(venueId, date);
+		if(purchases != null){
+			return PurchaseViewModelFactory.toPurchaseViewModel(purchases, ViewModelType.large);
 		}
 		return null;
 	}

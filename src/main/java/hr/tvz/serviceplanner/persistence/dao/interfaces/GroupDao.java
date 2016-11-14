@@ -18,5 +18,6 @@ public interface GroupDao extends Operations<Group> {
 
 	public Long createGroup(Long id, Group group);
 
-	public VenueEvents getTimeEventsForGroupByDate(long id, long groupId, String date);
+	public VenueEvents getTimeEventsForServiceGroupByDate(long id, long groupId, String date);
+	
 }

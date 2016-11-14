@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
 import hr.tvz.serviceplanner.viewmodels.EventViewModel;
 import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
@@ -12,7 +14,9 @@ import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
 public class EventViewModelLarge implements EventViewModel {
 
 	private Long id;
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date startTime;
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date endTime;
 	private ProductViewModel product;
 	private EmployeeViewModel employee;

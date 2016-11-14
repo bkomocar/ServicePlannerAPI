@@ -1,5 +1,7 @@
 package hr.tvz.serviceplanner.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.tvz.serviceplanner.persistence.services.interfaces.PurchaseService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
 import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
+import hr.tvz.serviceplanner.viewmodels.ViewModelType;
 import hr.tvz.serviceplanner.viewmodels.request.CreatePurchaseViewModel;
 import hr.tvz.serviceplanner.viewmodels.request.UpdatePurchaseViewModel;
 import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
@@ -78,7 +82,22 @@ public class PurchasesController {
 			return new ResponseEntity<PurchaseViewModel>(HttpStatus.FORBIDDEN);
 		}
 	}
-
+	/*date in yyyy-MM-dd*/
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<PurchaseViewModel>> getPurchases(@PathVariable("venueId") long id, @RequestParam(name = "date", required = false) String date) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<PurchaseViewModel> models = purchaseService.getPurchases(id, date);
+			if (models != null) {
+				return new ResponseEntity<List<PurchaseViewModel>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<PurchaseViewModel>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<PurchaseViewModel>>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
 	@RequestMapping(value = "/{purchaseId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deletePurchase(@PathVariable("venueId") long id,
 			@PathVariable("purchaseId") long purchaseId) {

@@ -1,11 +1,20 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.enums.GroupType;
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.PurchaseDao;
 import hr.tvz.serviceplanner.persistence.models.Customer;
+import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
@@ -102,6 +111,37 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 	@Override
 	public Purchase getPurchase(Long purchaseId) {
 		return findOne(purchaseId);
+	}
+
+	@Override
+	public List<Purchase> getPurchases(Long venueId, String date) {
+		Venue venue = getCurrentSession().get(Venue.class, venueId);
+		if(venue != null) {
+		if (date != null && !date.isEmpty()) {
+			try {
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date fromDate = df.parse(date + " 00:00:00");
+				Date toDate = df.parse(date + " 23:59:59");
+				Criteria criteria = getCurrentSession().createCriteria(Purchase.class);
+				criteria.add(Restrictions.between("purchaseDate", fromDate, toDate));
+				criteria.add(Restrictions.eq("venue", venue));
+				criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				//criteria.setProjection(Projections.distinct(Projections.property("id")));
+				//criteria.setResultTransformer(Transformers.aliasToBean(Event.class));
+				List<?> results = criteria.list();
+				return (List<Purchase>) results;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {			
+			if(venue.getPurchases() != null) {
+				return new ArrayList<>(venue.getPurchases());
+			}
+		}
+	
+		}
+		return null;
 	}
 
 }
