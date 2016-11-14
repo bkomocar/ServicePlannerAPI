@@ -15,7 +15,6 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 
 public class CreateEventViewModel {
 
-	@NotNull(message = "Employee is a required field")
 	Employee employee;
 	@NotNull(message = "Product is a required field")
 	Product product;

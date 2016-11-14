@@ -11,7 +11,7 @@ import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 public interface ProductService extends Operations<Product> {
 
 	public ProductViewModel getProduct(Long id, ViewModelType type);
-
+	
 	public IdViewModel createProduct(Long id, CreateProductViewModel model);
 
 	public boolean updateProduct(Long id, UpdateProductViewModel model);

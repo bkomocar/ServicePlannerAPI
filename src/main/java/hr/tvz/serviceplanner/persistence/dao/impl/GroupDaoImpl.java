@@ -73,29 +73,14 @@ public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDa
 		Venue venue = group.getVenue();
 		if (venue.getId().equals(id)) {
 			VenueEvents venueEvents = new VenueEvents(venue.getOpenTime(), venue.getCloseTime());
-			/*
-			 * SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
-			 * Date minDate; try { minDate = formatter.parse(date); Criteria
-			 * crit = getCurrentSession().createCriteria(Event.class); Date
-			 * maxDate = new Date(minDate.getTime() +
-			 * TimeUnit.DAYS.toMillis(1)); Conjunction and =
-			 * Restrictions.conjunction(); and.add( Restrictions.ge("startTime",
-			 * minDate) ); and.add( Restrictions.lt("startTime", maxDate) );
-			 * crit.add(and); List<?> results = crit.list();
-			 * venueEvents.setEvents((List<Event>) results); return venueEvents;
-			 * } catch (ParseException e) { e.printStackTrace(); }
-			 */
-
 			try {
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date fromDate = df.parse(date + " 00:00:00");
 				Date toDate = df.parse(date + " 23:59:59");
 				Criteria criteria = getCurrentSession().createCriteria(Event.class);
 				criteria.add(Restrictions.between("startTime", fromDate, toDate));
-				criteria.add(Restrictions.eq("venue", venue));
+				criteria.add(Restrictions.eqOrIsNull("group", group));
 				criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-				//criteria.setProjection(Projections.distinct(Projections.property("id")));
-				//criteria.setResultTransformer(Transformers.aliasToBean(Event.class));
 				List<?> results = criteria.list();
 				venueEvents.setEvents((List<Event>) results);
 				return venueEvents;

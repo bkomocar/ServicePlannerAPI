@@ -96,7 +96,7 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 				tempTime = 0;
 			}
 			eventViewModels.add(timespan);
-			tempTime++;				
+			tempTime++;
 		} while (tempTime != closeTimeHours);
 
 		for (Event event : events.getEvents()) {
@@ -104,10 +104,29 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 			for (Purchase purchase : event.getPurchases()) {
 				customers.add(purchase.getCustomer());
 			}
-			EventViewModelMedium eventViewModel = new EventViewModelMedium(event.getId(), event.getEmployee().getId(),
-					event.getProduct().getCategory().getColor(), event.getProduct().getShortName(),
-					hourMinsFormat.format(event.getStartTime()), hourMinsFormat.format(event.getEndTime()),
-					CustomerViewModelFactory.toCustomerViewModel(customers, ViewModelType.small));
+
+			EventViewModelMedium eventViewModel = new EventViewModelMedium(event.getId());
+
+			if (event.getEmployee() != null) {
+				eventViewModel.setEmployeeId(event.getEmployee().getId());
+			}
+			if (event.getProduct() != null) {
+				eventViewModel.setProductId(event.getProduct().getId());
+				eventViewModel.setProductShortName(event.getProduct().getShortName());
+				if (event.getProduct().getCategory() != null) {
+					eventViewModel.setCategoryColor(event.getProduct().getCategory().getColor());
+				}
+			}
+			if (event.getStartTime() != null) {
+				eventViewModel.setStartTime(hourMinsFormat.format(event.getStartTime()));
+			}
+			if (event.getEndTime() != null) {
+				eventViewModel.setEndTime(hourMinsFormat.format(event.getEndTime()));
+			}
+			if (customers != null) {
+				eventViewModel
+						.setCustomers(CustomerViewModelFactory.toCustomerViewModel(customers, ViewModelType.small));
+			}
 			int time = Integer.parseInt(sdf.format(event.getStartTime()));
 			int index = time - openTimeHours;
 			if (time < openTimeHours) {

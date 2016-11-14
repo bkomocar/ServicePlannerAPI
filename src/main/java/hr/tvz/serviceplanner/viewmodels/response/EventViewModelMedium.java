@@ -9,17 +9,22 @@ public class EventViewModelMedium {
 
 	Long eventId;
 	Long employeeId;
+	Long productId;
 	String categoryColor;
 	String productShortName;
 	String startTime;
 	String endTime;
 	private List<CustomerViewModel> customers = new ArrayList<>();
 	
-	
-	public EventViewModelMedium(Long eventId, Long employeeId, String categoryColor, String productShortName,
-			String startTime, String endTime, List<CustomerViewModel> customers) {
-		super();
+	public EventViewModelMedium(Long eventId) {
 		this.eventId = eventId;
+	}
+
+
+	public EventViewModelMedium(Long eventId, Long employeeId,Long productId, String categoryColor, String productShortName,
+			String startTime, String endTime, List<CustomerViewModel> customers) {
+		this.eventId = eventId;
+		this.productId = productId;
 		this.employeeId = employeeId;
 		this.categoryColor = categoryColor;
 		this.productShortName = productShortName;
@@ -82,6 +87,14 @@ public class EventViewModelMedium {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 	
 	
