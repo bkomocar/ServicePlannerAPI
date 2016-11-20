@@ -28,6 +28,9 @@ public class UpdatePurchaseViewModel {
 
 	private Long priceId;
 	
+	@Range(min = 1, message = "Items count can not be less than {min}")
+	private Long itemsCount;
+	
 	public UpdatePurchaseViewModel() {
 		super();
 	}
@@ -46,7 +49,7 @@ public class UpdatePurchaseViewModel {
 
 	public static Purchase toPurchase(UpdatePurchaseViewModel model) {
 		if (model != null) {
-			return new Purchase(model.currency, model.valueInSmallestCurrency, null, model.purchaseDate, model.paymentDate,
+			return new Purchase(model.currency, model.valueInSmallestCurrency,model.itemsCount, null, model.purchaseDate, model.paymentDate,
 					new Product(model.productId), new Customer(model.customerId), new Price(model.priceId));
 		}
 		return null;

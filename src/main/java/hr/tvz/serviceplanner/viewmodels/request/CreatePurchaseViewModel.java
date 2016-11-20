@@ -34,6 +34,9 @@ public class CreatePurchaseViewModel {
 
 	private Long customerId;
 
+	@Range(min = 1, message = "Items count can not be less than {min}")
+	private Long itemsCount;
+	
 	@NotNull
 	private Long priceId;
 
@@ -55,7 +58,7 @@ public class CreatePurchaseViewModel {
 
 	public static Purchase toPurchase(CreatePurchaseViewModel model) {
 		if (model != null) {
-			Purchase purchase = new Purchase(model.currency, model.valueInSmallestCurrency,null, model.purchaseDate,
+			Purchase purchase = new Purchase(model.currency, model.valueInSmallestCurrency,model.itemsCount, null, model.purchaseDate,
 					model.paymentDate,  new Product(model.productId), new Price(model.priceId));
 
 			if (model.customerId != null) {

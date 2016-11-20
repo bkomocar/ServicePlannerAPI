@@ -14,6 +14,7 @@ public class PurchaseViewModelLarge implements PurchaseViewModel {
 	private Long id;
 	private String currency;
 	private Long valueInSmallestCurrency;
+	private Long itemsCount;
 	private Date purchaseDate;
 	private Date paymentDate;
 	private ProductViewModel product;
@@ -26,11 +27,12 @@ public class PurchaseViewModelLarge implements PurchaseViewModel {
 		super();
 	}
 
-	public PurchaseViewModelLarge(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
+	public PurchaseViewModelLarge(Long id, String currency, Long valueInSmallestCurrency, Long itemsCount, Date purchaseDate,
 			Date paymentDate, ProductViewModel product, CustomerViewModel customer, PriceViewModel price,
 			Long totalDurationInMinutes, List<EventViewModel> events) {
 		super();
 		this.id = id;
+		this.itemsCount = itemsCount;
 		this.currency = currency;
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 		this.purchaseDate = purchaseDate;
@@ -40,6 +42,16 @@ public class PurchaseViewModelLarge implements PurchaseViewModel {
 		this.price = price;
 		this.totalDurationInMinutes = totalDurationInMinutes;
 		this.events = events;
+	}
+	
+	
+
+	public Long getItemsCount() {
+		return itemsCount;
+	}
+
+	public void setItemsCount(Long itemsCount) {
+		this.itemsCount = itemsCount;
 	}
 
 	public Long getId() {

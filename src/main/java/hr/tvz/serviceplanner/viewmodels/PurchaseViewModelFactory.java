@@ -18,19 +18,19 @@ public class PurchaseViewModelFactory {
 			if (type == null || type == ViewModelType.large || type == ViewModelType.extended) {
 				List<Event> events = new ArrayList<>(purchase.getEvents());
 				return new PurchaseViewModelLarge(purchase.getId(), purchase.getCurrency(),
-						purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
+						purchase.getValueInSmallestCurrency(), purchase.getItemsCount(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
 						ProductViewModelFactory.toProductViewModel(purchase.getProduct(), ViewModelType.large),
 						CustomerViewModelFactory.toCustomerViewModel(purchase.getCustomer(), ViewModelType.large),
 						PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes(),
 						EventViewModelFactory.toEventViewModel(events, ViewModelType.small));
 			} else if (type == ViewModelType.medium) {
 				return new PurchaseViewModelMedium(purchase.getId(), purchase.getCurrency(),
-						purchase.getValueInSmallestCurrency(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
+						purchase.getValueInSmallestCurrency(), purchase.getItemsCount(), purchase.getPurchaseDate(), purchase.getPaymentDate(),
 						ProductViewModelFactory.toProductViewModel(purchase.getProduct(), ViewModelType.large),
 						CustomerViewModelFactory.toCustomerViewModel(purchase.getCustomer(), ViewModelType.large),
 						PriceViewModel.fromPrice(purchase.getPrice()), purchase.getTotalDurationInMinutes());
 			} else {
-				return new PurchaseViewModelSmall(purchase.getId(),
+				return new PurchaseViewModelSmall(purchase.getId(), purchase.getCurrency(), purchase.getItemsCount(),
 						ProductViewModelFactory.toProductViewModel(purchase.getProduct(), ViewModelType.small),
 						CustomerViewModelFactory.toCustomerViewModel(purchase.getCustomer(), ViewModelType.small),
 						purchase.getTotalDurationInMinutes(), PriceViewModel.fromPrice(purchase.getPrice()));

@@ -11,6 +11,7 @@ public class PurchaseViewModelMedium implements PurchaseViewModel {
 	private Long id;
 	private String currency;
 	private Long valueInSmallestCurrency;
+	private Long itemsCount;
 	private Date purchaseDate;
 	private Date paymentDate;
 	private ProductViewModel product;
@@ -22,12 +23,13 @@ public class PurchaseViewModelMedium implements PurchaseViewModel {
 		super();
 	}
 
-	public PurchaseViewModelMedium(Long id, String currency, Long valueInSmallestCurrency, Date purchaseDate,
+	public PurchaseViewModelMedium(Long id, String currency, Long valueInSmallestCurrency, Long itemsCount,Date purchaseDate,
 			Date paymentDate, ProductViewModel product, CustomerViewModel customer, PriceViewModel price,
 			Long totalDurationInMinutes) {
 		super();
 		this.id = id;
 		this.currency = currency;
+		this.setItemsCount(itemsCount);
 		this.valueInSmallestCurrency = valueInSmallestCurrency;
 		this.purchaseDate = purchaseDate;
 		this.paymentDate = paymentDate;
@@ -107,6 +109,14 @@ public class PurchaseViewModelMedium implements PurchaseViewModel {
 
 	public void setTotalDurationInMinutes(Long totalDurationInMinutes) {
 		this.totalDurationInMinutes = totalDurationInMinutes;
+	}
+
+	public Long getItemsCount() {
+		return itemsCount;
+	}
+
+	public void setItemsCount(Long itemsCount) {
+		this.itemsCount = itemsCount;
 	}
 
 }

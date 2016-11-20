@@ -11,17 +11,19 @@ public class PurchaseViewModelSmall implements PurchaseViewModel {
 	private CustomerViewModel customer;
 	private PriceViewModel price;
 	private Long totalDurationInMinutes;
-	
-
+	private Long itemsCount;
+	private String currency;
 	public PurchaseViewModelSmall() {
 		super();
 	}
 
-	public PurchaseViewModelSmall(Long id, ProductViewModel product, CustomerViewModel customer,
+	public PurchaseViewModelSmall(Long id, String currency, Long itemsCount, ProductViewModel product, CustomerViewModel customer,
 			Long totalDurationInMinutes, PriceViewModel price) {
 		super();
 		this.id = id;
+		this.currency = currency;
 		this.product = product;
+		this.setItemsCount(itemsCount);
 		this.customer = customer;
 		this.price = price;
 		this.totalDurationInMinutes = totalDurationInMinutes;
@@ -65,6 +67,22 @@ public class PurchaseViewModelSmall implements PurchaseViewModel {
 
 	public void setPrice(PriceViewModel price) {
 		this.price = price;
+	}
+
+	public Long getItemsCount() {
+		return itemsCount;
+	}
+
+	public void setItemsCount(Long itemsCount) {
+		this.itemsCount = itemsCount;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	
