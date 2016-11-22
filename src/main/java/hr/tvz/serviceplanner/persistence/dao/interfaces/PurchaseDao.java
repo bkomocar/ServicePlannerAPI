@@ -1,7 +1,6 @@
 package hr.tvz.serviceplanner.persistence.dao.interfaces;
 
 import java.util.List;
-import java.util.SortedSet;
 
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
@@ -15,6 +14,6 @@ public interface PurchaseDao extends Operations<Purchase> {
 	public boolean deletePurchase(Long venueId, Long purchaseId);
 
 	public Purchase getPurchase(Long purchaseId);
-	
+
 	public List<Purchase> getPurchases(Long venueId, Long groupId, String date);
 }

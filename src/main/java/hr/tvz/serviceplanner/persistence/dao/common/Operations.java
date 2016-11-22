@@ -5,17 +5,17 @@ import java.util.List;
 
 public interface Operations<T extends Serializable> {
 
-    T findOne(final long id);
+	T findOne(final long id);
 
-    List<T> findAll();
+	List<T> findAll();
 
-    T create(final T entity);
+	T create(final T entity);
 
-    T update(final T entity);
+	T update(final T entity);
 
-    void delete(final T entity);
+	void delete(final T entity);
 
-    void deleteById(final long entityId);
+	void deleteById(final long entityId);
 
-    T findByName(final String name); 
+	T findByName(final String name);
 }

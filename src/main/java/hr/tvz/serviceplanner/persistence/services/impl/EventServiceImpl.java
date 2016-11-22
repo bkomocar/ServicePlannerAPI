@@ -3,18 +3,18 @@ package hr.tvz.serviceplanner.persistence.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.EventDto;
+import hr.tvz.serviceplanner.dtos.EventDtoFactory;
+import hr.tvz.serviceplanner.dtos.request.CreateByIdDto;
+import hr.tvz.serviceplanner.dtos.request.CreateEventDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateEventDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.EventDao;
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EventService;
-import hr.tvz.serviceplanner.viewmodels.EventViewModel;
-import hr.tvz.serviceplanner.viewmodels.EventViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
 public class EventServiceImpl extends AbstractService<Event> implements EventService {
@@ -23,18 +23,18 @@ public class EventServiceImpl extends AbstractService<Event> implements EventSer
 	private EventDao dao;
 
 	@Override
-	public IdViewModel createEvent(Long id, CreateEventViewModel model) {
-		Long eventId = dao.createEvent(id, CreateEventViewModel.toEvent(model));
+	public IdDto createEvent(Long id, CreateEventDto model) {
+		Long eventId = dao.createEvent(id, CreateEventDto.toEvent(model));
 		if (eventId != null) {
-			return new IdViewModel(eventId);
+			return new IdDto(eventId);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updateEvent(Long id, UpdateEventViewModel model) {
+	public boolean updateEvent(Long id, UpdateEventDto model) {
 		if (model != null) {
-			return dao.updateEvent(id, UpdateEventViewModel.toEvent(model));
+			return dao.updateEvent(id, UpdateEventDto.toEvent(model));
 		}
 		return false;
 	}
@@ -50,10 +50,10 @@ public class EventServiceImpl extends AbstractService<Event> implements EventSer
 	}
 
 	@Override
-	public EventViewModel getEvent(Long eventId) {
+	public EventDto getEvent(Long eventId) {
 		Event event = dao.getEvent(eventId);
 		if (event != null) {
-			return EventViewModelFactory.toEventViewModel(event, ViewModelType.large);
+			return EventDtoFactory.toEventDto(event, DtoType.large);
 		}
 		return null;
 	}
@@ -64,7 +64,7 @@ public class EventServiceImpl extends AbstractService<Event> implements EventSer
 	}
 
 	@Override
-	public boolean addPurchase(Long eventId, CreateByIdViewModel model) {
+	public boolean addPurchase(Long eventId, CreateByIdDto model) {
 		return dao.addPurchase(eventId, model.getId());
 	}
 

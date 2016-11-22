@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.CategoryDto;
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.EmployeeDto;
+import hr.tvz.serviceplanner.dtos.request.CreateByIdDto;
+import hr.tvz.serviceplanner.dtos.request.CreateCategoryDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateCategoryDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}")
@@ -39,24 +39,24 @@ public class CategoriesController {
 	private CategoryService categoryService;
 
 	@RequestMapping(value = "/groups/{groupId}/categories", method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createCategory(@PathVariable("venueId") long id,
-			@PathVariable("groupId") long groupId, @Valid @RequestBody CreateCategoryViewModel model) {
+	public ResponseEntity<IdDto> createCategory(@PathVariable("venueId") long id, @PathVariable("groupId") long groupId,
+			@Valid @RequestBody CreateCategoryDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel categoryId = categoryService.createCategory(groupId, model);
+			IdDto categoryId = categoryService.createCategory(groupId, model);
 			if (categoryId != null) {
-				return new ResponseEntity<IdViewModel>(categoryId, HttpStatus.CREATED);
+				return new ResponseEntity<IdDto>(categoryId, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<IdDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<IdViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<IdDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
 	@RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateCategory(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId, @Valid @RequestBody UpdateCategoryViewModel model) {
+			@PathVariable("categoryId") long categoryId, @Valid @RequestBody UpdateCategoryDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (categoryService.updateCategory(categoryId, model) != false) {
@@ -70,19 +70,18 @@ public class CategoriesController {
 	}
 
 	@RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.GET)
-	public ResponseEntity<CategoryViewModel> getCategory(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId,
-			@RequestParam(name = "type", required = false) ViewModelType type) {
+	public ResponseEntity<CategoryDto> getCategory(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId, @RequestParam(name = "type", required = false) DtoType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			CategoryViewModel model = categoryService.getCategory(categoryId, type);
+			CategoryDto model = categoryService.getCategory(categoryId, type);
 			if (model != null) {
-				return new ResponseEntity<CategoryViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<CategoryDto>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<CategoryViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<CategoryDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<CategoryViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<CategoryDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -110,7 +109,7 @@ public class CategoriesController {
 
 	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.POST)
 	public ResponseEntity<Void> addEmployee(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateByIdViewModel model) {
+			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateByIdDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (categoryService.addEmployee(categoryId, model)) {
@@ -123,19 +122,18 @@ public class CategoriesController {
 	}
 
 	@RequestMapping(value = "/categories/{categoryId}/employees", method = RequestMethod.GET)
-	public ResponseEntity<List<EmployeeViewModel>> getEmployees(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId,
-			@RequestParam(name = "type", required = false) ViewModelType type) {
+	public ResponseEntity<List<EmployeeDto>> getEmployees(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId, @RequestParam(name = "type", required = false) DtoType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			List<EmployeeViewModel> models = categoryService.getEmployees(id, categoryId, type);
+			List<EmployeeDto> models = categoryService.getEmployees(id, categoryId, type);
 			if (models != null) {
-				return new ResponseEntity<List<EmployeeViewModel>>(models, HttpStatus.OK);
+				return new ResponseEntity<List<EmployeeDto>>(models, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<List<EmployeeViewModel>>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<List<EmployeeDto>>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<List<EmployeeViewModel>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<EmployeeDto>>(HttpStatus.FORBIDDEN);
 		}
 	}
 }

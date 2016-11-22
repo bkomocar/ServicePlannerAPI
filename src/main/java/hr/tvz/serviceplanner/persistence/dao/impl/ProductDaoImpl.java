@@ -13,7 +13,6 @@ import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.models.Venue;
-import scala.remote;
 
 @Repository
 public class ProductDaoImpl extends AbstractHibernateDao<Product> implements ProductDao {

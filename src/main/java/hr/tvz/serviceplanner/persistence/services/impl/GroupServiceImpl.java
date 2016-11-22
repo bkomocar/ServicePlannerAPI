@@ -8,6 +8,17 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.CategoryDto;
+import hr.tvz.serviceplanner.dtos.CategoryDtoFactory;
+import hr.tvz.serviceplanner.dtos.CustomerDtoFactory;
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.GroupDto;
+import hr.tvz.serviceplanner.dtos.GroupDtoFactory;
+import hr.tvz.serviceplanner.dtos.request.CreateGroupDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateGroupDto;
+import hr.tvz.serviceplanner.dtos.response.EventDtoMedium;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
+import hr.tvz.serviceplanner.dtos.response.TimespanEventDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.GroupDao;
 import hr.tvz.serviceplanner.persistence.models.Category;
@@ -18,17 +29,6 @@ import hr.tvz.serviceplanner.persistence.models.Purchase;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
 import hr.tvz.serviceplanner.util.VenueEvents;
-import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.CategoryViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.CustomerViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.GroupViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateGroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateGroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.EventViewModelMedium;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.TimespanEventViewModel;
 
 @Service
 public class GroupServiceImpl extends AbstractService<Group> implements GroupService {
@@ -46,56 +46,56 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 	}
 
 	@Override
-	public IdViewModel createGroup(Long id, CreateGroupViewModel model) {
-		Long groupId = dao.createGroup(id, CreateGroupViewModel.toGroup(model));
+	public IdDto createGroup(Long id, CreateGroupDto model) {
+		Long groupId = dao.createGroup(id, CreateGroupDto.toGroup(model));
 		if (groupId != null) {
-			return new IdViewModel(groupId);
+			return new IdDto(groupId);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updateGroup(Long id, UpdateGroupViewModel model) {
+	public boolean updateGroup(Long id, UpdateGroupDto model) {
 		if (model != null) {
-			return dao.updateGroup(id, UpdateGroupViewModel.toGroup(model));
+			return dao.updateGroup(id, UpdateGroupDto.toGroup(model));
 		}
 		return false;
 	}
 
 	@Override
-	public GroupViewModel getGroup(Long id, ViewModelType type) {
+	public GroupDto getGroup(Long id, DtoType type) {
 		Group group = dao.findOne(id);
 		if (group != null) {
-			return GroupViewModelFactory.toGroupViewModel(group, type);
+			return GroupDtoFactory.toGroupDto(group, type);
 		}
 		return null;
 	}
 
 	@Override
-	public List<CategoryViewModel> getCategoriesForGroup(Long venueId, Long groupId, ViewModelType type) {
+	public List<CategoryDto> getCategoriesForGroup(Long venueId, Long groupId, DtoType type) {
 		SortedSet<Category> categories = dao.getCategoriesForGroup(venueId, groupId);
 		if (categories != null) {
-			return CategoryViewModelFactory.toCategoryViewModel(new ArrayList<Category>(categories), type);
+			return CategoryDtoFactory.toCategoryDto(new ArrayList<Category>(categories), type);
 		}
 		return null;
 	}
 
 	@Override
-	public List<TimespanEventViewModel> getTimeEventsForGroupByDate(long id, long groupId, String date) {
+	public List<TimespanEventDto> getTimeEventsForGroupByDate(long id, long groupId, String date) {
 		VenueEvents events = dao.getTimeEventsForServiceGroupByDate(id, groupId, date);
 		SimpleDateFormat sdf = new SimpleDateFormat("HH");
 		SimpleDateFormat hourMinsFormat = new SimpleDateFormat("HH:mm");
 		int openTimeHours = Integer.parseInt(sdf.format(events.getOpenTime()));
 		int closeTimeHours = Integer.parseInt(sdf.format(events.getCloseTime()));
 		int tempTime = openTimeHours;
-		List<TimespanEventViewModel> eventViewModels = new ArrayList<>();
+		List<TimespanEventDto> eventdtos = new ArrayList<>();
 		do {
-			TimespanEventViewModel timespan = new TimespanEventViewModel(
+			TimespanEventDto timespan = new TimespanEventDto(
 					(tempTime < 10) ? "0" + tempTime + ":00" : tempTime + ":00");
 			if (tempTime == 24) {
 				tempTime = 0;
 			}
-			eventViewModels.add(timespan);
+			eventdtos.add(timespan);
 			tempTime++;
 		} while (tempTime != closeTimeHours);
 
@@ -105,36 +105,35 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 				customers.add(purchase.getCustomer());
 			}
 
-			EventViewModelMedium eventViewModel = new EventViewModelMedium(event.getId());
+			EventDtoMedium eventDto = new EventDtoMedium(event.getId());
 
 			if (event.getEmployee() != null) {
-				eventViewModel.setEmployeeId(event.getEmployee().getId());
+				eventDto.setEmployeeId(event.getEmployee().getId());
 			}
 			if (event.getProduct() != null) {
-				eventViewModel.setProductId(event.getProduct().getId());
-				eventViewModel.setProductShortName(event.getProduct().getShortName());
+				eventDto.setProductId(event.getProduct().getId());
+				eventDto.setProductShortName(event.getProduct().getShortName());
 				if (event.getProduct().getCategory() != null) {
-					eventViewModel.setCategoryColor(event.getProduct().getCategory().getColor());
+					eventDto.setCategoryColor(event.getProduct().getCategory().getColor());
 				}
 			}
 			if (event.getStartTime() != null) {
-				eventViewModel.setStartTime(hourMinsFormat.format(event.getStartTime()));
+				eventDto.setStartTime(hourMinsFormat.format(event.getStartTime()));
 			}
 			if (event.getEndTime() != null) {
-				eventViewModel.setEndTime(hourMinsFormat.format(event.getEndTime()));
+				eventDto.setEndTime(hourMinsFormat.format(event.getEndTime()));
 			}
 			if (customers != null) {
-				eventViewModel
-						.setCustomers(CustomerViewModelFactory.toCustomerViewModel(customers, ViewModelType.small));
+				eventDto.setCustomers(CustomerDtoFactory.toCustomerDto(customers, DtoType.small));
 			}
 			int time = Integer.parseInt(sdf.format(event.getStartTime()));
 			int index = time - openTimeHours;
 			if (time < openTimeHours) {
 				index = 24 - openTimeHours + time;
 			}
-			eventViewModels.get(index).getEvents().add(eventViewModel);
+			eventdtos.get(index).getEvents().add(eventDto);
 		}
-		return eventViewModels;
+		return eventdtos;
 	}
 
 }

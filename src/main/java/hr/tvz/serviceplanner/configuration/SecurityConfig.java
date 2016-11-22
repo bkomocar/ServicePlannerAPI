@@ -1,7 +1,5 @@
 package hr.tvz.serviceplanner.configuration;
 
-import hr.tvz.serviceplanner.security.service.SecurityService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +16,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import hr.tvz.serviceplanner.security.AuthenticationTokenFilter;
 import hr.tvz.serviceplanner.security.EntryPointUnauthorizedHandler;
+import hr.tvz.serviceplanner.security.service.SecurityService;
 
 @Configuration
 @EnableWebSecurity
@@ -37,9 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder
-		.userDetailsService(this.userDetailsService)
-		.passwordEncoder(passwordEncoder());
+		authenticationManagerBuilder.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -67,28 +65,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity
-		.csrf()
-		.disable()
-		.exceptionHandling()
-		.authenticationEntryPoint(this.unauthorizedHandler)
-		.and()
-		.sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-		.authorizeRequests()
-		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		.antMatchers("/swagger-resources/**").permitAll()
-		.antMatchers("/auth/**").permitAll()		
-		.anyRequest().authenticated();
+		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(this.unauthorizedHandler).and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().antMatchers("/swagger-resources/**").permitAll()
+				.antMatchers("/auth/**").permitAll().anyRequest().authenticated();
 
 		// Custom JWT based authentication
-		httpSecurity
-		.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**");
-    }
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
+				"/swagger-ui.html", "/webjars/**");
+	}
 }

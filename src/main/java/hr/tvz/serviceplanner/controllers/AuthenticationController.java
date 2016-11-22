@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.request.AuthenticationDto;
+import hr.tvz.serviceplanner.dtos.request.RegisterDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
+import hr.tvz.serviceplanner.dtos.response.TokenDto;
 import hr.tvz.serviceplanner.persistence.services.impl.UserServiceImpl;
 import hr.tvz.serviceplanner.security.TokenUtils;
 import hr.tvz.serviceplanner.security.model.SecurityUser;
-import hr.tvz.serviceplanner.viewmodels.request.AuthenticationViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.RegisterViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.TokenViewModel;
 
 @RestController
 @RequestMapping("${route.authentication}")
@@ -44,19 +44,19 @@ public class AuthenticationController {
 	private UserServiceImpl userDetailsService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> register(@Valid @RequestBody RegisterViewModel model) {
+	public ResponseEntity<IdDto> register(@Valid @RequestBody RegisterDto model) {
 		if (userDetailsService.isUserValid(model.getUsername())) {
-			return new ResponseEntity<IdViewModel>(HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<IdDto>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		IdViewModel idViewModel = userDetailsService.saveUser(RegisterViewModel.toUser(model));
-		if (idViewModel == null) {
-			return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+		IdDto idDto = userDetailsService.saveUser(RegisterDto.toUser(model));
+		if (idDto == null) {
+			return new ResponseEntity<IdDto>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<IdViewModel>(idViewModel, HttpStatus.CREATED);
+		return new ResponseEntity<IdDto>(idDto, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> login(@Valid @RequestBody AuthenticationViewModel authenticationRequest, Device device)
+	public ResponseEntity<?> login(@Valid @RequestBody AuthenticationDto authenticationRequest, Device device)
 			throws AuthenticationException {
 		Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
@@ -65,7 +65,7 @@ public class AuthenticationController {
 		String token = this.tokenUtils.generateToken(userDetails, device);
 
 		// Return the token
-		return ResponseEntity.ok(new TokenViewModel(token));
+		return ResponseEntity.ok(new TokenDto(token));
 	}
 
 	@RequestMapping(value = "${route.authentication.refresh}", method = RequestMethod.GET)
@@ -75,7 +75,7 @@ public class AuthenticationController {
 		SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
 			String refreshedToken = this.tokenUtils.refreshToken(token);
-			return ResponseEntity.ok(new TokenViewModel(refreshedToken));
+			return ResponseEntity.ok(new TokenDto(refreshedToken));
 		} else {
 			return ResponseEntity.badRequest().body(null);
 		}

@@ -27,7 +27,7 @@ public class Customer implements Serializable, Comparable<Customer> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column
 	@ColumnDefault("0")
 	private boolean deleted;
@@ -52,7 +52,7 @@ public class Customer implements Serializable, Comparable<Customer> {
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
-	
+
 	@SortNatural
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
 	private SortedSet<Purchase> purchases;
@@ -65,7 +65,6 @@ public class Customer implements Serializable, Comparable<Customer> {
 		super();
 		this.id = id;
 	}
-	
 
 	public Customer(Long id, boolean deleted, String firstName, String lastName, String email, String phone,
 			String comment, Venue venue, SortedSet<Purchase> purchases) {

@@ -5,17 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.PurchaseDto;
+import hr.tvz.serviceplanner.dtos.PurchaseDtoFactory;
+import hr.tvz.serviceplanner.dtos.request.CreatePurchaseDto;
+import hr.tvz.serviceplanner.dtos.request.UpdatePurchaseDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.PurchaseDao;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.PurchaseService;
-import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
-import hr.tvz.serviceplanner.viewmodels.PurchaseViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreatePurchaseViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdatePurchaseViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
 public class PurchaseServiceImpl extends AbstractService<Purchase> implements PurchaseService {
@@ -24,18 +24,18 @@ public class PurchaseServiceImpl extends AbstractService<Purchase> implements Pu
 	private PurchaseDao dao;
 
 	@Override
-	public IdViewModel createPurchase(Long id, CreatePurchaseViewModel model) {
-		Long purchaseId = dao.createPurchase(id, CreatePurchaseViewModel.toPurchase(model));
+	public IdDto createPurchase(Long id, CreatePurchaseDto model) {
+		Long purchaseId = dao.createPurchase(id, CreatePurchaseDto.toPurchase(model));
 		if (purchaseId != null) {
-			return new IdViewModel(purchaseId);
+			return new IdDto(purchaseId);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updatePurchase(Long id, UpdatePurchaseViewModel model) {
+	public boolean updatePurchase(Long id, UpdatePurchaseDto model) {
 		if (model != null) {
-			return dao.updatePurchase(id, UpdatePurchaseViewModel.toPurchase(model));
+			return dao.updatePurchase(id, UpdatePurchaseDto.toPurchase(model));
 		}
 		return false;
 	}
@@ -51,19 +51,19 @@ public class PurchaseServiceImpl extends AbstractService<Purchase> implements Pu
 	}
 
 	@Override
-	public PurchaseViewModel getPurchase(Long purchaseId) {
+	public PurchaseDto getPurchase(Long purchaseId) {
 		Purchase purchase = dao.getPurchase(purchaseId);
 		if (purchase != null) {
-			return PurchaseViewModelFactory.toPurchaseViewModel(purchase, ViewModelType.large);
+			return PurchaseDtoFactory.toPurchaseDto(purchase, DtoType.large);
 		}
 		return null;
 	}
 
 	@Override
-	public List<PurchaseViewModel> getPurchases(Long venueId, Long groupId, String date) {
+	public List<PurchaseDto> getPurchases(Long venueId, Long groupId, String date) {
 		List<Purchase> purchases = dao.getPurchases(venueId, groupId, date);
-		if(purchases != null){
-			return PurchaseViewModelFactory.toPurchaseViewModel(purchases, ViewModelType.large);
+		if (purchases != null) {
+			return PurchaseDtoFactory.toPurchaseDto(purchases, DtoType.large);
 		}
 		return null;
 	}

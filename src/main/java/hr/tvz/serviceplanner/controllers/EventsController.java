@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.EventDto;
+import hr.tvz.serviceplanner.dtos.request.CreateByIdDto;
+import hr.tvz.serviceplanner.dtos.request.CreateEventDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateEventDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EventService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.EventViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateEventViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}/events")
@@ -33,24 +33,24 @@ public class EventsController {
 	private EventService eventService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createEvent(@PathVariable("venueId") long id,
-			@Valid @RequestBody CreateEventViewModel model) {
+	public ResponseEntity<IdDto> createEvent(@PathVariable("venueId") long id,
+			@Valid @RequestBody CreateEventDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel eventId = eventService.createEvent(id, model);
+			IdDto eventId = eventService.createEvent(id, model);
 			if (eventId != null) {
-				return new ResponseEntity<IdViewModel>(eventId, HttpStatus.CREATED);
+				return new ResponseEntity<IdDto>(eventId, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<IdDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<IdViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<IdDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
 	@RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateEvent(@PathVariable("venueId") long id, @PathVariable("eventId") long eventId,
-			@Valid @RequestBody UpdateEventViewModel model) {
+			@Valid @RequestBody UpdateEventDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (eventService.updateEvent(eventId, model) != false) {
@@ -64,18 +64,17 @@ public class EventsController {
 	}
 
 	@RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
-	public ResponseEntity<EventViewModel> getEvent(@PathVariable("venueId") long id,
-			@PathVariable("eventId") long eventId) {
+	public ResponseEntity<EventDto> getEvent(@PathVariable("venueId") long id, @PathVariable("eventId") long eventId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			EventViewModel model = eventService.getEvent(eventId);
+			EventDto model = eventService.getEvent(eventId);
 			if (model != null) {
-				return new ResponseEntity<EventViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<EventDto>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<EventViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<EventDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<EventViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<EventDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -104,7 +103,7 @@ public class EventsController {
 
 	@RequestMapping(value = "/{eventId}/purchases", method = RequestMethod.POST)
 	public ResponseEntity<Void> addPurchase(@PathVariable("venueId") long id, @PathVariable("eventId") long eventId,
-			@Valid @RequestBody CreateByIdViewModel model) {
+			@Valid @RequestBody CreateByIdDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (eventService.addPurchase(eventId, model)) {

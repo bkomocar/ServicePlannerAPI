@@ -1,7 +1,6 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.springframework.stereotype.Repository;
 

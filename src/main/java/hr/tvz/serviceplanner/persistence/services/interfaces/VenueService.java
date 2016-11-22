@@ -2,29 +2,29 @@ package hr.tvz.serviceplanner.persistence.services.interfaces;
 
 import java.util.List;
 
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.GroupDto;
+import hr.tvz.serviceplanner.dtos.VenueDto;
+import hr.tvz.serviceplanner.dtos.request.CreateByNameDto;
+import hr.tvz.serviceplanner.dtos.request.CreateVenueDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateVenueDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.models.Venue;
-import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 
 public interface VenueService extends Operations<Venue> {
 
-	public VenueViewModel getVenue(Long venueId, ViewModelType type);
+	public VenueDto getVenue(Long venueId, DtoType type);
 
-	public VenueViewModel saveVenue(CreateVenueViewModel model, Long userId);
+	public VenueDto saveVenue(CreateVenueDto model, Long userId);
 
-	public boolean addUser(Long venueId, CreateByNameViewModel model);
+	public boolean addUser(Long venueId, CreateByNameDto model);
 
 	public boolean removeUser(Long venueId, Long userId);
 
-	public List<VenueViewModel> getVenuesForUser(Long userId, ViewModelType type);
+	public List<VenueDto> getVenuesForUser(Long userId, DtoType type);
 
-	public boolean updateVenue(Long id, UpdateVenueViewModel venue);
+	public boolean updateVenue(Long id, UpdateVenueDto venue);
 
-	public GroupViewModel getGroup(Long venueId, String name, ViewModelType type);
+	public GroupDto getGroup(Long venueId, String name, DtoType type);
 
 }

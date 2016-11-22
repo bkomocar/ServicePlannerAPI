@@ -1,8 +1,6 @@
 package hr.tvz.serviceplanner.persistence.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -98,8 +96,7 @@ public class CategoryDaoImpl extends AbstractHibernateDao<Category> implements C
 		if (category != null && category.getGroup() != null && category.getGroup().getVenue() != null
 				&& category.getGroup().getVenue().getId() != null
 				&& category.getGroup().getVenue().getId() == venueId) {
-			List<Employee> employees = category.getEmployees().stream() 	
-					.filter(employee -> !employee.isDeleted())	
+			List<Employee> employees = category.getEmployees().stream().filter(employee -> !employee.isDeleted())
 					.collect(Collectors.toList());
 			return new TreeSet<Employee>(employees);
 		}

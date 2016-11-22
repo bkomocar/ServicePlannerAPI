@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.PurchaseDto;
+import hr.tvz.serviceplanner.dtos.request.CreatePurchaseDto;
+import hr.tvz.serviceplanner.dtos.request.UpdatePurchaseDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.services.interfaces.PurchaseService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.PurchaseViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreatePurchaseViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdatePurchaseViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}/purchases")
@@ -37,24 +36,24 @@ public class PurchasesController {
 	private PurchaseService purchaseService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createPurchase(@PathVariable("venueId") long id,
-			@Valid @RequestBody CreatePurchaseViewModel model) {
+	public ResponseEntity<IdDto> createPurchase(@PathVariable("venueId") long id,
+			@Valid @RequestBody CreatePurchaseDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel productId = purchaseService.createPurchase(id, model);
+			IdDto productId = purchaseService.createPurchase(id, model);
 			if (productId != null) {
-				return new ResponseEntity<IdViewModel>(productId, HttpStatus.CREATED);
+				return new ResponseEntity<IdDto>(productId, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<IdDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<IdViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<IdDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
 	@RequestMapping(value = "/{purchaseId}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updatePurchase(@PathVariable("venueId") long id,
-			@PathVariable("purchaseId") long purchaseId, @Valid @RequestBody UpdatePurchaseViewModel model) {
+			@PathVariable("purchaseId") long purchaseId, @Valid @RequestBody UpdatePurchaseDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (purchaseService.updatePurchase(purchaseId, model) != false) {
@@ -68,36 +67,36 @@ public class PurchasesController {
 	}
 
 	@RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET)
-	public ResponseEntity<PurchaseViewModel> getPurchase(@PathVariable("venueId") long id,
+	public ResponseEntity<PurchaseDto> getPurchase(@PathVariable("venueId") long id,
 			@PathVariable("purchaseId") long purchaseId) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			PurchaseViewModel model = purchaseService.getPurchase(purchaseId);
+			PurchaseDto model = purchaseService.getPurchase(purchaseId);
 			if (model != null) {
-				return new ResponseEntity<PurchaseViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<PurchaseDto>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<PurchaseViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<PurchaseDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<PurchaseViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<PurchaseDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
 	/* date in yyyy-MM-dd */
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<PurchaseViewModel>> getPurchases(@PathVariable("venueId") long id,
+	public ResponseEntity<List<PurchaseDto>> getPurchases(@PathVariable("venueId") long id,
 			@RequestParam(name = "groupId", required = false) Long groupId,
 			@RequestParam(name = "date", required = false) String date) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			List<PurchaseViewModel> models = purchaseService.getPurchases(id, groupId, date);
+			List<PurchaseDto> models = purchaseService.getPurchases(id, groupId, date);
 			if (models != null) {
-				return new ResponseEntity<List<PurchaseViewModel>>(models, HttpStatus.OK);
+				return new ResponseEntity<List<PurchaseDto>>(models, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<List<PurchaseViewModel>>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<List<PurchaseDto>>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<List<PurchaseViewModel>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<PurchaseDto>>(HttpStatus.FORBIDDEN);
 		}
 	}
 

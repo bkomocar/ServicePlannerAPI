@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.CustomerDao;
 import hr.tvz.serviceplanner.persistence.models.Customer;
-import hr.tvz.serviceplanner.persistence.models.Employee;
-import hr.tvz.serviceplanner.persistence.models.User;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
 @Repository
@@ -73,7 +71,7 @@ public class CustomerDaoImpl extends AbstractHibernateDao<Customer> implements C
 	@Override
 	public Customer getCustomer(Long customerId) {
 		Customer c = findOne(customerId);
-		if(c!=null && !c.isDeleted()){
+		if (c != null && !c.isDeleted()) {
 			return c;
 		}
 		return null;

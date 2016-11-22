@@ -57,7 +57,7 @@ public class Employee implements Serializable, Comparable<Employee> {
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
-	
+
 	@Column
 	@ColumnDefault("0")
 	private boolean deleted;
@@ -77,8 +77,6 @@ public class Employee implements Serializable, Comparable<Employee> {
 		this.id = id;
 	}
 
-	
-	
 	public Employee(Long id, String username, String firstName, String lastName, String color, String email,
 			String phone, String comment, Venue venue, boolean deleted, SortedSet<Category> categoriesEmployees) {
 		super();

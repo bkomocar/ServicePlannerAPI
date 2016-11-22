@@ -7,17 +7,17 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.EmployeeDto;
+import hr.tvz.serviceplanner.dtos.EmployeeDtoFactory;
+import hr.tvz.serviceplanner.dtos.request.CreateEmployeeDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateEmployeeDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.EmployeeDao;
 import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.EmployeeService;
-import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
-import hr.tvz.serviceplanner.viewmodels.EmployeeViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateEmployeeViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateEmployeeViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
 public class EmployeeServiceImpl extends AbstractService<Employee> implements EmployeeService {
@@ -26,27 +26,27 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 	private EmployeeDao dao;
 
 	@Override
-	public EmployeeViewModel getEmployee(Long id, ViewModelType type) {
+	public EmployeeDto getEmployee(Long id, DtoType type) {
 		Employee employee = dao.getEmployee(id);
 		if (employee != null) {
-			return EmployeeViewModelFactory.toEmployeeViewModel(employee, type);
+			return EmployeeDtoFactory.toEmployeeDto(employee, type);
 		}
 		return null;
 	}
 
 	@Override
-	public IdViewModel createEmployee(Long id, CreateEmployeeViewModel model) {
-		Long groupId = dao.createEmployee(id, CreateEmployeeViewModel.toEmployee(model));
+	public IdDto createEmployee(Long id, CreateEmployeeDto model) {
+		Long groupId = dao.createEmployee(id, CreateEmployeeDto.toEmployee(model));
 		if (groupId != null) {
-			return new IdViewModel(groupId);
+			return new IdDto(groupId);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updateEmployee(Long id, UpdateEmployeeViewModel model) {
+	public boolean updateEmployee(Long id, UpdateEmployeeDto model) {
 		if (model != null) {
-			return dao.updateEmployee(id, UpdateEmployeeViewModel.toEmployee(model));
+			return dao.updateEmployee(id, UpdateEmployeeDto.toEmployee(model));
 		}
 		return false;
 	}
@@ -57,10 +57,10 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 	}
 
 	@Override
-	public List<EmployeeViewModel> getEmployeesForVenue(Long venueId, ViewModelType type) {
+	public List<EmployeeDto> getEmployeesForVenue(Long venueId, DtoType type) {
 		SortedSet<Employee> employees = dao.getEmployeesForVenue(venueId);
 		if (employees != null) {
-			return EmployeeViewModelFactory.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
+			return EmployeeDtoFactory.toEmployeeDto(new ArrayList<Employee>(employees), type);
 		}
 		return null;
 	}

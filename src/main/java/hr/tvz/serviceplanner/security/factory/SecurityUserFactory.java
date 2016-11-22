@@ -1,10 +1,9 @@
 package hr.tvz.serviceplanner.security.factory;
 
-import hr.tvz.serviceplanner.security.model.SecurityUser;
-
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import hr.tvz.serviceplanner.persistence.models.User;
+import hr.tvz.serviceplanner.security.model.SecurityUser;
 
 public class SecurityUserFactory {
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import hr.tvz.serviceplanner.persistence.dao.common.AbstractHibernateDao;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.EmployeeDao;
-import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 
@@ -52,11 +51,11 @@ public class EmployeeDaoImpl extends AbstractHibernateDao<Employee> implements E
 		}
 		return false;
 	}
-	
+
 	@Override
 	public Employee getEmployee(Long employeeId) {
 		Employee e = findOne(employeeId);
-		if(e!=null && !e.isDeleted()){
+		if (e != null && !e.isDeleted()) {
 			return e;
 		}
 		return null;

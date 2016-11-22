@@ -53,13 +53,13 @@ public class Venue implements Serializable, Comparable<Venue> {
 	private Time openTime;
 
 	@Column
-	private Time closeTime;	
-	
+	private Time closeTime;
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column
 	private VenueType type = VenueType.OTHER;
-	
+
 	@SortNatural
 	@Cascade(value = CascadeType.REFRESH)
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -86,22 +86,22 @@ public class Venue implements Serializable, Comparable<Venue> {
 	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
 	private SortedSet<Purchase> purchases = new TreeSet<>();
-	
+
 	@SortNatural
 	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
 	private SortedSet<Price> prices = new TreeSet<>();
-	
+
 	@SortNatural
 	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
 	private SortedSet<Product> products = new TreeSet<>();
-	
+
 	@SortNatural
 	@Cascade(value = CascadeType.DELETE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
 	private SortedSet<Event> events = new TreeSet<>();
-	
+
 	public Venue() {
 		super();
 	}
@@ -119,7 +119,7 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.openTime = openTime;
 		this.closeTime = closeTime;
 	}
-	
+
 	public Venue(String name, String description, String owner, Time openTime, Time closeTime, VenueType type) {
 		super();
 		this.name = name;
@@ -224,7 +224,7 @@ public class Venue implements Serializable, Comparable<Venue> {
 	public void setGroups(SortedSet<Group> groups) {
 		this.groups = groups;
 	}
-	
+
 	public VenueType getType() {
 		return type;
 	}

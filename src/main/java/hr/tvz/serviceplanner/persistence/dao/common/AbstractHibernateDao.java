@@ -28,7 +28,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> implements Op
 
 	@Override
 	public final T findOne(final long id) {
-			return (T) getCurrentSession().get(clazz, id);
+		return (T) getCurrentSession().get(clazz, id);
 	}
 
 	@Override

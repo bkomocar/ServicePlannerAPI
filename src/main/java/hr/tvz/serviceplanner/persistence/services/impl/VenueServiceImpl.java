@@ -7,20 +7,20 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.GroupDto;
+import hr.tvz.serviceplanner.dtos.GroupDtoFactory;
+import hr.tvz.serviceplanner.dtos.VenueDto;
+import hr.tvz.serviceplanner.dtos.VenueDtoFactory;
+import hr.tvz.serviceplanner.dtos.request.CreateByNameDto;
+import hr.tvz.serviceplanner.dtos.request.CreateVenueDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateVenueDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.VenueDao;
 import hr.tvz.serviceplanner.persistence.models.Group;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.VenueService;
-import hr.tvz.serviceplanner.viewmodels.GroupViewModel;
-import hr.tvz.serviceplanner.viewmodels.GroupViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.VenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.VenueViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateByNameViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateVenueViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateVenueViewModel;
 
 @Service
 public class VenueServiceImpl extends AbstractService<Venue> implements VenueService {
@@ -34,16 +34,16 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public VenueViewModel saveVenue(CreateVenueViewModel model, Long userId) {
-		Venue daoVenue = this.dao.saveVenue(CreateVenueViewModel.toVenue(model), userId);
+	public VenueDto saveVenue(CreateVenueDto model, Long userId) {
+		Venue daoVenue = this.dao.saveVenue(CreateVenueDto.toVenue(model), userId);
 		if (daoVenue != null) {
-			return VenueViewModelFactory.toVenueViewModel(daoVenue, ViewModelType.extended);
+			return VenueDtoFactory.toVenueDto(daoVenue, DtoType.extended);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean addUser(Long venueId, CreateByNameViewModel model) {
+	public boolean addUser(Long venueId, CreateByNameDto model) {
 		if (venueId != null && model != null && model.getName() != null) {
 			return dao.addUser(venueId, model.getName());
 		}
@@ -51,18 +51,18 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public List<VenueViewModel> getVenuesForUser(Long userId, ViewModelType type) {
+	public List<VenueDto> getVenuesForUser(Long userId, DtoType type) {
 		SortedSet<Venue> venues = dao.getVenuesForUser(userId);
 		if (venues != null) {
-			return VenueViewModelFactory.toVenueViewModel(new ArrayList<Venue>(venues), type);
+			return VenueDtoFactory.toVenueDto(new ArrayList<Venue>(venues), type);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updateVenue(Long id, UpdateVenueViewModel venue) {
+	public boolean updateVenue(Long id, UpdateVenueDto venue) {
 		if (venue != null) {
-			return dao.updateVenue(id, UpdateVenueViewModel.toVenue(venue));
+			return dao.updateVenue(id, UpdateVenueDto.toVenue(venue));
 		}
 		return false;
 	}
@@ -76,19 +76,19 @@ public class VenueServiceImpl extends AbstractService<Venue> implements VenueSer
 	}
 
 	@Override
-	public GroupViewModel getGroup(Long venueId, String name, ViewModelType type) {
+	public GroupDto getGroup(Long venueId, String name, DtoType type) {
 		Group group = dao.getGroup(venueId, name);
 		if (group != null) {
-			return GroupViewModelFactory.toGroupViewModel(group, type);
+			return GroupDtoFactory.toGroupDto(group, type);
 		}
 		return null;
 	}
 
 	@Override
-	public VenueViewModel getVenue(Long venueId, ViewModelType type) {
+	public VenueDto getVenue(Long venueId, DtoType type) {
 		Venue venue = dao.getVenue(venueId);
 		if (venue != null) {
-			return VenueViewModelFactory.toVenueViewModel(venue, type);
+			return VenueDtoFactory.toVenueDto(venue, type);
 		}
 		return null;
 	}

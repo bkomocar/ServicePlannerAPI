@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.request.CreateCostDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateCostDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CostService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.CreateCostViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateCostViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}")
@@ -31,24 +31,24 @@ public class CostsController {
 	private CostService costService;
 
 	@RequestMapping(value = "/prices/{priceId}/costs", method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createCost(@PathVariable("venueId") long id,
-			@PathVariable("priceId") long priceId, @Valid @RequestBody CreateCostViewModel model) {
+	public ResponseEntity<IdDto> createCost(@PathVariable("venueId") long id, @PathVariable("priceId") long priceId,
+			@Valid @RequestBody CreateCostDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel costId = costService.createCost(priceId, model);
+			IdDto costId = costService.createCost(priceId, model);
 			if (costId != null) {
-				return new ResponseEntity<IdViewModel>(costId, HttpStatus.CREATED);
+				return new ResponseEntity<IdDto>(costId, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<IdDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<IdViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<IdDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
 	@RequestMapping(value = "/costs/{costId}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateCost(@PathVariable("venueId") long id, @PathVariable("costId") long costId,
-			@Valid @RequestBody UpdateCostViewModel model) {
+			@Valid @RequestBody UpdateCostDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (costService.updateCost(costId, model) != false) {

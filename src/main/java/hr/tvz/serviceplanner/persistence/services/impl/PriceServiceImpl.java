@@ -3,14 +3,14 @@ package hr.tvz.serviceplanner.persistence.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.request.CreatePriceDto;
+import hr.tvz.serviceplanner.dtos.request.UpdatePriceDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.PriceDao;
 import hr.tvz.serviceplanner.persistence.models.Price;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.PriceService;
-import hr.tvz.serviceplanner.viewmodels.request.CreatePriceViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdatePriceViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
 public class PriceServiceImpl extends AbstractService<Price> implements PriceService {
@@ -19,18 +19,18 @@ public class PriceServiceImpl extends AbstractService<Price> implements PriceSer
 	private PriceDao dao;
 
 	@Override
-	public IdViewModel createPrice(Long id, CreatePriceViewModel model) {
-		Long priceId = dao.createPrice(id, CreatePriceViewModel.toPrice(model));
+	public IdDto createPrice(Long id, CreatePriceDto model) {
+		Long priceId = dao.createPrice(id, CreatePriceDto.toPrice(model));
 		if (priceId != null) {
-			return new IdViewModel(priceId);
+			return new IdDto(priceId);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updatePrice(Long id, UpdatePriceViewModel model) {
+	public boolean updatePrice(Long id, UpdatePriceDto model) {
 		if (model != null) {
-			return dao.updatePrice(id, UpdatePriceViewModel.toPrice(model));
+			return dao.updatePrice(id, UpdatePriceDto.toPrice(model));
 		}
 		return false;
 	}

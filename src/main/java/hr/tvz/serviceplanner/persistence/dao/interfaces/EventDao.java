@@ -12,8 +12,8 @@ public interface EventDao extends Operations<Event> {
 	public boolean deleteEvent(Long venueId, Long eventId);
 
 	public Event getEvent(Long eventId);
-	
+
 	public boolean addPurchase(Long eventId, Long purchaseId);
-	
+
 	public boolean removePurchase(Long eventId, Long purchaseId);
 }

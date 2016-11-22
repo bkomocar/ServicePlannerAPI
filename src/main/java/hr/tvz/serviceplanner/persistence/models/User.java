@@ -1,9 +1,9 @@
 package hr.tvz.serviceplanner.persistence.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,11 +54,12 @@ public class User implements Serializable, Comparable<User> {
 
 	@SortNatural
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "usersVenues", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "venueId") })
+	@JoinTable(name = "usersVenues", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = {
+			@JoinColumn(name = "venueId") })
 	private SortedSet<Venue> venues = new TreeSet<>();
-	
+
 	// Public methods
-	
+
 	public User() {
 	}
 
@@ -74,7 +75,7 @@ public class User implements Serializable, Comparable<User> {
 		this.lastPasswordReset = lastPasswordReset;
 		this.authorities = authorities;
 	}
-	
+
 	public User(String email, String username, String password) {
 		this.email = email;
 		this.name = username;
@@ -152,5 +153,5 @@ public class User implements Serializable, Comparable<User> {
 		}
 		return -1;
 	}
-		
+
 }

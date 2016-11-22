@@ -1,14 +1,14 @@
 package hr.tvz.serviceplanner.security.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import hr.tvz.serviceplanner.persistence.models.User;
-
 import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import hr.tvz.serviceplanner.persistence.models.User;
 
 public class SecurityUser implements UserDetails {
 
@@ -28,7 +28,8 @@ public class SecurityUser implements UserDetails {
 		super();
 	}
 
-	public SecurityUser(Long id, String username, String password, String email, Date lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
+	public SecurityUser(Long id, String username, String password, String email, Date lastPasswordReset,
+			Collection<? extends GrantedAuthority> authorities) {
 		this.setId(id);
 		this.setUsername(username);
 		this.setPassword(password);
@@ -36,11 +37,11 @@ public class SecurityUser implements UserDetails {
 		this.setLastPasswordReset(lastPasswordReset);
 		this.setAuthorities(authorities);
 	}
-	
+
 	public static User toUser(SecurityUser user) {
 		if (user != null) {
-		return new User(user.id);
-	} 
+			return new User(user.id);
+		}
 		return null;
 	}
 

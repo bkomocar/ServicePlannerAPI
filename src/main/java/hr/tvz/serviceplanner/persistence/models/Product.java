@@ -46,7 +46,7 @@ public class Product implements Serializable, Comparable<Product> {
 	@Column(columnDefinition = "varchar(500)")
 	private String description;
 
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE})
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE })
 	@SortNatural
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
 	private SortedSet<Price> prices;
@@ -54,15 +54,14 @@ public class Product implements Serializable, Comparable<Product> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoryId", nullable = true)
 	private Category category;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
-	
+
 	@SortNatural
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
 	private SortedSet<Purchase> purchases;
-	
 
 	public Venue getVenue() {
 		return venue;

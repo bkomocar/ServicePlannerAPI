@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -47,8 +46,8 @@ public class Price implements Serializable, Comparable<Price> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "venueId", nullable = false)
 	private Venue venue;
-	
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE})
+
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE })
 	@SortNatural
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "price")
 	private SortedSet<Cost> costs;
@@ -77,7 +76,7 @@ public class Price implements Serializable, Comparable<Price> {
 	public Price(Long id, String name, String description, Long durationInMin, Long itemsCount, SortedSet<Cost> costs) {
 		super();
 		this.name = name;
-		this.id =id;
+		this.id = id;
 		this.description = description;
 		this.durationInMin = durationInMin;
 		this.itemsCount = itemsCount;

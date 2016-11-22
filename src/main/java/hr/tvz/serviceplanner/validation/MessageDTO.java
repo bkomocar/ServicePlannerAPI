@@ -45,5 +45,5 @@ public class MessageDTO {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
 }

@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.ProductDto;
+import hr.tvz.serviceplanner.dtos.request.CreateProductDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateProductDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.services.interfaces.ProductService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserRightsCheckerService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.ProductViewModel;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateProductViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateProductViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @RestController
 @RequestMapping("venues/{venueId}")
@@ -36,24 +36,24 @@ public class ProductsController {
 	private ProductService productService;
 
 	@RequestMapping(value = "/categories/{categoryId}/products", method = RequestMethod.POST)
-	public ResponseEntity<IdViewModel> createProduct(@PathVariable("venueId") long id,
-			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateProductViewModel model) {
+	public ResponseEntity<IdDto> createProduct(@PathVariable("venueId") long id,
+			@PathVariable("categoryId") long categoryId, @Valid @RequestBody CreateProductDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			IdViewModel productId = productService.createProduct(categoryId, model);
+			IdDto productId = productService.createProduct(categoryId, model);
 			if (productId != null) {
-				return new ResponseEntity<IdViewModel>(productId, HttpStatus.CREATED);
+				return new ResponseEntity<IdDto>(productId, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<IdViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<IdDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<IdViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<IdDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 
 	@RequestMapping(value = "/products/{productId}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateProduct(@PathVariable("venueId") long id,
-			@PathVariable("productId") long productId, @Valid @RequestBody UpdateProductViewModel model) {
+			@PathVariable("productId") long productId, @Valid @RequestBody UpdateProductDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
 			if (productService.updateProduct(productId, model) != false) {
@@ -67,19 +67,18 @@ public class ProductsController {
 	}
 
 	@RequestMapping(value = "/products/{productId}", method = RequestMethod.GET)
-	public ResponseEntity<ProductViewModel> getProduct(@PathVariable("venueId") long id,
-			@PathVariable("productId") long productId,
-			@RequestParam(name = "type", required = false) ViewModelType type) {
+	public ResponseEntity<ProductDto> getProduct(@PathVariable("venueId") long id,
+			@PathVariable("productId") long productId, @RequestParam(name = "type", required = false) DtoType type) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			ProductViewModel model = productService.getProduct(productId, type);
+			ProductDto model = productService.getProduct(productId, type);
 			if (model != null) {
-				return new ResponseEntity<ProductViewModel>(model, HttpStatus.OK);
+				return new ResponseEntity<ProductDto>(model, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<ProductViewModel>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<ProductDto>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<ProductViewModel>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<ProductDto>(HttpStatus.FORBIDDEN);
 		}
 	}
 

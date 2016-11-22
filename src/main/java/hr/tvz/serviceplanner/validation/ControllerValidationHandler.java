@@ -21,9 +21,9 @@ public class ControllerValidationHandler {
 		ArrayList<MessageDTO> messages = new ArrayList<>();
 		BindingResult result = ex.getBindingResult();
 		if (result.getFieldErrors() != null && !result.getFieldErrors().isEmpty()) {
-			for(FieldError error : result.getFieldErrors()){
+			for (FieldError error : result.getFieldErrors()) {
 				MessageDTO msg = processFieldError(error);
-				if(msg!=null){
+				if (msg != null) {
 					messages.add(msg);
 				}
 			}

@@ -7,21 +7,21 @@ import java.util.SortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hr.tvz.serviceplanner.dtos.CategoryDto;
+import hr.tvz.serviceplanner.dtos.CategoryDtoFactory;
+import hr.tvz.serviceplanner.dtos.DtoType;
+import hr.tvz.serviceplanner.dtos.EmployeeDto;
+import hr.tvz.serviceplanner.dtos.EmployeeDtoFactory;
+import hr.tvz.serviceplanner.dtos.request.CreateByIdDto;
+import hr.tvz.serviceplanner.dtos.request.CreateCategoryDto;
+import hr.tvz.serviceplanner.dtos.request.UpdateCategoryDto;
+import hr.tvz.serviceplanner.dtos.response.IdDto;
 import hr.tvz.serviceplanner.persistence.dao.common.Operations;
 import hr.tvz.serviceplanner.persistence.dao.interfaces.CategoryDao;
 import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.models.Employee;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.CategoryService;
-import hr.tvz.serviceplanner.viewmodels.CategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.CategoryViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.EmployeeViewModel;
-import hr.tvz.serviceplanner.viewmodels.EmployeeViewModelFactory;
-import hr.tvz.serviceplanner.viewmodels.ViewModelType;
-import hr.tvz.serviceplanner.viewmodels.request.CreateByIdViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.CreateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateCategoryViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.IdViewModel;
 
 @Service
 public class CategoryServiceImpl extends AbstractService<Category> implements CategoryService {
@@ -30,27 +30,27 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	private CategoryDao dao;
 
 	@Override
-	public CategoryViewModel getCategory(Long id, ViewModelType type) {
+	public CategoryDto getCategory(Long id, DtoType type) {
 		Category category = dao.findOne(id);
 		if (category != null) {
-			return CategoryViewModelFactory.toCategoryViewModel(category, type);
+			return CategoryDtoFactory.toCategoryDto(category, type);
 		}
 		return null;
 	}
 
 	@Override
-	public IdViewModel createCategory(Long id, CreateCategoryViewModel model) {
-		Long categoryId = dao.createCategory(id, CreateCategoryViewModel.toCategory(model));
+	public IdDto createCategory(Long id, CreateCategoryDto model) {
+		Long categoryId = dao.createCategory(id, CreateCategoryDto.toCategory(model));
 		if (categoryId != null) {
-			return new IdViewModel(categoryId);
+			return new IdDto(categoryId);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean updateCategory(Long id, UpdateCategoryViewModel model) {
+	public boolean updateCategory(Long id, UpdateCategoryDto model) {
 		if (model != null) {
-			return dao.updateCategory(id, UpdateCategoryViewModel.toCategory(model));
+			return dao.updateCategory(id, UpdateCategoryDto.toCategory(model));
 		}
 		return false;
 	}
@@ -61,7 +61,7 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	}
 
 	@Override
-	public boolean addEmployee(Long categoryId, CreateByIdViewModel model) {
+	public boolean addEmployee(Long categoryId, CreateByIdDto model) {
 		if (categoryId != null && model != null && model.getId() != null) {
 			return dao.addEmployee(categoryId, model.getId());
 		}
@@ -77,10 +77,10 @@ public class CategoryServiceImpl extends AbstractService<Category> implements Ca
 	}
 
 	@Override
-	public List<EmployeeViewModel> getEmployees(Long venueId, Long categoryId, ViewModelType type) {
+	public List<EmployeeDto> getEmployees(Long venueId, Long categoryId, DtoType type) {
 		SortedSet<Employee> employees = dao.getEmployees(venueId, categoryId);
 		if (employees != null) {
-			return EmployeeViewModelFactory.toEmployeeViewModel(new ArrayList<Employee>(employees), type);
+			return EmployeeDtoFactory.toEmployeeDto(new ArrayList<Employee>(employees), type);
 		}
 		return null;
 	}

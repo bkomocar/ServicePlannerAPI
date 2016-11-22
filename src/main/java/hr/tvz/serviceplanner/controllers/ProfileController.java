@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.tvz.serviceplanner.dtos.request.UpdateUserDto;
+import hr.tvz.serviceplanner.dtos.response.UserDto;
 import hr.tvz.serviceplanner.persistence.services.interfaces.UserService;
 import hr.tvz.serviceplanner.util.AuthenticationFacade;
-import hr.tvz.serviceplanner.viewmodels.request.UpdateUserViewModel;
-import hr.tvz.serviceplanner.viewmodels.response.UserViewModel;
 
 @RestController
 @RequestMapping("/profile")
@@ -26,20 +26,20 @@ public class ProfileController {
 	private AuthenticationFacade authenticationFacade;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<UserViewModel> getProfile() {
+	public ResponseEntity<UserDto> getProfile() {
 		Long userId = authenticationFacade.getUserId();
 		if (userId == null) {
-			return new ResponseEntity<UserViewModel>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<UserDto>(HttpStatus.UNAUTHORIZED);
 		}
-		UserViewModel user = UserViewModel.fromUser(userService.findOne(userId));
+		UserDto user = UserDto.fromUser(userService.findOne(userId));
 		if (user == null) {
-			return new ResponseEntity<UserViewModel>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<UserDto>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<UserViewModel>(user, HttpStatus.OK);
+		return new ResponseEntity<UserDto>(user, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateProfile(@Valid @RequestBody UpdateUserViewModel model) {
+	public ResponseEntity<Void> updateProfile(@Valid @RequestBody UpdateUserDto model) {
 		Long userId = authenticationFacade.getUserId();
 		if (userId == null) {
 			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);

@@ -19,6 +19,5 @@ public class ServicePlannerApplication {
 		messageBundle.setDefaultEncoding("UTF-8");
 		return messageBundle;
 	}
-	
-	
+
 }
