@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -15,6 +16,7 @@ import hr.tvz.serviceplanner.persistence.dao.interfaces.GroupDao;
 import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.models.Group;
+import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.models.Venue;
 import hr.tvz.serviceplanner.util.VenueEvents;
 
@@ -83,6 +85,22 @@ public class GroupDaoImpl extends AbstractHibernateDao<Group> implements GroupDa
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		return null;
+	}
+
+	@Override
+	public SortedSet<Product> getProductsForGroup(Long venueId, Long groupId) {
+		Group group = findOne(groupId);
+		if (group.getVenue().getId().equals(venueId)) {
+			SortedSet<Category> categories = group.getCategories();
+			SortedSet<Product> products = new TreeSet<>();
+			for (Category category : categories) {
+				if (category != null && category.getProducts() != null) {
+					products.addAll(category.getProducts());
+				}
+			}
+			return products;
 		}
 		return null;
 	}

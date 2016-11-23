@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hr.tvz.serviceplanner.dtos.CategoryDto;
 import hr.tvz.serviceplanner.dtos.DtoType;
 import hr.tvz.serviceplanner.dtos.GroupDto;
+import hr.tvz.serviceplanner.dtos.ProductDto;
 import hr.tvz.serviceplanner.dtos.request.CreateGroupDto;
 import hr.tvz.serviceplanner.dtos.request.UpdateGroupDto;
 import hr.tvz.serviceplanner.dtos.response.IdDto;
@@ -101,6 +102,22 @@ public class GroupsController {
 		}
 	}
 
+	@RequestMapping(value = "/{groupId}/products", method = RequestMethod.GET)
+	public ResponseEntity<List<ProductDto>> getProductsForGroup(@PathVariable("venueId") long id,
+			@PathVariable("groupId") long groupId, @RequestParam(name = "type", required = false) DtoType type) {
+		Long userId = authenticationFacade.getUserId();
+		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
+			List<ProductDto> models = groupService.getProductsForGroup(id, groupId, type);
+			if (models != null) {
+				return new ResponseEntity<List<ProductDto>>(models, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<ProductDto>>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<List<ProductDto>>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
 	@RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteGroup(@PathVariable("venueId") long id, @PathVariable("groupId") long groupId) {
 		Long userId = authenticationFacade.getUserId();

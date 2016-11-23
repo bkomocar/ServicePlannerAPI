@@ -14,6 +14,8 @@ import hr.tvz.serviceplanner.dtos.CustomerDtoFactory;
 import hr.tvz.serviceplanner.dtos.DtoType;
 import hr.tvz.serviceplanner.dtos.GroupDto;
 import hr.tvz.serviceplanner.dtos.GroupDtoFactory;
+import hr.tvz.serviceplanner.dtos.ProductDto;
+import hr.tvz.serviceplanner.dtos.ProductDtoFactory;
 import hr.tvz.serviceplanner.dtos.request.CreateGroupDto;
 import hr.tvz.serviceplanner.dtos.request.UpdateGroupDto;
 import hr.tvz.serviceplanner.dtos.response.EventDtoMedium;
@@ -25,6 +27,7 @@ import hr.tvz.serviceplanner.persistence.models.Category;
 import hr.tvz.serviceplanner.persistence.models.Customer;
 import hr.tvz.serviceplanner.persistence.models.Event;
 import hr.tvz.serviceplanner.persistence.models.Group;
+import hr.tvz.serviceplanner.persistence.models.Product;
 import hr.tvz.serviceplanner.persistence.models.Purchase;
 import hr.tvz.serviceplanner.persistence.services.common.AbstractService;
 import hr.tvz.serviceplanner.persistence.services.interfaces.GroupService;
@@ -134,6 +137,15 @@ public class GroupServiceImpl extends AbstractService<Group> implements GroupSer
 			eventdtos.get(index).getEvents().add(eventDto);
 		}
 		return eventdtos;
+	}
+
+	@Override
+	public List<ProductDto> getProductsForGroup(Long id, Long groupId, DtoType type) {
+		SortedSet<Product> products = dao.getProductsForGroup(id, groupId);
+		if (products != null) {
+			return ProductDtoFactory.toProductDto(new ArrayList<Product>(products), type);
+		}
+		return null;
 	}
 
 }
