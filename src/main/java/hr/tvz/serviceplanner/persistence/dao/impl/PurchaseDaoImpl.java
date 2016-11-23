@@ -112,7 +112,7 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 	}
 
 	@Override
-	public List<Purchase> getPurchases(Long venueId, Long groupId, String date) {
+	public List<Purchase> getPurchases(Long venueId, Long groupId, Long productId, String date) {
 		Venue venue = getCurrentSession().get(Venue.class, venueId);
 		if (venue != null) {
 			Criteria criteria = getCurrentSession().createCriteria(Purchase.class);
@@ -132,6 +132,14 @@ public class PurchaseDaoImpl extends AbstractHibernateDao<Purchase> implements P
 				Group group = getCurrentSession().get(Group.class, groupId);
 				if (group != null) {
 					criteria.add(Restrictions.eq("group", group));
+				} else {
+					return null;
+				}
+			}
+			if (productId != null) {
+				Product product = getCurrentSession().get(Product.class, productId);
+				if (product != null) {
+					criteria.add(Restrictions.eq("product", product));
 				} else {
 					return null;
 				}

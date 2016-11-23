@@ -86,10 +86,11 @@ public class PurchasesController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<PurchaseDto>> getPurchases(@PathVariable("venueId") long id,
 			@RequestParam(name = "groupId", required = false) Long groupId,
+			@RequestParam(name = "productId", required = false) Long productId,
 			@RequestParam(name = "date", required = false) String date) {
 		Long userId = authenticationFacade.getUserId();
 		if (userRightsCheckerService.hasUserRightsOnVenue(userId, id)) {
-			List<PurchaseDto> models = purchaseService.getPurchases(id, groupId, date);
+			List<PurchaseDto> models = purchaseService.getPurchases(id, groupId, productId, date);
 			if (models != null) {
 				return new ResponseEntity<List<PurchaseDto>>(models, HttpStatus.OK);
 			} else {

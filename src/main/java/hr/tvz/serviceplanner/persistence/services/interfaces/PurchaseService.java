@@ -19,5 +19,5 @@ public interface PurchaseService extends Operations<Purchase> {
 
 	public PurchaseDto getPurchase(Long purchaseId);
 
-	public List<PurchaseDto> getPurchases(Long venueId, Long groupId, String date);
+	public List<PurchaseDto> getPurchases(Long venueId, Long groupId, Long productId, String date);
 }

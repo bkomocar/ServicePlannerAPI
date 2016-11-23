@@ -60,8 +60,8 @@ public class PurchaseServiceImpl extends AbstractService<Purchase> implements Pu
 	}
 
 	@Override
-	public List<PurchaseDto> getPurchases(Long venueId, Long groupId, String date) {
-		List<Purchase> purchases = dao.getPurchases(venueId, groupId, date);
+	public List<PurchaseDto> getPurchases(Long venueId, Long groupId, Long productId, String date) {
+		List<Purchase> purchases = dao.getPurchases(venueId, groupId, productId, date);
 		if (purchases != null) {
 			return PurchaseDtoFactory.toPurchaseDto(purchases, DtoType.large);
 		}
