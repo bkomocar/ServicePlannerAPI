@@ -19,10 +19,12 @@ public class CategoryDtoFactory {
 						category.getColor(), ProductDtoFactory.toProductDto(products, DtoType.large));
 			} else if (type == DtoType.extended) {
 				List<Product> products = new ArrayList<>(category.getProducts());
-				return new CategoryDtoExtended(category.getId(), category.getName(),
-						ProductDtoFactory.toProductDto(products, DtoType.large));
+				return new CategoryDtoLarge(category.getId(), category.getName(), category.getDescription(),
+						category.getColor(), ProductDtoFactory.toProductDto(products, DtoType.large));
 			} else {
-				return new CategoryDtoSmall(category.getId(), category.getName());
+				List<Product> products = new ArrayList<>(category.getProducts());
+				return new CategoryDtoLarge(category.getId(), category.getName(), category.getDescription(),
+						category.getColor(), ProductDtoFactory.toProductDto(products, DtoType.large));
 			}
 		}
 		return null;

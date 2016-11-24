@@ -10,6 +10,8 @@ public class CategoryDtoExtended implements CategoryDto {
 
 	private Long id;
 	private String name;
+	private String description;
+	private String color;
 	private List<ProductDto> products = new ArrayList<>();
 
 	public CategoryDtoExtended() {
